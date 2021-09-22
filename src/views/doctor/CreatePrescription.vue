@@ -46,6 +46,9 @@
             class="mx-0"
             vertical
             ></v-divider>
+
+    <!-- Right Side  -->
+
             <v-col lg="" md="9" sm="12" cols="12">
                 <v-card  class="ma-5" elevation="0">
                    <v-row>
@@ -77,6 +80,9 @@
                             </v-card>
                         </v-col>
                    </v-row>
+
+                <!-- test for Patient -->
+
                    <v-row>
                         <v-col>
                             <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
@@ -128,6 +134,9 @@
                             </v-card>
                         </v-col>
                    </v-row>
+
+
+                   <!-- Drugs Table  -->
                    <v-row>
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
@@ -191,9 +200,57 @@
                            </v-card>
                        </v-col>
                    </v-row>
+
+
+                <!-- print save button  -->
+
+                    <v-row justify="center" style="text-align:center !important;">
+                        <v-col>
+                            <v-btn-toggle
+                                v-model="icon"
+                                borderless
+                                class="pa-2"
+                                style="border:2px solid #479EF4"
+                            >
+                                <v-btn value="left" href="/prescription">
+                                <span class="hidden-sm-and-down">Preview</span>
+
+                                <v-icon right>
+                                    mdi-eye-outline
+                                </v-icon>
+                                </v-btn>
+
+                                <v-btn value="center">
+                                <span class="hidden-sm-and-down">Save</span>
+
+                                <v-icon right>
+                                   mdi-content-save-outline
+                                </v-icon>
+                                </v-btn>
+
+                                <v-btn value="right"
+                                @click="saveAndPrint()">
+                                <span class="hidden-sm-and-down">Save & Print</span>
+
+                                <v-icon right>
+                                    mdi-cloud-print-outline
+                                </v-icon>
+                                </v-btn>
+                            </v-btn-toggle>
+                        </v-col>
+                    </v-row>
                 </v-card>
             </v-col>
+
+         <!-- right side end  -->
     </v-row>
+
+    <!-- prescription here  -->
+
+    <div v-show="false" id="prescription">
+      <p>working on it</p>
+    </div>
+
 
     <!-- dialog here -->
 
@@ -233,10 +290,15 @@
     </v-dialog>
     </div>
 </template>
+
+
+
 <script>
+import {htmlToPaper} from 'vue-html-to-paper'
 export default {
   data () {
     return {
+        icon:"",
       input: '',
       idx: 0,
       idy: 0,
@@ -290,7 +352,11 @@ export default {
   methods: {
     show () {
       return 0
-    }
+    },
+    saveAndPrint () {
+      console.log("clicked")
+      this.$htmlToPaper('prescription');
+    },
   }
 }
 </script>
@@ -298,5 +364,8 @@ export default {
 .rowise .col-6{
     padding-bottom: 0px !important;
     padding-top: 0px !important;
+}
+.vl {
+  border-left: 1px solid gray;
 }
 </style>
