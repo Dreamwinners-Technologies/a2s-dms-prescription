@@ -212,7 +212,7 @@
                                 class="pa-2"
                                 style="border:2px solid #479EF4"
                             >
-                                <v-btn value="left" href="/prescription">
+                                <v-btn value="left" link to="prescription">
                                 <span class="hidden-sm-and-down">Preview</span>
 
                                 <v-icon right>
