@@ -7,68 +7,120 @@ const getDatabase = () => {
         columns: {
             drugId: {
                 primaryKey: true,
-                autoIncrement: false
+                autoIncrement: true
             },
             name: {
                 notNull: true,
                 dataType: DATA_TYPE.String
             },
-            type: {
-                dataType: DATA_TYPE.String,
+            // type: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // generic: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // typbrandNamee: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // packSize: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // indications: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // adultDose: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // childDose: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // renalDose: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // administration: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // contraindications: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // sideEffects: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // precautionsAndWarnings: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // pregnancyAndLactation: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // therapeuticClass: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // modeOfAction: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // interaction: {
+            //     dataType: DATA_TYPE.String,
+            // },
+            // packSizeAndPrice: {
+            //     dataType: DATA_TYPE.String,
+            // },
+        }
+    };
+    const tblComlaints = {
+        name: 'Complaints',
+        columns: {
+            id: {
+                primaryKey: true,
+                autoIncrement: true
             },
-            generic: {
-                dataType: DATA_TYPE.String,
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.String
             },
-            typbrandNamee: {
-                dataType: DATA_TYPE.String,
+        }
+    };
+    const tblOnExamination = {
+        name: 'OnExamination',
+        columns: {
+            id: {
+                primaryKey: true,
+                autoIncrement: true
             },
-            packSize: {
-                dataType: DATA_TYPE.String,
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.String
             },
-            indications: {
-                dataType: DATA_TYPE.String,
+        }
+    };
+    const tblDiagnosis = {
+        name: 'Diagnosis',
+        columns: {
+            Id: {
+                primaryKey: true,
+                autoIncrement: true
             },
-            adultDose: {
-                dataType: DATA_TYPE.String,
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.String
             },
-            childDose: {
-                dataType: DATA_TYPE.String,
+        }
+    };
+    const tblInvestigationAdvice = {
+        name: 'InvestigationAdvice',
+        columns: {
+            Id: {
+                primaryKey: true,
+                autoIncrement: true
             },
-            renalDose: {
-                dataType: DATA_TYPE.String,
-            },
-            administration: {
-                dataType: DATA_TYPE.String,
-            },
-            contraindications: {
-                dataType: DATA_TYPE.String,
-            },
-            sideEffects: {
-                dataType: DATA_TYPE.String,
-            },
-            precautionsAndWarnings: {
-                dataType: DATA_TYPE.String,
-            },
-            pregnancyAndLactation: {
-                dataType: DATA_TYPE.String,
-            },
-            therapeuticClass: {
-                dataType: DATA_TYPE.String,
-            },
-            modeOfAction: {
-                dataType: DATA_TYPE.String,
-            },
-            interaction: {
-                dataType: DATA_TYPE.String,
-            },
-            packSizeAndPrice: {
-                dataType: DATA_TYPE.String,
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.String
             },
         }
     };
     const dataBase = {
         name: "a2sdms",
-        tables: [tblDrugs]
+        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice]
     };
     return dataBase;
 };

@@ -99,14 +99,14 @@ this.searchDrugs()
   let ds = new DrugService();
       axios
         .get(
-          `http://need-doctors-backend.southeastasia.cloudapp.azure.com:8100/drugs?pageNo=0&pageSize=20`
+          `http://need-doctors-backend.southeastasia.cloudapp.azure.com:8100/drugs?pageNo=0&pageSize=200`
         )
         .then(r => {
           let response = r.data,
               currentDrugList = r.data.drugModelList
               //  console.log("r")
        for (let i = 0;i < currentDrugList.length;i++){
-         ds.addDrugs(currentDrugList[i])
+         ds.addDrugs({name: currentDrugList[i].name})
        }
          this.dialog = false
            console.log(r)
