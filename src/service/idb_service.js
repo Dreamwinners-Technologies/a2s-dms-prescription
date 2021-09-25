@@ -12,62 +12,11 @@ const getDatabase = () => {
             name: {
                 notNull: true,
                 dataType: DATA_TYPE.String
-            },
-            // type: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // generic: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // typbrandNamee: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // packSize: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // indications: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // adultDose: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // childDose: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // renalDose: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // administration: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // contraindications: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // sideEffects: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // precautionsAndWarnings: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // pregnancyAndLactation: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // therapeuticClass: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // modeOfAction: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // interaction: {
-            //     dataType: DATA_TYPE.String,
-            // },
-            // packSizeAndPrice: {
-            //     dataType: DATA_TYPE.String,
-            // },
+            }
         }
     };
     const tblComlaints = {
-        name: 'Complaints',
+        name: 'chiefComplaint',
         columns: {
             id: {
                 primaryKey: true,
@@ -80,7 +29,7 @@ const getDatabase = () => {
         }
     };
     const tblOnExamination = {
-        name: 'OnExamination',
+        name: 'onExamination',
         columns: {
             id: {
                 primaryKey: true,
@@ -93,7 +42,7 @@ const getDatabase = () => {
         }
     };
     const tblDiagnosis = {
-        name: 'Diagnosis',
+        name: 'diagnosis',
         columns: {
             Id: {
                 primaryKey: true,
@@ -106,7 +55,7 @@ const getDatabase = () => {
         }
     };
     const tblInvestigationAdvice = {
-        name: 'InvestigationAdvice',
+        name: 'investigationAdvice',
         columns: {
             Id: {
                 primaryKey: true,
@@ -118,9 +67,41 @@ const getDatabase = () => {
             },
         }
     };
+    const tblLocalPrescription = {
+        name: 'LocalPresciption',
+        columns: {
+            lId: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            id: {
+                notNull: false,
+            },
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.Object
+            },
+        }
+    };
+    const tblPrescription = {
+        name: 'Presciption',
+        columns: {
+            lId: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            id: {
+                notNull: false,
+            },
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.Object
+            },
+        }
+    };
     const dataBase = {
         name: "a2sdms",
-        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice]
+        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription]
     };
     return dataBase;
 };

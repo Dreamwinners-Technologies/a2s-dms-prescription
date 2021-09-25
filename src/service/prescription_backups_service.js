@@ -13,9 +13,7 @@ export class ABService {
     addData(tableName, data) {
         return connection.insert({
             into: tableName,
-            values: [{
-                data: data
-            }],
+            values: [data],
             return: true
         })
     }
