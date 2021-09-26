@@ -407,7 +407,7 @@
                 class="pa-2"
                 style="border:2px solid #479EF4"
               >
-                <v-btn value="left" link to="prescription">
+                <v-btn value="left" @click="printPrescription()">
                   <span class="hidden-sm-and-down">Preview</span>
 
                   <v-icon right>
@@ -659,6 +659,10 @@ export default {
     saveAndPrint() {
       console.log("clicked");
       this.$htmlToPaper("prescription");
+    },
+    printPrescription(){
+      let routeData = this.$router.resolve({name: 'Prescription' ,query: {data: "print"}});
+      window.open(routeData.href, '_blank');
     },
     addDrug() {
       if (this.drugUpdateIdx == -1) {
