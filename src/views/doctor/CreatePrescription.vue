@@ -441,7 +441,7 @@
 
     <!-- prescription here  -->
 
-    <v-dialog title="Add New Drug" v-model="prescriptionPriview" max-width="900px">
+    <v-dialog title="Add New Drug" v-model="prescriptionPriview" max-width="980px">
         <v-card class="pa-5">
             <h3>Preview: Prescription of ( Rahim Mia )</h3>
         <div id="prescription">
