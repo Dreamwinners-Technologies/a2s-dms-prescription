@@ -88,7 +88,7 @@ const routes = [{
             import ( /* webpackChunkName: "about" */ '../views/auth/NoPermissionErr.vue')
     },
     {
-        path: '/prescription/:id',
+        path: '/print/prescription/:id',
         name: 'Prescription By ID',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -97,7 +97,7 @@ const routes = [{
             import ( /* webpackChunkName: "about" */ '../views/pages/PrescriptionById.vue')
     },
     {
-        path: '/prescription',
+        path: '/print/prescription',
         name: 'Prescription',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route

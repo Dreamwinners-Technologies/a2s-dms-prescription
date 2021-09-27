@@ -399,7 +399,7 @@
 
           <!-- print save button  -->
 
-          <v-row justify="center" style="text-align:center !important;">
+          <v-row style="text-align:center !important;">
             <v-col>
               <v-btn-toggle
                 v-model="icon"
@@ -469,7 +469,7 @@
             </v-col>
         </v-row>
         <hr>
-        <v-row class="my-0" justify="center" style="text-align:center">
+        <v-row class="my-0" style="text-align:center">
             <v-col>
                 Patient ID: #P1234
             </v-col>
@@ -550,7 +550,7 @@
                     </v-row>
                     <br>
                     <v-footer>
-                        <v-row justify="left">
+                        <v-row>
                             <v-col class="mx-2 mt-4">
                                 <b>Given Advice: </b><p style="margin:0px;display:block" v-for="item in prescription.advice" :key="item"> {{item}} </p>
                             </v-col>
