@@ -1,6 +1,8 @@
 <template>
-    <v-container>
-        <v-row>
+<v-app> 
+    <v-content>
+<v-container >
+        <v-row class="my-0">
             <v-col>
                 <h2 style="color:#479EF4">Dr Mojibur Rahman</h2>
                 MBBS <br>
@@ -23,7 +25,7 @@
             </v-col>
         </v-row>
         <hr>
-        <v-row justify="center" style="text-align:center">
+        <v-row class="my-0" justify="center" style="text-align:center">
             <v-col>
                 Patient ID: #P1234
             </v-col>
@@ -38,8 +40,8 @@
             </v-col>
         </v-row>
         <hr>
-        <v-row style="height:1160px">
-            <v-col cols="4">
+        <v-row class="ma-0" style="height:1160px">
+            <v-col cols="4" style="border-right: 1px solid #f0f0f0 !important;">
                 <v-row>
                     <v-col>
                     <b>Cheif Complaints :</b><br><br>
@@ -95,9 +97,9 @@
                             <br>
                         </v-col>
                     </v-row>
-                    <v-row v-for="item in prescription.medicines" :key="item">
+                    <v-row class="my-0" v-for="item in prescription.medicines" :key="item">
                         <v-col class="mx-4">
-                            <h6>{{item.brand}}</h6><br>
+                            <b style="font-size: 15px !important;">{{item.brand}}</b><br>
                             {{item.dose}} --- {{item.instruction}} --- {{item.duration}} <br>
                             Note: {{item.note}}
                         </v-col>
@@ -116,7 +118,7 @@
         <br> -->
         <br>
         <br>
-        <v-footer fixed>
+        <v-footer absolute>
         <v-container>
             <v-row class="pt-2" style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;">
             <v-col>
@@ -132,12 +134,19 @@
         </v-container>
         </v-footer>
     </v-container>
+    </v-content>
+</v-app>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data(){
         return {
+            windowSize: {
+                x: 500,
+                y: 200,
+            },
             prescription:{
                 id:"",
                 chiefComplaints: ["Fever for 3 days","Runing nose"],
@@ -201,6 +210,32 @@ export default {
     }
 }
 </script>
+
 <style scoped>
-@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
+html{
+    margin:0 !important;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
+    font-size:1rem !important;
+    font-weight:400 !important;
+    line-height:1.5 !important;
+    color:#212529 !important;
+    text-align:left !important;
+    background-color:rgba(255, 255, 255, 0.269) !important;
+}
+.container {
+    width: 100%;
+    padding: 12px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.full-height {
+  background-color:#f2f5f8;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+.theme--light.v-messages {
+  color: #E4515D;
+}
 </style>

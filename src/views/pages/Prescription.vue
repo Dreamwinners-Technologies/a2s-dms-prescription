@@ -1,6 +1,7 @@
 <template>
-        <v-container>
-          <v-row>
+<v-app>
+    <v-container>
+        <v-row>
             <v-col>
                 <h2 style="color:#479EF4">Dr Mojibur Rahman</h2>
                 MBBS <br>
@@ -38,7 +39,7 @@
             </v-col>
         </v-row>
         <hr>
-        <v-row style="height:1020px">
+        <v-row style="height:1160px">
             <v-col cols="4">
                 <v-row>
                     <v-col>
@@ -102,18 +103,23 @@
                             Note: {{item.note}}
                         </v-col>
                     </v-row>
-                    <v-footer absolute>
+                    <br>
+                    <v-footer>
                         <v-row justify="left">
-                            <v-col class="mx-4">
+                            <v-col class="mx-2 mt-4">
                                 <b>Given Advice: </b><p style="margin:0px;display:block" v-for="item in prescription.advice" :key="item"> {{item}} </p>
                             </v-col>
                         </v-row>
                     </v-footer>
             </v-col>
         </v-row>
-        <hr>
-        <v-footer>
-        <v-row>
+        <!-- <br> 
+        <br> -->
+        <br>
+        <br>
+        <v-footer fixed>
+        <v-container>
+            <v-row class="pt-2" style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;">
             <v-col>
                 Made By <br>
                 A2S DMS Prescription
@@ -124,12 +130,13 @@
                  https://prescription.a2sdms.com
             </v-col>
         </v-row>
-        </v-footer>
         </v-container>
+        </v-footer>
+    </v-container>
+</v-app>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
     data(){
         return {
@@ -196,16 +203,6 @@ export default {
     }
 }
 </script>
-
 <style scoped>
-.full-height {
-  background-color:#f2f5f8;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  min-height: 100vh;
-}
-.theme--light.v-messages {
-  color: #E4515D;
-}
+ @import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css");
 </style>

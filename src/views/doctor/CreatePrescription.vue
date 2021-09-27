@@ -407,7 +407,7 @@
                 class="pa-2"
                 style="border:2px solid #479EF4"
               >
-                <v-btn value="left" @click="printPrescription()">
+                <v-btn value="left" @click="prescriptionPriview=true">
                   <span class="hidden-sm-and-down">Preview</span>
 
                   <v-icon right>
@@ -423,7 +423,7 @@
                   </v-icon>
                 </v-btn>
 
-                <v-btn value="right" @click="saveAndPrint()">
+                <v-btn value="right" @click="printPrescription()">
                   <span class="hidden-sm-and-down">Save & Print</span>
 
                   <v-icon right>
@@ -441,9 +441,147 @@
 
     <!-- prescription here  -->
 
-    <div v-show="false" id="prescription">
-      <p>working on it</p>
-    </div>
+    <v-dialog title="Add New Drug" v-model="prescriptionPriview" max-width="900px">
+        <v-card class="pa-5">
+            <h3>Preview: Prescription of ( Rahim Mia )</h3>
+        <div id="prescription">
+        <v-container>
+        <v-row class="my-0">
+            <v-col>
+                <h2 style="color:#479EF4">Dr Mojibur Rahman</h2>
+                MBBS <br>
+                Dhaka Medical College <br>
+                Room No 508,Trusted Care Hostpital <br>
+                Narsingdi sadar <br>
+                Phone: 01734543027 <br>
+            </v-col>
+            <v-spacer>
+            </v-spacer>
+            <v-col style="text-align:right !important">
+                 <h2 style="color:#479EF4">ডাঃ মোঃ মজিবুর রহমান
+                 </h2>
+                এম বি বি এস <br>
+                ঢাকা মেডিকেল কলেজ <br>
+                চেম্বারঃ ৫০৮,  ট্রাস্টেড কেয়ার হাসপাতাল <br>
+                নরসিংদী সদর, নরসিংদী <br>
+                ফোনঃ ০১৭৩৪৫৪৩০২৭
+                
+            </v-col>
+        </v-row>
+        <hr>
+        <v-row class="my-0" justify="center" style="text-align:center">
+            <v-col>
+                Patient ID: #P1234
+            </v-col>
+            <v-col>
+                Name: Maahbub Mia
+            </v-col>
+            <v-col>
+                Age: 34 Years Old
+            </v-col>
+            <v-col>
+                Date: 27 May 2021
+            </v-col>
+        </v-row>
+        <hr>
+        <v-row class="ma-0" style="height:1160px">
+            <v-col cols="4" style="border-right: 1px solid #f0f0f0 !important;">
+                <v-row>
+                    <v-col>
+                    <b>Cheif Complaints :</b><br><br>
+                    <ul class="px-4" style="list-style-type:none">
+                        <li v-for="item in prescription.chiefComplaints" :key="item">
+                            {{item}}
+                        </li>
+                    </ul>
+                    </v-col>
+                </v-row>
+                 <v-row>
+                    <v-col>
+                    <b>On Examination :</b><br><br>
+                    <ul class="px-4" style="list-style-type:none">
+                        <li>Pulse: {{prescription.pulse}} mg</li>
+                        <li>BP: {{prescription.bloodPressure}} mmHg</li>
+                        <li>Temp: {{prescription.temperature}} Degree F</li>
+                        <li v-for="item in prescription.onExamination" :key="item">
+                            {{item}}
+                        </li>
+                    </ul>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                    <b>Diagnosis :</b><br><br>
+                    <ul class="px-4" style="list-style-type:none">
+                        <li v-for="item in prescription.diagnosis" :key="item">
+                            {{item}}
+                        </li>
+                    </ul>
+                    </v-col>
+                </v-row>
+                 <v-row>
+                    <v-col>
+                    <b>Investigation Advice :</b><br><br>
+                    <ul class="px-4" style="list-style-type:none">
+                        <li v-for="item in prescription.investigationAdvice" :key="item">
+                            {{item}}
+                        </li>
+                    </ul>
+                    </v-col>
+                </v-row>
+            </v-col>
+            <v-divider
+            class="mx-0"
+            vertical
+            ></v-divider>
+            <v-col cols="7">
+                    <v-row>
+                        <v-col>
+                            <v-icon large>mdi-prescription</v-icon>
+                            <br>
+                        </v-col>
+                    </v-row>
+                    <v-row class="my-0" style="margin-bottom: 10px !important" v-for="item in prescription.medicines" :key="item">
+                        <v-col class="mx-4">
+                            <b style="font-size: 15px !important;">{{item.brand}}</b><br>
+                            {{item.dose}} --- {{item.instruction}} --- {{item.duration}} <br>
+                            Note: {{item.note}}
+                        </v-col>
+                    </v-row>
+                    <br>
+                    <v-footer>
+                        <v-row justify="left">
+                            <v-col class="mx-2 mt-4">
+                                <b>Given Advice: </b><p style="margin:0px;display:block" v-for="item in prescription.advice" :key="item"> {{item}} </p>
+                            </v-col>
+                        </v-row>
+                    </v-footer>
+            </v-col>
+        </v-row>
+        <!-- <br> 
+        <br> -->
+        <br>
+        <br>
+        <v-footer absolute>
+        <v-container>
+            <v-row class="pt-2" style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;">
+            <v-col>
+                Made By <br>
+                A2S DMS Prescription
+            </v-col>
+            <v-spacer>
+            </v-spacer>
+            <v-col style="text-align:right !important">
+                 https://prescription.a2sdms.com
+            </v-col>
+        </v-row>
+        </v-container>
+        </v-footer>
+    </v-container>
+        </div>
+            <v-btn depressed color="info"><v-icon class="mr-2" @click="prescriptionPriview = false">mdi-content-save</v-icon>Print Prescription</v-btn>
+        </v-card>
+    </v-dialog>
 
     <!-- dialog here -->
 
@@ -563,6 +701,7 @@ export default {
       idz: 0,
       drugUpdateIdx: -1,
       adddialog: false,
+      prescriptionPriview: false,
       sideModels: {
         chiefComplaint: "",
         onExamination: "",
@@ -598,24 +737,57 @@ export default {
           href: "rx-prescription"
         }
       ],
-      prescription: {
-        id: "",
-        chiefComplaints: [],
-        diagnosis: [],
-        investigationAdvice: [],
-        onExamination: [],
-        advice: ["খাবার পরে খাবেন", "খাবার পরে খাবেন"],
-        pulse: "88",
-        temperature: "102",
-        bloodPressure: "120/80",
-        medicines: [ ],
-        patient: {
-          id: "",
-          name: "",
-          age: "",
-          address: ""
+      prescription:{
+            id:"",
+            chiefComplaints: ["Fever for 3 days","Runing nose"],
+            diagnosis: ["","",""],
+            investigationAdvice: ["CBC with ESR","Plain X-Ray og chest : AP"],
+            onExamination: ["","",""],    
+            advice:["খাবার পরে খাবেন","খাবার পরে খাবেন"],
+            pulse: "88",
+            temperature: "102",
+            bloodPressure: "120/80",
+            medicines: [
+                {
+                    id:"1",
+                    brand: 'Ace | Paracetamol | 500mg',
+                    dose: '১+০+১',
+                    instruction: 'খাবার পরে খাবেন',
+                    duration: '৭ দিন',
+                    note: ''
+                },
+                {
+                    id:"2",
+                    brand: 'Napa Extra | Paracetamol | 200mg',
+                    dose: '১+০+১',
+                    instruction: 'খাবার পরে খাবেন',
+                    duration: '১৫ দিন',
+                    note: ' -'
+                },
+                {
+                    id:"1",
+                    brand: 'Ace | Paracetamol | 500mg',
+                    dose: '১+০+১',
+                    instruction: 'খাবার পরে খাবেন',
+                    duration: '৭ দিন',
+                    note: ''
+                },
+                {
+                    id:"2",
+                    brand: 'Napa Extra | Paracetamol | 200mg',
+                    dose: '১+০+১',
+                    instruction: 'খাবার পরে খাবেন',
+                    duration: '১৫ দিন',
+                    note: ' -'
+                },
+            ],
+            patient: {
+                id: "",
+                name: "",
+                age: "",
+                address: "",
+            }
         }
-      }
     };
   },
   methods: {
@@ -658,6 +830,7 @@ export default {
     },
     saveAndPrint() {
       console.log("clicked");
+      this.prescriptionPriview = true;
       this.$htmlToPaper("prescription");
     },
     printPrescription(){

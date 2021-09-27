@@ -74,7 +74,7 @@
                        </v-col>
                    </v-row>   
 
-                   <!-- dialog here -->
+    <!-- dialog here -->
 
     <v-dialog title="Add New Drug" v-model="createAppDialog" max-width="800px">
         <v-card class="pa-5">
