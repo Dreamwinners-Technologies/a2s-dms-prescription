@@ -99,9 +99,25 @@ const getDatabase = () => {
             },
         }
     };
+    const tblAppointment = {
+        name: 'Appointment',
+        columns: {
+            lId: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            id: {
+                notNull: false,
+            },
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.Object
+            },
+        }
+    };
     const dataBase = {
         name: "a2sdms",
-        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription]
+        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment]
     };
     return dataBase;
 };

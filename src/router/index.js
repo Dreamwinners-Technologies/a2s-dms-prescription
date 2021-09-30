@@ -88,13 +88,22 @@ const routes = [{
             import ( /* webpackChunkName: "about" */ '../views/auth/NoPermissionErr.vue')
     },
     {
-        path: '/prescription',
+        path: '/print/prescription/:id',
+        name: 'Prescription By ID',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '../views/pages/PrescriptionById.vue')
+    },
+    {
+        path: '/print/prescription',
         name: 'Prescription',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/print/Prescription.vue')
+            import ( /* webpackChunkName: "about" */ '../views/pages/Prescription.vue')
     }
 ]
 
