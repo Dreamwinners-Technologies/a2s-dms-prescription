@@ -3,7 +3,6 @@ import { connection } from "./jsstore_con";
 export class DrugService {
 
     constructor() {
-
         this.tableName = "Drugs";
     }
 
