@@ -115,9 +115,25 @@ const getDatabase = () => {
             },
         }
     };
+    const tblLocalAppointment = {
+        name: 'LocalAppointment',
+        columns: {
+            lId: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            id: {
+                notNull: false,
+            },
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.Object
+            },
+        }
+    };
     const dataBase = {
         name: "a2sdms",
-        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment]
+        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment]
     };
     return dataBase;
 };
