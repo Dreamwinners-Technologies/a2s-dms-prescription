@@ -10,7 +10,10 @@ export default {
   },
   data: () => ({
     //
-  })
+  }),
+  mounted(){
+    localStorage.setItem("selectedAppointment",null)
+  }
 }
 </script>
 <style lang="scss" scoped>
