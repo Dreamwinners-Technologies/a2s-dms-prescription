@@ -210,8 +210,8 @@
               <v-row class="pa-4">
                   <h4>Patient Information :</h4>
                   <v-spacer></v-spacer>
-                  <v-btn v-if="selectedAppointment" @click="crearSelectedAppointment" class="mr-2" small depressed>Clear</v-btn>
-                  <v-btn v-if="selectedAppointment" @click="$router.push('/create-appointment')" small depressed color="info">Change Appointment</v-btn>
+                  <v-btn v-if="selectedAppointment!='null'" @click="crearSelectedAppointment" class="mr-2" small depressed>Clear</v-btn>
+                  <v-btn v-if="selectedAppointment!='null'" @click="$router.push('/create-appointment')" small depressed color="info">Change Appointment</v-btn>
               </v-row>
               <v-card
                 color="teal lighten-5"
@@ -221,7 +221,7 @@
                 style="border: 1px solid #e7e7e7"
                 width="100%"
               >
-              <v-row v-if="!selectedAppointment" class="pa-4">
+              <v-row v-if="selectedAppointment=='null'" class="pa-4">
                 <v-col class="mx-auto" style="text-align:center !important;">
                     <p>
                       Please select an appointment to create prescription.
@@ -229,7 +229,7 @@
                     <v-btn @click="$router.push('/create-appointment')" depressed color="info">Select Appointment</v-btn>
                   </v-col>
                 </v-row>
-                <v-row v-if="selectedAppointment">
+                <v-row v-if="selectedAppointment!='null'">
                   <v-col>
                     <v-card-subtitle>
                       <b>Patient ID:</b> <br />PID0234
@@ -817,37 +817,39 @@ export default {
             }
         },
         appointment: {
-            appointmentDate: "",
-            createdAt: 0,
-            createdBy: "",
-            doctorsFee: 0,
-            gender: "Male",
-            id: "",
-            isCompleted: false,
-            isExpired: false,
-            isPaid: false,
-            otherFees: 0,
-            patientAddress: "",
-            patientAge: "",
-            patientName: "",
-            patientPhoneNo: "",
-            patientProblem: "",
-            paymentMethod: "Cash",
-            prescription: {
-              advice: [],
-              bloodPressure: 0,
-              chiefComplaints: [],
-              diagnosis: [],
+            data: {
+              appointmentDate: "",
+              createdAt: 0,
+              createdBy: "",
+              doctorsFee: 0,
+              gender: "Male",
               id: "",
-              investigationAdvice: [],
-              medicines: [],
-              onExamination: [],
-              pulse: 0,
-              temperature: 0
-            },
+              isCompleted: false,
+              isExpired: false,
+              isPaid: false,
+              otherFees: 0,
+              patientAddress: "",
+              patientAge: "",
+              patientName: "",
+              patientPhoneNo: "",
+              patientProblem: "",
+              paymentMethod: "Cash",
+              prescription: {
+                advice: [],
+                bloodPressure: 0,
+                chiefComplaints: [],
+                diagnosis: [],
+                id: "",
+                investigationAdvice: [],
+                medicines: [],
+                onExamination: [],
+                pulse: 0,
+                temperature: 0
+              },
             totalFee: 0,
             updatedAt: 0,
             updatedBy: ""
+            }
         },
     };
   },
@@ -859,8 +861,15 @@ export default {
     async getAppointmentData(){
       let id = localStorage.getItem("selectedAppointment")
       this.selectedAppointment = id
-      let data = await this.ABS.getDataById("Appointment",id);
-      this.appointment = data[0]
+      console.log("Selected ------------------------")
+      console.log(this.selectedAppointment)
+      if(id!=null){
+        let data = await this.ABS.getDataById("Appointment",id);
+        this.appointment = data[0]
+      }
+    },
+    crearSelectedAppointment(){
+      localStorage.setItem("selectedAppointment",null)
     },
     setComplaintsText() {
       let complaints = this.sideModels.chiefComplaint;
