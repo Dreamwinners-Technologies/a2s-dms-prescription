@@ -239,7 +239,6 @@ export default {
                     patientPhoneNo: "",
                     patientProblem: "",
                     paymentMethod: "Cash",
-                    prescriptionRequest: null
                 },
         appointment: {
                     appointmentDate: "",
@@ -248,9 +247,9 @@ export default {
                     doctorsFee: 0,
                     gender: "Male",
                     id: "",
-                    isCompleted: true,
-                    isExpired: true,
-                    isPaid: true,
+                    isCompleted: false,
+                    isExpired: false,
+                    isPaid: false,
                     otherFees: 0,
                     patientAddress: "",
                     patientAge: "",
@@ -293,35 +292,7 @@ export default {
                     updatedAt: 0,
                     updatedBy: ""
                 },
-        prescriptionRequest: {
-                advice: [
-                    ""
-                ],
-                bloodPressure: 0,
-                chiefComplaints: [
-                    ""
-                ],
-                diagnosis: [
-                    ""
-                ],
-                investigationAdvice: [
-                    ""
-                ],
-                medicines: [
-                    {
-                    brand: "",
-                    dose: "",
-                    duration: "",
-                    instruction: "",
-                    note: ""
-                    }
-                ],
-                onExamination: [
-                    ""
-                ],
-                pulse: 0,
-                temperature: 0
-            },
+        
         appointmentList: [],
         items: [
             {
@@ -367,6 +338,8 @@ export default {
         data.appointmentDate = this.localAppointment.appointmentDate
         data.createdAt = this.localAppointment.createdOn
         data.createdBy = "ihsonnet"
+        data.updatedAt = this.localAppointment.createdOn
+        data.updatedBy = "ihsonnet"
         data.doctorsFee = 400
         data.gender = this.localAppointment.gender
         data.otherFees = 0

@@ -737,6 +737,9 @@ export default {
           href: "rx-prescription"
         }
       ],
+      localprescription: {
+
+      },
       prescription:{
             id:"",
             chiefComplaints: ["Fever for 3 days","Runing nose"],
