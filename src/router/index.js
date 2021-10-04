@@ -12,36 +12,24 @@ const routes = [{
         children: [{
                 path: '',
                 name: 'Dashboard',
-                // route level code-splitting
-                // this generates a separate chunk (about.[hash].js) for this route
-                // which is lazy-loaded when the route is visited.
                 component: () =>
                     import ( /* webpackChunkName: "about" */ '../views/common/Dashboard.vue')
             },
             {
                 path: 'rx-prescription',
                 name: 'Create Prescription',
-                // route level code-splitting
-                // this generates a separate chunk (about.[hash].js) for this route
-                // which is lazy-loaded when the route is visited.
                 component: () =>
                     import ( /* webpackChunkName: "about" */ '../views/doctor/CreatePrescription.vue')
             },
             {
                 path: 'generic-controller',
                 name: 'Generic Controller',
-                // route level code-splitting
-                // this generates a separate chunk (about.[hash].js) for this route
-                // which is lazy-loaded when the route is visited.
                 component: () =>
                     import ( /* webpackChunkName: "about" */ '../views/admin/GenericController.vue')
             },
             {
                 path: 'create-appointment',
                 name: 'Create Appointment',
-                // route level code-splitting
-                // this generates a separate chunk (about.[hash].js) for this route
-                // which is lazy-loaded when the route is visited.
                 component: () =>
                     import ( /* webpackChunkName: "about" */ '../views/doctor/CreateAppointment.vue')
             },

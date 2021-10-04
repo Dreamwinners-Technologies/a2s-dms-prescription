@@ -31,19 +31,19 @@
             </v-list-item-icon>
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item>
-          <v-list-item link to="/rx-prescription">
+          <v-list-item v-if="userType =='DOCTOR'" link to="/rx-prescription">
             <v-list-item-icon>
               <v-icon>mdi-prescription</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Create Presciption</v-list-item-title>
           </v-list-item>
-          <v-list-item link to="/create-appointment">
+          <v-list-item v-if="userType =='DOCTOR'" link to="/create-appointment">
             <v-list-item-icon>
               <v-icon>mdi-clipboard-plus</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Create Appointment</v-list-item-title>
           </v-list-item>
-          <v-list-item link to="appointment-list">
+          <v-list-item v-if="userType =='DOCTOR'" link to="appointment-list">
             <v-list-item-icon>
               <v-icon>mdi-clipboard-text</v-icon>
             </v-list-item-icon>
@@ -56,13 +56,13 @@
             <v-list-item-title>Generic Contoller</v-list-item-title>
           </v-list-item>
           
-          <v-list-item link to="edit-template">
+          <v-list-item v-if="userType =='DOCTOR'" link to="edit-template">
             <v-list-item-icon>
               <v-icon>mdi-cards-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Edit Template</v-list-item-title>
           </v-list-item>
-          <v-list-item link to="settings">
+          <v-list-item v-if="userType =='DOCTOR'" link to="settings">
             <v-list-item-icon>
               <v-icon>mdi-power-settings</v-icon>
             </v-list-item-icon>
@@ -87,7 +87,7 @@
               <v-list-item-title>{{ onlineStatus }}</v-list-item-title>
             </v-list-item>
 
-            <v-list-item link to="/auth/signin">
+            <v-list-item @click="logOut">
               <v-list-item-icon>
                 <v-icon>mdi-exit-to-app</v-icon>
               </v-list-item-icon>
@@ -102,6 +102,7 @@ export default {
   data() {
     return {
       onlineStatus: "Offline",
+      userType: "",
     }
   },
   methods: {
@@ -115,10 +116,21 @@ export default {
         this.onlineStatus="Offline";
         return false;
       }
-    }
+    },
+      logOut(){
+      localStorage.removeItem("token");
+      this.$router.push("/auth/signin");
   },
+  getCurrentLoggedUserType(){
+    let user = JSON.parse(localStorage.getItem("uData"));
+    this.userType = user.roles[0];
+    this.$store.commit("setCurrentLoggedUserType",this.userType);
+  }
+  },
+
   mounted() {
-    this.setOnlineStatus()
+    this.setOnlineStatus();
+    this.getCurrentLoggedUserType();
   }
 }
 </script>
