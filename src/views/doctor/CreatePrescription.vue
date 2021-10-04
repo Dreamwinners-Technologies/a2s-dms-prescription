@@ -207,7 +207,12 @@
         <v-card class="ma-5" elevation="0">
           <v-row>
             <v-col>
-              <h4>Patient Information :</h4>
+              <v-row class="pa-4">
+                  <h4>Patient Information :</h4>
+                  <v-spacer></v-spacer>
+                  <v-btn v-if="selectedAppointment" @click="crearSelectedAppointment" class="mr-2" small depressed>Clear</v-btn>
+                  <v-btn v-if="selectedAppointment" @click="$router.push('/create-appointment')" small depressed color="info">Change Appointment</v-btn>
+              </v-row>
               <v-card
                 color="teal lighten-5"
                 outlined
@@ -216,7 +221,15 @@
                 style="border: 1px solid #e7e7e7"
                 width="100%"
               >
-                <v-row>
+              <v-row v-if="!selectedAppointment" class="pa-4">
+                <v-col class="mx-auto" style="text-align:center !important;">
+                    <p>
+                      Please select an appointment to create prescription.
+                    </p>
+                    <v-btn @click="$router.push('/create-appointment')" depressed color="info">Select Appointment</v-btn>
+                  </v-col>
+                </v-row>
+                <v-row v-if="selectedAppointment">
                   <v-col>
                     <v-card-subtitle>
                       <b>Patient ID:</b> <br />PID0234
@@ -225,19 +238,19 @@
                   <v-col>
                     <v-card-subtitle>
                       <b>Patient Name:</b> <br />
-                      Mr. Mahtab Uddin
+                      {{appointment.data.patientName}}
                     </v-card-subtitle>
                   </v-col>
                   <v-col>
                     <v-card-subtitle>
                       <b>Age</b> <br />
-                      34 year's old
+                      {{appointment.data.patientAge}} Years Old
                     </v-card-subtitle>
                   </v-col>
                   <v-col>
                     <v-card-subtitle>
                       <b>Phone Number:</b> <br />
-                      01734543027
+                      {{appointment.data.patientPhoneNo}}
                     </v-card-subtitle>
                   </v-col>
                 </v-row>
@@ -258,7 +271,7 @@
                 <v-row class="rowise">
                   <v-col>
                     <v-text-field
-                      v-model="prescription.pulse"
+                      v-model="appointment.data.prescription.pulse"
                       class="mt-2 pa-0"
                       outlined
                       color="#666666"
@@ -272,7 +285,7 @@
                   </v-col>
                   <v-col>
                     <v-text-field
-                      v-model="prescription.bloodPressure"
+                      v-model="appointment.data.prescription.bloodPressure"
                       placeholder="120/80"
                       class="mt-2 pa-0"
                       outlined
@@ -287,7 +300,7 @@
                   </v-col>
                   <v-col>
                     <v-text-field
-                      v-model="prescription.temperature"
+                      v-model="appointment.data.prescription.temperature"
                       class="mt-2 pa-0"
                       outlined
                       color="#666666"
@@ -342,7 +355,7 @@
                   </v-col>
                 </v-row>
                 <v-row
-                  v-for="(drug, idy) in prescription.medicines"
+                  v-for="(drug, idy) in appointment.data.prescription.medicines"
                   :key="idy"
                   style="text-align:center;border-bottom: 1px solid #e7e7e7"
                 >
@@ -385,7 +398,7 @@
                         ><v-icon small>mdi-pencil-outline</v-icon></v-btn
                       ><v-btn
                         color="error"
-                        @click="prescription.medicines.splice(idy, 1)"
+                        @click="appointment.data.prescription.medicines.splice(idy, 1)"
                         depressed
                         small
                         ><v-icon small>mdi-delete</v-icon></v-btn
@@ -702,6 +715,7 @@ export default {
       drugUpdateIdx: -1,
       adddialog: false,
       prescriptionPriview: false,
+      selectedAppointment: null,
       sideModels: {
         chiefComplaint: "",
         onExamination: "",
@@ -738,7 +752,18 @@ export default {
         }
       ],
       localprescription: {
-
+            id: "",
+            prescriptionRequest: {
+                advice: [],
+                bloodPressure: 0,
+                chiefComplaints: [],
+                diagnosis: [],
+                investigationAdvice: [],
+                medicines: [],
+          onExamination: [],
+          pulse: 0,
+          temperature: 0
+        }
       },
       prescription:{
             id:"",
@@ -790,13 +815,52 @@ export default {
                 age: "",
                 address: "",
             }
-        }
+        },
+        appointment: {
+            appointmentDate: "",
+            createdAt: 0,
+            createdBy: "",
+            doctorsFee: 0,
+            gender: "Male",
+            id: "",
+            isCompleted: false,
+            isExpired: false,
+            isPaid: false,
+            otherFees: 0,
+            patientAddress: "",
+            patientAge: "",
+            patientName: "",
+            patientPhoneNo: "",
+            patientProblem: "",
+            paymentMethod: "Cash",
+            prescription: {
+              advice: [],
+              bloodPressure: 0,
+              chiefComplaints: [],
+              diagnosis: [],
+              id: "",
+              investigationAdvice: [],
+              medicines: [],
+              onExamination: [],
+              pulse: 0,
+              temperature: 0
+            },
+            totalFee: 0,
+            updatedAt: 0,
+            updatedBy: ""
+        },
     };
   },
   methods: {
     test() {},
     show() {
       return 0;
+    },
+    async getAppointmentData(){
+      let id = localStorage.getItem("selectedAppointment")
+      this.selectedAppointment = id
+      let data = await this.ABS.getDataById("Appointment",id);
+      this.appointment = data[0]
     },
     setComplaintsText() {
       let complaints = this.sideModels.chiefComplaint;
@@ -842,9 +906,9 @@ export default {
     },
     addDrug() {
       if (this.drugUpdateIdx == -1) {
-        this.prescription.medicines.push(this.addDrugModel);
+        this.appointment.data.prescription.medicines.push(this.addDrugModel);
       } else {
-        this.prescription.medicines[this.drugUpdateIdx] = this.addDrugModel;
+        this.appointment.data.prescription.medicines[this.drugUpdateIdx] = this.addDrugModel;
         this.drugUpdateIdx = -1;
       }
 
@@ -859,14 +923,11 @@ export default {
     },
    async savePrescription(){
     let r = await this.ABS.addData("LocalPresciption", {
-      id: this.prescription.id,
-      data: this.prescription
+      id: this.appointment.data.id,
+      data: this.localprescription
     });
       if (r) console.log(r);
-          r = await this.ABS.addData("Presciption", {
-      id: this.prescription.id,
-      data: this.prescription
-    });
+          r = await this.ABS.updateDataById("Appointment",this.appointment)
      if (r) { this.snackbar = true;}
     
     }
@@ -879,6 +940,7 @@ export default {
     this.getSideData("diagnosis");
     this.getSideData("investigationAdvice");
     this.getDrugs();
+    this.getAppointmentData();
   }
 };
 </script>

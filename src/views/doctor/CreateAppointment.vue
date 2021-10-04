@@ -72,7 +72,10 @@
                                     </v-col>
                                     <v-col cols="2">
                                         <v-card-subtitle>
-                                                 <v-btn-toggle><v-btn color="info" depressed small><v-icon small>mdi-eye</v-icon></v-btn><v-btn color="info" depressed small><v-icon small>mdi-prescription</v-icon></v-btn><v-btn color="info" depressed small><v-icon small>mdi-printer</v-icon></v-btn> </v-btn-toggle>
+                                                 <v-btn-toggle>
+                                                     <v-btn color="info" depressed small><v-icon small>mdi-eye</v-icon></v-btn>
+                                                     <v-btn color="info" depressed small @click="createPrescription(appointment.data.id)"><v-icon small>mdi-prescription</v-icon></v-btn>
+                                                     <v-btn color="info" depressed small><v-icon small>mdi-printer</v-icon></v-btn> </v-btn-toggle>
                                         </v-card-subtitle>
                                     </v-col>
                                </v-row>
@@ -227,71 +230,52 @@ export default {
         genders: ["Male","Female"],
         paymentMethods: ["Cash","Online"],
         localAppointment: {
-                    appointmentDate: "",
-                    createdOn: 0,
-                    gender: "Male",
-                    id: "",
-                    offline: true,
-                    paid: false,
-                    patientAddress: "",
-                    patientAge: "",
-                    patientName: "",
-                    patientPhoneNo: "",
-                    patientProblem: "",
-                    paymentMethod: "Cash",
+                appointmentDate: "",
+                createdOn: 0,
+                gender: "Male",
+                id: "",
+                offline: true,
+                paid: false,
+                patientAddress: "",
+                patientAge: "",
+                patientName: "",
+                patientPhoneNo: "",
+                patientProblem: "",
+                paymentMethod: "Cash",
                 },
-        appointment: {
-                    appointmentDate: "",
-                    createdAt: 0,
-                    createdBy: "",
-                    doctorsFee: 0,
-                    gender: "Male",
-                    id: "",
-                    isCompleted: false,
-                    isExpired: false,
-                    isPaid: false,
-                    otherFees: 0,
-                    patientAddress: "",
-                    patientAge: "",
-                    patientName: "",
-                    patientPhoneNo: "",
-                    patientProblem: "",
-                    paymentMethod: "Cash",
-                    prescription: {
-                    advice: [
-                        ""
-                    ],
-                    bloodPressure: 0,
-                    chiefComplaints: [
-                        ""
-                    ],
-                    diagnosis: [
-                        ""
-                    ],
-                    id: "",
-                    investigationAdvice: [
-                        ""
-                    ],
-                    medicines: [
-                        {
-                        brand: "",
-                        dose: "",
-                        duration: "",
-                        id: 0,
-                        instruction: "",
-                        note: ""
-                        }
-                    ],
-                    onExamination: [
-                        ""
-                    ],
-                    pulse: 0,
-                    temperature: 0
-                    },
-                    totalFee: 0,
-                    updatedAt: 0,
-                    updatedBy: ""
+         appointment: {
+                appointmentDate: "",
+                createdAt: 0,
+                createdBy: "",
+                doctorsFee: 0,
+                gender: "Male",
+                id: "",
+                isCompleted: false,
+                isExpired: false,
+                isPaid: false,
+                otherFees: 0,
+                patientAddress: "",
+                patientAge: "",
+                patientName: "",
+                patientPhoneNo: "",
+                patientProblem: "",
+                paymentMethod: "Cash",
+                prescription: {
+                advice: [],
+                bloodPressure: 0,
+                chiefComplaints: [],
+                diagnosis: [],
+                id: "",
+                investigationAdvice: [],
+                medicines: [],
+                onExamination: [],
+                pulse: 0,
+                temperature: 0
                 },
+                totalFee: 0,
+                updatedAt: 0,
+                updatedBy: ""
+            },
         
         appointmentList: [],
         items: [
@@ -360,6 +344,10 @@ export default {
         let data = await this.ABS.getData("Appointment");
         console.log(data)
         this.appointmentList = data;
+    },
+    createPrescription(id){
+        localStorage.setItem("selectedAppointment",id);
+        this.$router.push("/rx-prescription")
     }
   },
   mounted(){

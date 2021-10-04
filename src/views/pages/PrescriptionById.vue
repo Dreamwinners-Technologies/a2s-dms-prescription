@@ -1,7 +1,9 @@
 <template>
 <v-app> 
     <v-content>
-<v-container >
+    <div class="body">
+        <v-container>
+        <div class="print-container" >
         <v-row class="my-0">
             <v-col>
                 <h2 style="color:#479EF4">Dr Mojibur Rahman</h2>
@@ -40,7 +42,7 @@
             </v-col>
         </v-row>
         <hr>
-        <v-row class="ma-0" style="height:1160px">
+        <v-row class="ma-0" style="height:1120px">
             <v-col cols="4" style="border-right: 1px solid #f0f0f0 !important;">
                 <v-row>
                     <v-col>
@@ -114,12 +116,7 @@
                     </v-footer>
             </v-col>
         </v-row>
-        <!-- <br> 
-        <br> -->
-        <br>
-        <br>
-        <v-footer absolute>
-        <v-container>
+        <v-footer>
             <v-row class="pt-2" style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;">
             <v-col>
                 Made By <br>
@@ -131,9 +128,15 @@
                  https://prescription.a2sdms.com
             </v-col>
         </v-row>
-        </v-container>
+        </v-footer>
+        </div>
+        <br>
+        <br>
+        <v-footer class="py-2" fixed>
+            <v-btn depressed color="info" class="mx-auto" @click="print()"><v-icon class="mr-2">mdi-printer</v-icon>Print Now</v-btn>
         </v-footer>
     </v-container>
+    </div>
     </v-content>
 </v-app>
 </template>
@@ -206,7 +209,7 @@ export default {
         }
     },
     mounted(){
-        this.print();
+        // this.print();
     }
 }
 </script>
@@ -224,9 +227,10 @@ html{
 }
 .container {
     width: 100%;
-    padding: 12px;
+    padding: 20px;
     margin-right: auto;
     margin-left: auto;
+    border: 1px dashed #8c8c8c;
 }
 .full-height {
   background-color:#f2f5f8;
@@ -237,5 +241,16 @@ html{
 }
 .theme--light.v-messages {
   color: #E4515D;
+}
+@media print {
+    .body , .container {
+        visibility: hidden !important;
+    }
+    .print-container {
+        visibility: visible;
+    }
+    @page {
+        size: A3;
+    }
 }
 </style>
