@@ -1,10 +1,7 @@
 <template>
-<v-app> 
-    <v-content>
-    <div class="body">
-        <v-container>
-        <div class="print-container" >
-        <v-row class="my-0">
+<v-app>
+    <v-container>
+        <v-row>
             <v-col>
                 <h2 style="color:#479EF4">Dr Mojibur Rahman</h2>
                 MBBS <br>
@@ -27,7 +24,7 @@
             </v-col>
         </v-row>
         <hr>
-        <v-row class="my-0" justify="center" style="text-align:center">
+        <v-row justify="center" style="text-align:center">
             <v-col>
                 Patient ID: #P1234
             </v-col>
@@ -42,8 +39,8 @@
             </v-col>
         </v-row>
         <hr>
-        <v-row class="ma-0" style="height:1120px">
-            <v-col cols="4" style="border-right: 1px solid #f0f0f0 !important;">
+        <v-row style="height:1160px">
+            <v-col cols="4">
                 <v-row>
                     <v-col>
                     <b>Cheif Complaints :</b><br><br>
@@ -99,9 +96,9 @@
                             <br>
                         </v-col>
                     </v-row>
-                    <v-row class="my-0" v-for="item in prescription.medicines" :key="item">
+                    <v-row v-for="item in prescription.medicines" :key="item">
                         <v-col class="mx-4">
-                            <b style="font-size: 15px !important;">{{item.brand}}</b><br>
+                            <h6>{{item.brand}}</h6><br>
                             {{item.dose}} --- {{item.instruction}} --- {{item.duration}} <br>
                             Note: {{item.note}}
                         </v-col>
@@ -116,7 +113,12 @@
                     </v-footer>
             </v-col>
         </v-row>
-        <v-footer>
+        <!-- <br> 
+        <br> -->
+        <br>
+        <br>
+        <v-footer fixed>
+        <v-container>
             <v-row class="pt-2" style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;">
             <v-col>
                 Made By <br>
@@ -128,33 +130,16 @@
                  https://prescription.a2sdms.com
             </v-col>
         </v-row>
-        </v-footer>
-        </div>
-        <br>
-        <br>
-        <v-footer style="border: 1px solid #f7f7f7" class="py-2" fixed>
-            <v-row>
-                <v-col class="mx-auto" style="text-align:center !important;">
-                    <v-btn depressed color="error" class="mr-2" @click="$router.push('/rx-prescription')"><v-icon class="mr-2">mdi-close</v-icon>Close</v-btn>
-                    <v-btn depressed color="info" @click="print()"><v-icon class="mr-2">mdi-printer</v-icon>Print Now</v-btn>
-                </v-col>
-            </v-row>
+        </v-container>
         </v-footer>
     </v-container>
-    </div>
-    </v-content>
 </v-app>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
     data(){
         return {
-            windowSize: {
-                x: 500,
-                y: 200,
-            },
             prescription:{
                 id:"",
                 chiefComplaints: ["Fever for 3 days","Runing nose"],
@@ -214,48 +199,10 @@ export default {
         }
     },
     mounted(){
-        // this.print();
+        this.print();
     }
 }
 </script>
-
-<style scoped>
-html{
-    margin:0 !important;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
-    font-size:1rem !important;
-    font-weight:400 !important;
-    line-height:1.5 !important;
-    color:#212529 !important;
-    text-align:left !important;
-    background-color:rgba(255, 255, 255, 0.269) !important;
-}
-.container {
-    width: 100%;
-    padding: 20px;
-    margin-right: auto;
-    margin-left: auto;
-    border: 1px dashed #8c8c8c;
-}
-.full-height {
-  background-color:#f2f5f8;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  min-height: 100vh;
-}
-.theme--light.v-messages {
-  color: #E4515D;
-}
-@media print {
-    .body , .container {
-        visibility: hidden !important;
-    }
-    .print-container {
-        visibility: visible;
-    }
-    @page {
-        size: A3;
-    }
-}
+<style scoped="mode" parent-scope-off>
+ /* @import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"); */
 </style>

@@ -132,8 +132,13 @@
         </div>
         <br>
         <br>
-        <v-footer class="py-2" fixed>
-            <v-btn depressed color="info" class="mx-auto" @click="print()"><v-icon class="mr-2">mdi-printer</v-icon>Print Now</v-btn>
+        <v-footer style="border: 1px solid #f7f7f7" class="py-2" fixed>
+            <v-row>
+                <v-col class="mx-auto" style="text-align:center !important;">
+                    <v-btn depressed color="error" class="mr-2" @click="window.close()"><v-icon class="mr-2">mdi-close</v-icon>Close</v-btn>
+                    <v-btn depressed color="info" @click="print()"><v-icon class="mr-2">mdi-printer</v-icon>Print Now</v-btn>
+                </v-col>
+            </v-row>
         </v-footer>
     </v-container>
     </div>

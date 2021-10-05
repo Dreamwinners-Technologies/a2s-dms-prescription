@@ -180,7 +180,8 @@ export default {
           console.log(response);
           // localStorage.setItem('token', response.data.accessToken)
           let res = response.data;
-          if (res.roles != "DOCTOR") {
+          if (false) {
+            
           } else {
             this.$store.commit("setUserLoginResponse", res);
             this.isOTPMode = true;
