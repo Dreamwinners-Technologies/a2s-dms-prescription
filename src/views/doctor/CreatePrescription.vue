@@ -9,6 +9,7 @@
     >
      Prescitption has been saved
     </v-snackbar>
+
     <v-card rounded="0" elevation="0" color="#f2f5f8">
       <v-breadcrumbs :items="items">
         <template v-slot:divider>
@@ -42,7 +43,7 @@
               >
                 <template slot="append">
                   <v-btn
-                    @click="addComplaints(sideModels.chiefComplaint)"
+                    @click.stop="dialogSideData = true,test()"
                     depressed
                     class="mt-0"
                     small
@@ -328,7 +329,7 @@
               >
                 <v-row class="pa-5">
                   <v-icon large>mdi-prescription</v-icon> <v-spacer></v-spacer>
-                  <v-btn depressed @click="adddialog = true" color="info"
+                  <v-btn depressed @click.stop="adddialog = true" color="info"
                     >Add Drugs</v-btn
                   >
                 </v-row>
@@ -453,6 +454,26 @@
     </v-row>
 
     <!-- prescription here  -->
+         <v-dialog
+      v-model="dialogSideData"
+      persistent
+      max-width="300px"
+    >
+  <v-card>
+    <v-form>
+      <v-text-field
+              v-model="sidemodel"
+              placeholder="Search Drug Name"
+              class="mt-2 pa-0"
+              outlined
+              color="teal"
+              dense
+              label="Instruction"
+            >
+            </v-text-field>
+    </v-form>
+  </v-card>
+     </v-dialog>
 
     <v-dialog title="Add New Drug" v-model="prescriptionPriview" max-width="980px">
         <v-card class="pa-5">
@@ -706,6 +727,7 @@ export default {
       ABS: null,
       DS: null,
       snackbar: false,
+      dialogSideData: false,
       input: "",
       icon: "",
       input: "",
@@ -854,7 +876,9 @@ export default {
     };
   },
   methods: {
-    test() {},
+    test() {
+      console.log("yo")
+    },
     show() {
       return 0;
     },

@@ -209,7 +209,7 @@ export default {
           console.log(response);
           // localStorage.setItem('token', response.data.accessToken)
           let res = response.data;
-          if (res.roles.includes("USER")) {
+          if (res.roles.includes("USER") && (!res.roles.includes("ADMIN") &&  !res.roles.includes("SUPER_ADMIN"))) {
             this.dialog = false;
             this.snackbar = true;
             this.snackbarColor = "error";
