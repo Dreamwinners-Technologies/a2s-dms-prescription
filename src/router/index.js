@@ -28,6 +28,12 @@ const routes = [{
                     import ( /* webpackChunkName: "about" */ '../views/admin/GenericController.vue')
             },
             {
+                path: 'doctor-approve',
+                name: 'Approve Controller',
+                component: () =>
+                    import ( /* webpackChunkName: "about" */ '../views/admin/ApproveController.vue')
+            },
+            {
                 path: 'create-appointment',
                 name: 'Create Appointment',
                 component: () =>

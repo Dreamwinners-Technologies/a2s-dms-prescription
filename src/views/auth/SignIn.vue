@@ -1,5 +1,8 @@
 <template>
   <v-container class="full-height" fluid>
+    <v-snackbar top :color="snackbarColor" v-model="snackbar" timeout="1500">
+      {{ snackbarText }}
+    </v-snackbar>
     <div style="padding-top:25px; position: fixed;z-index:1;right:20px">
       <v-alert v-if="successMsg" color="#4BCA81" text type="success">
         {{ apiResponse }}
@@ -27,7 +30,7 @@
             :indeterminate="dialog"
             absolute
             top
-            color="#AD74B8"
+            color="#3a8384"
           ></v-progress-linear>
           <div align="center">
             <v-img
@@ -38,9 +41,18 @@
             ></v-img>
             <br />
             <h3 v-if="!isOTPMode" class="my-4">Sign in</h3>
-             <h3 v-if="isOTPMode" class="my-4">We just need the OTP send <br> to you number to verify</h3>
+            <h3 v-if="isOTPMode" class="my-4">
+              We just need the OTP send <br />
+              to you number to verify
+            </h3>
           </div>
-          <v-form v-if="!isOTPMode" style="margin-top:20px" ref="form" lazy-validation class="">
+          <v-form
+            v-if="!isOTPMode"
+            style="margin-top:20px"
+            ref="form"
+            lazy-validation
+            class=""
+          >
             <v-text-field
               dense
               v-model="phone"
@@ -59,7 +71,13 @@
               </v-col>
             </v-row>
           </v-form>
-           <v-form v-if="isOTPMode" style="margin-top:20px" ref="formOTP" lazy-validation class="">
+          <v-form
+            v-if="isOTPMode"
+            style="margin-top:20px"
+            ref="formOTP"
+            lazy-validation
+            class=""
+          >
             <v-text-field
               dense
               v-model="otp"
@@ -71,10 +89,18 @@
             ></v-text-field>
             <v-row class="mb-2" align="center">
               <v-col class="">
-                Didn't get OTP? 
-              </v-col> <v-col>
-                <v-btn rounded="" :disabled="countDown != 0" color="black" class="white--text float-right"
-                  > Resend </v-btn> <span v-if="countDown != 0"> in {{countDown }}s</span>
+                Didn't get OTP?
+              </v-col>
+              <v-col>
+                <v-btn
+                  rounded=""
+                  :disabled="countDown != 0"
+                  color="black"
+                  class="white--text float-right"
+                >
+                  Resend
+                </v-btn>
+                <span v-if="countDown != 0"> in {{ countDown }}s</span>
               </v-col>
             </v-row>
             <v-row class="mt-0">
@@ -120,6 +146,9 @@ export default {
       successMsg: false,
       errorMsg: false,
       response: "",
+      snackbar: false,
+      snackbarColor: "",
+      snackbarText: "",
       rules: {
         required: value => !!value || "Required.",
         min: v => v.length >= 11 || "Min 11 characters",
@@ -131,11 +160,9 @@ export default {
       }
     };
   },
-  watch: {
-  },
+  watch: {},
   computed: {
-    ...mapGetters(["userLoginResponse"]),
-
+    ...mapGetters(["userLoginResponse"])
   },
   methods: {
     submit() {
@@ -149,7 +176,7 @@ export default {
         i.response = this.login(signInData);
       }
     },
-      submitOtp() {
+    submitOtp() {
       let r = this.$refs.formOTP.validate();
       if (r == true) {
         let i = this;
@@ -157,16 +184,18 @@ export default {
         this.OTPSend();
       }
     },
-     OTPSend() {
+    OTPSend() {
       axios
-        .post(`${OTP_VERIFY_API}otp=${this.otp}&phoneNo=${this.userLoginResponse.phoneNo}`)
+        .post(
+          `${OTP_VERIFY_API}otp=${this.otp}&phoneNo=${this.userLoginResponse.phoneNo}`
+        )
         .then(response => {
           console.log(response);
-          if(response.status == 200){
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('uData', JSON.stringify(response.data));
-                            // Redirect to a specified route
-          this.$router.push("/");
+          if (response.status == 200) {
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("uData", JSON.stringify(response.data));
+            // Redirect to a specified route
+            this.$router.push("/");
           }
         })
         .catch(err => {
@@ -180,8 +209,11 @@ export default {
           console.log(response);
           // localStorage.setItem('token', response.data.accessToken)
           let res = response.data;
-          if (false) {
-            
+          if (res.roles.includes("USER")) {
+            this.dialog = false;
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "User Account can't be used here!";
           } else {
             this.$store.commit("setUserLoginResponse", res);
             this.isOTPMode = true;
@@ -214,31 +246,17 @@ export default {
     redirect() {
       this.$router.push("/cpanel/dashboard");
     },
-    OtpTimer(){
-      this.OTPBtnText = "";
-      var timeleft = 60;
-      let ins = this;
-    var downloadTimer = setInterval(function(){
-    timeleft--;  
-    ins.OTPResendTimeLeft = timeleft;
-    ins.OTPBtnText = `in ${timeleft} s`;
-     console.log(ins.OTPBtnText)
-    if(timeleft <= 0)
-        clearInterval(downloadTimer);
-         ins.OTPBtnText = ``;
-    },1000);
-    },
     countDownTimer() {
-                if(this.countDown > 0) {
-                    setTimeout(() => {
-                        this.countDown -= 1
-                        this.countDownTimer()
-                    }, 1000)
-                }
-            }
+      if (this.countDown > 0) {
+        setTimeout(() => {
+          this.countDown -= 1;
+          this.countDownTimer();
+        }, 1000);
+      }
+    }
   },
   mounted() {
-    if(localStorage.token!= undefined){
+    if (localStorage.token != undefined) {
       this.$router.push("/");
     }
   }

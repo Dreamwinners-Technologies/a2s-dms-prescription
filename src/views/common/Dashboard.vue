@@ -123,6 +123,7 @@
                 elevation="0"
                 style="border: 1px solid #e7e7e7"
                 width="100%"
+                 v-if="currentLoggedUserType == 'DOCTOR'"
               >
                 <v-row class="pa-5">
                   <v-icon large>mdi-clipboard-text</v-icon>
@@ -132,9 +133,9 @@
                   >
                     Recent Appointment
                   </h3>
-                  <h3 v-if="currentLoggedUserType == 'ADMIN'" class="mt-1 ml-2">
+                  <!-- <h3 v-if="currentLoggedUserType == 'ADMIN'" class="mt-1 ml-2">
                     Approve Doctor
-                  </h3>
+                  </h3> -->
                 </v-row>
                 <template v-if="currentLoggedUserType == 'DOCTOR'">
                   <v-row
@@ -205,65 +206,7 @@
                     </v-col>
                   </v-row>
                 </template>
-                <template v-if="currentLoggedUserType == 'ADMIN'">
-                    <v-form ref="doctorApproveForm">
-                  <v-row
-                    style="background-color:#fff;border-radius:8px;text-align:center"
-                  >
-                    <v-col  >
-                      <v-text-field
-                        v-model="doctorPrescriptionRequestNumber"
-                        class="mt-2 pa-0"
-                        outlined
-                        color="#666666"
-                        dense
-                        number
-                        label="Doctor Number"
-                      >
-                      </v-text-field>
-                    </v-col>
-                    <v-col  >
-                      <v-text-field
-                        v-model="doctorPrescriptionRequestModel.appointmentPerDay"
-                        placeholder="120/80"
-                        class="mt-2 pa-0"
-                        outlined
-                        color="#666666"
-                        dense
-                        label="Appointments per Day"
-                      >
-                      </v-text-field>
-                    </v-col>
-                    <v-col  >
-                      <v-text-field
-                        v-model="doctorPrescriptionRequestModel.doctorChamberAddress"
-                        class="mt-2 pa-0"
-                        outlined
-                        color="#666666"
-                        dense
-                        label="Chamber Address"
-                      >
-                      </v-text-field>
-                    </v-col>
-                                        <v-col  >
-                      <v-text-field
-                        v-model="doctorPrescriptionRequestModel.fee"
-                        class="mt-2 pa-0"
-                        outlined
-                        color="#666666"
-                        dense
-                        label="Fee"
-                      >
-                      </v-text-field>
-                    </v-col>
-                   <v-col cols="12">
-                    <v-btn color="#3f8485" class="white--text"
-                  >Submit</v-btn
-                >
-                   </v-col>
-                  </v-row>
-                    </v-form>
-                </template>
+                
               </v-card>
             </v-col>
           </v-row>
