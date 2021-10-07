@@ -43,7 +43,7 @@
               >
                 <template slot="append">
                   <v-btn
-                    @click.stop="dialogSideData = true,test()"
+                    @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='chiefComplaint'"
                     depressed
                     class="mt-0"
                     small
@@ -74,7 +74,7 @@
                 v-model="sideModels.onExamination"
                 :items="sideData.onExamination"
                 chips
-                label="Complaints"
+                label="On Examination"
                 full-width
                 hide-details
                 hide-no-data
@@ -88,6 +88,7 @@
               >
                 <template slot="append">
                   <v-btn
+                   @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='onExamination'"
                     depressed
                     class="mt-0"
                     small
@@ -118,7 +119,7 @@
                 v-model="sideModels.diagnosis"
                 :items="sideData.diagnosis"
                 chips
-                label="Complaints"
+                label="Diagnosis"
                 full-width
                 hide-details
                 hide-no-data
@@ -132,6 +133,7 @@
               >
                 <template slot="append">
                   <v-btn
+                  @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='diagnosis'"
                     depressed
                     class="mt-0"
                     small
@@ -162,7 +164,7 @@
                 v-model="sideModels.investigationAdvice"
                 :items="sideData.investigationAdvice"
                 chips
-                label="Complaints"
+                label="Investigation Advice"
                 full-width
                 hide-details
                 hide-no-data
@@ -176,6 +178,7 @@
               >
                 <template slot="append">
                   <v-btn
+                  @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='investigationAdvice'"
                     depressed
                     class="mt-0"
                     small
@@ -456,21 +459,25 @@
     <!-- prescription here  -->
          <v-dialog
       v-model="dialogSideData"
-      persistent
       max-width="300px"
     >
-  <v-card>
+  <v-card class="pa-4">
     <v-form>
       <v-text-field
-              v-model="sidemodel"
-              placeholder="Search Drug Name"
+              v-model="sideDataSubmitModel"
+              placeholder=""
               class="mt-2 pa-0"
               outlined
               color="teal"
               dense
-              label="Instruction"
+              label=""
             >
             </v-text-field>
+            <v-btn @click="submitSideData()"
+            color="primary"
+            >
+              Submit
+            </v-btn>
     </v-form>
   </v-card>
      </v-dialog>
@@ -728,6 +735,8 @@ export default {
       DS: null,
       snackbar: false,
       dialogSideData: false,
+      sideDataSubmitModel: "",
+      sideDataSubmitCurrentTableName: "",
       input: "",
       icon: "",
       input: "",
@@ -881,6 +890,16 @@ export default {
     },
     show() {
       return 0;
+    },
+   async submitSideData(){
+    let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {
+      data: this.sideDataSubmitModel
+    });
+      if (r){
+         this.getSideData(this.sideDataSubmitCurrentTableName);
+         this.dialogSideData = false;
+      };
+      this.sideDataSubmitModel = "";
     },
     async getAppointmentData(){
       let id = localStorage.getItem("selectedAppointment")
