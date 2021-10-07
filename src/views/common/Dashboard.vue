@@ -55,7 +55,7 @@
       <v-col lg="" md="9" sm="12" cols="12">
         <v-card class="ma-5" elevation="0">
           <v-row>
-            <v-col v-if="currentLoggedUserType == 'DOCTOR'">
+            <v-col v-if="currentLoggedUserType.includes('DOCTOR')">
               <v-card
                 color="teal lighten-5"
                 outlined
@@ -123,12 +123,12 @@
                 elevation="0"
                 style="border: 1px solid #e7e7e7"
                 width="100%"
-                 v-if="currentLoggedUserType == 'DOCTOR'"
+                v-if="currentLoggedUserType.includes('DOCTOR')"
               >
                 <v-row class="pa-5">
                   <v-icon large>mdi-clipboard-text</v-icon>
                   <h3
-                    v-if="currentLoggedUserType == 'DOCTOR'"
+                   v-if="currentLoggedUserType.includes('DOCTOR')"
                     class="mt-1 ml-2"
                   >
                     Recent Appointment
@@ -137,7 +137,7 @@
                     Approve Doctor
                   </h3> -->
                 </v-row>
-                <template v-if="currentLoggedUserType == 'DOCTOR'">
+                <template v-if="currentLoggedUserType.includes('DOCTOR')">
                   <v-row
                     style="background-color:#f2f5f8;border-radius:8px;text-align:center"
                   >
@@ -210,7 +210,7 @@
               </v-card>
             </v-col>
           </v-row>
-          <moderator-controller v-if="currentLoggedUserType == 'ADMIN'">
+          <moderator-controller v-if="currentLoggedUserType.includes('ADMIN') || currentLoggedUserType.includes('SUPER_ADMIN')">
 
           </moderator-controller>
           
@@ -326,7 +326,7 @@ moderatorController
     setSideDataBasedOnUser() {
       console.log(this.dashboard);
       if (this.userInfo.dashboard.length != 0) return;
-      if (this.currentLoggedUserType == "ADMIN") {
+      if (this.currentLoggedUserType.includes('ADMIN') || this.currentLoggedUserType.includes('SUPER_ADMIN')) {
         let o = [
           {
             text: "Total Doctors",
