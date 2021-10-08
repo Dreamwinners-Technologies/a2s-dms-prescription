@@ -520,14 +520,14 @@
             <v-col>
                 Patient ID: #P1234
             </v-col>
-            <v-col>
-                Name: Maahbub Mia
+            <v-col cols="4">
+                Name: {{appointment.data.patientName}}
             </v-col>
             <v-col>
-                Age: 34 Years Old
+                Age: {{appointment.data.patientAge}} Years Old
             </v-col>
             <v-col>
-                Date: 27 May 2021
+                Date: {{new Date().toLocaleDateString()}}
             </v-col>
         </v-row>
         <hr>
@@ -537,7 +537,7 @@
                     <v-col>
                     <b>Cheif Complaints :</b><br><br>
                     <ul class="px-4" style="list-style-type:none">
-                        <li v-for="item in prescription.chiefComplaints" :key="item">
+                        <li v-for="item in appointment.data.prescription.chiefComplaints" :key="item">
                             {{item}}
                         </li>
                     </ul>
@@ -547,10 +547,10 @@
                     <v-col>
                     <b>On Examination :</b><br><br>
                     <ul class="px-4" style="list-style-type:none">
-                        <li>Pulse: {{prescription.pulse}} mg</li>
-                        <li>BP: {{prescription.bloodPressure}} mmHg</li>
-                        <li>Temp: {{prescription.temperature}} Degree F</li>
-                        <li v-for="item in prescription.onExamination" :key="item">
+                        <li>Pulse: {{appointment.data.prescription.pulse}} mg</li>
+                        <li>BP: {{appointment.data.prescription.bloodPressure}} mmHg</li>
+                        <li>Temp: {{appointment.data.prescription.temperature}} Degree F</li>
+                        <li v-for="item in appointment.data.prescription.onExamination" :key="item">
                             {{item}}
                         </li>
                     </ul>
@@ -560,7 +560,7 @@
                     <v-col>
                     <b>Diagnosis :</b><br><br>
                     <ul class="px-4" style="list-style-type:none">
-                        <li v-for="item in prescription.diagnosis" :key="item">
+                        <li v-for="item in appointment.data.prescription.diagnosis" :key="item">
                             {{item}}
                         </li>
                     </ul>
@@ -570,7 +570,7 @@
                     <v-col>
                     <b>Investigation Advice :</b><br><br>
                     <ul class="px-4" style="list-style-type:none">
-                        <li v-for="item in prescription.investigationAdvice" :key="item">
+                        <li v-for="item in appointment.data.prescription.investigationAdvice" :key="item">
                             {{item}}
                         </li>
                     </ul>
@@ -588,7 +588,7 @@
                             <br>
                         </v-col>
                     </v-row>
-                    <v-row class="my-0" style="margin-bottom: 10px !important" v-for="item in prescription.medicines" :key="item">
+                    <v-row class="my-0" style="margin-bottom: 10px !important" v-for="item in appointment.data.prescription.medicines" :key="item">
                         <v-col class="mx-4">
                             <b style="font-size: 15px !important;">{{item.brand}}</b><br>
                             {{item.dose}} --- {{item.instruction}} --- {{item.duration}} <br>
@@ -599,7 +599,7 @@
                     <v-footer>
                         <v-row>
                             <v-col class="mx-2 mt-4">
-                                <b>Given Advice: </b><p style="margin:0px;display:block" v-for="item in prescription.advice" :key="item"> {{item}} </p>
+                                <b>Given Advice: </b><p style="margin:0px;display:block" v-for="item in appointment.data.prescription.advice" :key="item"> {{item}} </p>
                             </v-col>
                         </v-row>
                     </v-footer>
@@ -808,58 +808,7 @@ export default {
             investigationAdvice: "",
             onExamination: "",
       },
-      prescription:{
-            id:"",
-            chiefComplaints: ["Fever for 3 days","Runing nose"],
-            diagnosis: ["","",""],
-            investigationAdvice: ["CBC with ESR","Plain X-Ray og chest : AP"],
-            onExamination: ["","",""],    
-            advice:["খাবার পরে খাবেন","খাবার পরে খাবেন"],
-            pulse: "88",
-            temperature: "102",
-            bloodPressure: "120/80",
-            medicines: [
-                {
-                    id:"1",
-                    brand: 'Ace | Paracetamol | 500mg',
-                    dose: '১+০+১',
-                    instruction: 'খাবার পরে খাবেন',
-                    duration: '৭ দিন',
-                    note: ''
-                },
-                {
-                    id:"2",
-                    brand: 'Napa Extra | Paracetamol | 200mg',
-                    dose: '১+০+১',
-                    instruction: 'খাবার পরে খাবেন',
-                    duration: '১৫ দিন',
-                    note: ' -'
-                },
-                {
-                    id:"1",
-                    brand: 'Ace | Paracetamol | 500mg',
-                    dose: '১+০+১',
-                    instruction: 'খাবার পরে খাবেন',
-                    duration: '৭ দিন',
-                    note: ''
-                },
-                {
-                    id:"2",
-                    brand: 'Napa Extra | Paracetamol | 200mg',
-                    dose: '১+০+১',
-                    instruction: 'খাবার পরে খাবেন',
-                    duration: '১৫ দিন',
-                    note: ' -'
-                },
-            ],
-            patient: {
-                id: "",
-                name: "",
-                age: "",
-                address: "",
-            }
-        },
-        appointment: {
+      appointment: {
             data: {
               appointmentDate: "",
               createdAt: 0,
@@ -979,7 +928,8 @@ export default {
       this.$htmlToPaper("prescription");
     },
     printPrescription(){
-      let routeData = this.$router.resolve({name: 'Prescription' ,query: {data: "print"}});
+      this.savePrescription()
+      let routeData = this.$router.resolve("print/prescription/"+this.selectedAppointment);
       window.open(routeData.href, '_blank');
     },
     addDrug() {
