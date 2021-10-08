@@ -721,20 +721,20 @@ import { ABService } from "@/service/prescription_backups_service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { htmlToPaper } from "vue-html-to-paper";
 export default {
-  async beforeCreate() {
-    try {
-      const isDbCreated = await initJsStore();
-      if (isDbCreated) {
-        console.log("db created");
-      } else {
-        console.log("db opened");
-      }
-    } catch (ex) {
-      console.error(ex);
-      alert(ex.message);
-      Global.isIndexedDbSupported = false;
-    }
-  },
+  // async beforeCreate() {
+  //   try {
+  //     const isDbCreated = await initJsStore();
+  //     if (isDbCreated) {
+  //       console.log("db created");
+  //     } else {
+  //       console.log("db opened");
+  //     }
+  //   } catch (ex) {
+  //     console.error(ex);
+  //     alert(ex.message);
+  //     Global.isIndexedDbSupported = false;
+  //   }
+  // },
   data() {
     return {
       ABS: null,

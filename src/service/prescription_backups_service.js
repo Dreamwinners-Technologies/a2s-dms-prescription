@@ -56,4 +56,8 @@ export class ABService {
             }
         })
     }
+
+    clearTable(table) {
+        return connection.clear(table);
+    }
 }

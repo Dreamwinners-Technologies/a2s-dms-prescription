@@ -108,12 +108,17 @@
     </v-navigation-drawer>
 </template>
 <script>
+import { initJsStore } from "@/service/idb_service.js";
+import { ABService } from "@/service/prescription_backups_service.js";
+
 export default {
+
   data() {
     return {
       onlineStatus: "Offline",
       isDoctor: "",
-      userData: ""
+      userData: "",
+         ABS: null,
     }
   },
   methods: {
@@ -131,7 +136,9 @@ export default {
       logOut(){
       localStorage.removeItem("token");
       localStorage.removeItem("uData");
+      localStorage.setItem("IL", true);
       this.$router.push("/auth/signin");
+      this.clearTable("Drugs");
   },
   getCurrentLoggedUserType(){
     let user = JSON.parse(localStorage.getItem("uData"));
@@ -139,10 +146,16 @@ export default {
     this.isDoctor = user.roles.includes("DOCTOR");
     this.$store.commit("setCurrentLoggedUserType",user.roles);
   },
+  async clearTable(...tables){
+      for(let table of tables){
+        await this.ABS.clearTable(table);
+      }
+  }
 
   },
 
   mounted() {
+    this.ABS = new ABService();
      if(localStorage.getItem("token") == null){
        this.$router.push("/auth/signin")
      }
