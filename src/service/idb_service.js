@@ -16,7 +16,7 @@ const getDatabase = () => {
         }
     };
     const tblComlaints = {
-        name: 'chiefComplaint',
+        name: 'chiefComplaints',
         columns: {
             id: {
                 primaryKey: true,

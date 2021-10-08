@@ -25,8 +25,8 @@
             <v-col>
               <h4>Cheif Complaints :</h4>
               <v-autocomplete
-                v-model="sideModels.chiefComplaint"
-                :items="sideData.chiefComplaint"
+                v-model="sideModels.chiefComplaints"
+                :items="sideData.chiefComplaints"
                 chips
                 label="Complaints"
                 full-width
@@ -39,11 +39,11 @@
                 outlined
                 color="teal"
                 dense
-                @change="setComplaintsText"
+                @change="setSideDataTextFieldTextByTableName('chiefComplaints')"
               >
                 <template slot="append">
                   <v-btn
-                    @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='chiefComplaint'"
+                    @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='chiefComplaints'"
                     depressed
                     class="mt-0"
                     small
@@ -57,7 +57,7 @@
                 style="margin-top:0px !important"
                 name="input-7-1"
                 outlined
-                v-model="prescription.chiefComplaint"
+                v-model="sideDataTextFieldModel.chiefComplaints"
                 background-color="white"
                 color="teal"
                 auto-grow
@@ -85,6 +85,7 @@
                 outlined
                 color="teal"
                 dense
+                @change="setSideDataTextFieldTextByTableName('onExamination')"
               >
                 <template slot="append">
                   <v-btn
@@ -102,7 +103,7 @@
                 style="margin-top:0px !important"
                 name="input-7-1"
                 outlined
-                v-model="prescription.onExamination"
+                v-model="sideDataTextFieldModel.onExamination"
                 background-color="white"
                 color="teal"
                 auto-grow
@@ -130,6 +131,7 @@
                 outlined
                 color="teal"
                 dense
+                 @change="setSideDataTextFieldTextByTableName('diagnosis')"
               >
                 <template slot="append">
                   <v-btn
@@ -147,7 +149,7 @@
                 style="margin-top:0px !important"
                 name="input-7-1"
                 outlined
-                v-model="prescription.diagnosis"
+                v-model="sideDataTextFieldModel.diagnosis"
                 background-color="white"
                 color="teal"
                 auto-grow
@@ -175,6 +177,7 @@
                 outlined
                 color="teal"
                 dense
+                 @change="setSideDataTextFieldTextByTableName('investigationAdvice')"
               >
                 <template slot="append">
                   <v-btn
@@ -192,7 +195,7 @@
                 style="margin-top:0px !important"
                 name="input-7-1"
                 outlined
-                v-model="prescription.investigationAdvice"
+                v-model="sideDataTextFieldModel.investigationAdvice"
                 background-color="white"
                 color="teal"
                 auto-grow
@@ -462,6 +465,7 @@
       max-width="300px"
     >
   <v-card class="pa-4">
+    <h2>Save Information</h2>
     <v-form>
       <v-text-field
               v-model="sideDataSubmitModel"
@@ -475,6 +479,8 @@
             </v-text-field>
             <v-btn @click="submitSideData()"
             color="primary"
+            class="text-center"
+            depressed
             >
               Submit
             </v-btn>
@@ -748,13 +754,13 @@ export default {
       prescriptionPriview: false,
       selectedAppointment: null,
       sideModels: {
-        chiefComplaint: "",
+        chiefComplaints: "",
         onExamination: "",
         diagnosis: "",
         investigationAdvice: ""
       },
       sideData: {
-        chiefComplaint: [],
+        chiefComplaints: [],
         onExamination: [],
         diagnosis: [],
         investigationAdvice: []
@@ -795,6 +801,12 @@ export default {
           pulse: 0,
           temperature: 0
         }
+      },
+      sideDataTextFieldModel: {
+           chiefComplaints: "",
+            diagnosis: "",
+            investigationAdvice: "",
+            onExamination: "",
       },
       prescription:{
             id:"",
@@ -914,14 +926,18 @@ export default {
     crearSelectedAppointment(){
       localStorage.setItem("selectedAppointment",null)
     },
-    setComplaintsText() {
-      let complaints = this.sideModels.chiefComplaint;
-      this.prescription.chiefComplaint +=
-        this.sideModels.chiefComplaint[
-          this.sideModels.chiefComplaint.length - 1
-        ] + ",\n";
+    setSideDataTextFieldTextByTableName(tableName) {
+      let autoCompleteFieldData = this.sideModels[tableName];
+      // concating the data from v-auto to to respective
+      // text-field with , 
+      this.sideDataTextFieldModel[tableName] +=
+        this.sideModels[tableName][
+          this.sideModels[tableName].length - 1
+        ] + " ,";
+        console.log(this.sideDataTextFieldModel[tableName])
+        //deleting the selectd v-auto data
       setTimeout(() => {
-        complaints.pop();
+        autoCompleteFieldData.pop();
       }, 100);
     },
     async addComplaints(data) {
@@ -987,7 +1003,7 @@ export default {
   mounted() {
     this.ABS = new ABService();
     this.DS = new DrugService();
-    this.getSideData("chiefComplaint");
+    this.getSideData("chiefComplaints");
     this.getSideData("onExamination");
     this.getSideData("diagnosis");
     this.getSideData("investigationAdvice");
