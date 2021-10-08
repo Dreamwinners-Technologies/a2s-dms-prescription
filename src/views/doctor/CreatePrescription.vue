@@ -921,7 +921,17 @@ export default {
       if(id!=null){
         let data = await this.ABS.getDataById("Appointment",id);
         this.appointment = data[0]
+        this.setSideModelData()
       }
+    },
+    setSideModelData(){
+        console.log("data..................................")
+        console.log(this.appointment.data.prescription.chiefComplaints)
+        console.log(this.arrayToString(this.appointment.data.prescription.chiefComplaints))
+        this.sideDataTextFieldModel.chiefComplaints = this.arrayToString(this.appointment.data.prescription.chiefComplaints)
+        this.sideDataTextFieldModel.onExamination = this.arrayToString(this.appointment.data.prescription.onExamination)
+        this.sideDataTextFieldModel.diagnosis = this.arrayToString(this.appointment.data.prescription.diagnosis)
+        this.sideDataTextFieldModel.investigationAdvice = this.arrayToString(this.appointment.data.prescription.investigationAdvice)
     },
     crearSelectedAppointment(){
       localStorage.setItem("selectedAppointment",null)
@@ -989,7 +999,14 @@ export default {
         note: ""
       };
     },
+    setPrescriptionData(){
+      this.appointment.data.prescription.chiefComplaints = this.stringToArray(this.sideDataTextFieldModel.chiefComplaints)
+     this.appointment.data.prescription.onExamination = this.stringToArray(this.sideDataTextFieldModel.onExamination)
+     this.appointment.data.prescription.diagnosis = this.stringToArray(this.sideDataTextFieldModel.diagnosis)
+     this.appointment.data.prescription.investigationAdvice = this.stringToArray(this.sideDataTextFieldModel.investigationAdvice)
+    },
    async savePrescription(){
+    this.setPrescriptionData()
     let r = await this.ABS.addData("LocalPresciption", {
       id: this.appointment.data.id,
       data: this.localprescription
@@ -998,6 +1015,20 @@ export default {
           r = await this.ABS.updateDataById("Appointment",this.appointment)
      if (r) { this.snackbar = true;}
     
+    },
+    stringToArray(string){
+      var data = string+ ''
+      var arr = data.split(',');
+      console.log(arr)
+      return arr;
+    },
+    arrayToString(arr){
+      console.log(arr)
+      // var arr = array.pop()
+      var str = arr.toString()
+      console.log("....................................")
+      console.log(str)
+      return str;
     }
   },
   mounted() {
