@@ -32,13 +32,13 @@
                 Patient ID: #P1234
             </v-col>
             <v-col>
-                Name: {{selectedAppointment}}
+                Name: {{appointment.data.patientName}}
             </v-col>
             <v-col>
                 Age: {{appointment.data.patientAge}} Years Old
             </v-col>
             <v-col>
-                Date: 27 May 2021
+                Date: {{new Date().toLocaleDateString()}}
             </v-col>
         </v-row>
         <hr>
@@ -107,13 +107,13 @@
                         </v-col>
                     </v-row>
                     <br>
-                    <v-footer>
+                    <div>
                         <v-row>
                             <v-col class="mx-2 mt-4">
                                 <b>Given Advice: </b><p style="margin:0px;display:block" v-for="item in appointment.data.prescription.advice" :key="item"> {{item}} </p>
                             </v-col>
                         </v-row>
-                    </v-footer>
+                    </div>
             </v-col>
         </v-row>
         <v-footer>

@@ -54,18 +54,21 @@
             </v-list-item-icon>
             <v-list-item-title>Appointment List</v-list-item-title>
           </v-list-item>
+          
+          <v-list-item v-if="!isDoctor" link to="doctor-approve">
+            <v-list-item-icon>
+              <v-icon>mdi-doctor</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Doctor Approve</v-list-item-title>
+          </v-list-item>
+
           <v-list-item v-if="!isDoctor" link to="generic-controller">
             <v-list-item-icon>
               <v-icon>mdi-pill</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Generic Contoller</v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="!isDoctor" link to="doctor-approve">
-            <v-list-item-icon>
-              <v-icon>mdi-pill</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Doctor Approve</v-list-item-title>
-          </v-list-item>
+          
           <v-list-item v-if="isDoctor" link to="edit-template">
             <v-list-item-icon>
               <v-icon>mdi-cards-outline</v-icon>

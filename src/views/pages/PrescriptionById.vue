@@ -32,13 +32,13 @@
                 Patient ID: #P1234
             </v-col>
             <v-col>
-                Name: {{selectedAppointment}}
+                Name: {{appointment.data.patientName}}
             </v-col>
             <v-col>
                 Age: {{appointment.data.patientAge}} Years Old
             </v-col>
             <v-col>
-                Date: 27 May 2021
+                Date: {{new Date().toLocaleDateString()}}
             </v-col>
         </v-row>
         <hr>
@@ -194,57 +194,6 @@ export default {
                     updatedBy: ""
                 }
             },
-            // prescription:{
-            //     id:"",
-            //     chiefComplaints: ["Fever for 3 days","Runing nose"],
-            //     diagnosis: ["","",""],
-            //     investigationAdvice: ["CBC with ESR","Plain X-Ray og chest : AP"],
-            //     onExamination: ["","",""],    
-            //     advice:["খাবার পরে খাবেন","খাবার পরে খাবেন"],
-            //     pulse: "88",
-            //     temperature: "102",
-            //     bloodPressure: "120/80",
-            //     medicines: [
-            //         {
-            //             id:"1",
-            //             brand: 'Ace | Paracetamol | 500mg',
-            //             dose: '১+০+১',
-            //             instruction: 'খাবার পরে খাবেন',
-            //             duration: '৭ দিন',
-            //             note: ''
-            //         },
-            //         {
-            //             id:"2",
-            //             brand: 'Napa Extra | Paracetamol | 200mg',
-            //             dose: '১+০+১',
-            //             instruction: 'খাবার পরে খাবেন',
-            //             duration: '১৫ দিন',
-            //             note: ' -'
-            //         },
-            //         {
-            //             id:"1",
-            //             brand: 'Ace | Paracetamol | 500mg',
-            //             dose: '১+০+১',
-            //             instruction: 'খাবার পরে খাবেন',
-            //             duration: '৭ দিন',
-            //             note: ''
-            //         },
-            //         {
-            //             id:"2",
-            //             brand: 'Napa Extra | Paracetamol | 200mg',
-            //             dose: '১+০+১',
-            //             instruction: 'খাবার পরে খাবেন',
-            //             duration: '১৫ দিন',
-            //             note: ' -'
-            //         },
-            //     ],
-            //     patient: {
-            //         id: "",
-            //         name: "",
-            //         age: "",
-            //         address: "",
-            //     }
-            // }
         }
     },
     methods: {
@@ -280,7 +229,6 @@ html{
     line-height:1.5 !important;
     color:#212529 !important;
     text-align:left !important;
-    background-color:rgba(255, 255, 255, 0.269) !important;
 }
 .container {
     width: 100%;
@@ -309,5 +257,8 @@ html{
     @page {
         size: A3;
     }
+}
+.v-footer {
+    background-color: white;
 }
 </style>
