@@ -149,7 +149,7 @@
 <script>
 import axios from 'axios';
 import { initJsStore } from "@/service/idb_service.js";
-import { ABService } from "@/service/prescription_backups_service.js";
+import { ABService } from "@/service/Generic_Service.js";
 export default {
     data(){
         return {

@@ -73,9 +73,9 @@
                                     <v-col cols="2">
                                         <v-card-subtitle>
                                                  <v-btn-toggle>
-                                                     <v-btn color="info" depressed small><v-icon small>mdi-eye</v-icon></v-btn>
-                                                     <v-btn color="info" depressed small @click="createPrescription(appointment.data.id)"><v-icon small>mdi-prescription</v-icon></v-btn>
-                                                     <v-btn color="info" depressed small><v-icon small>mdi-printer</v-icon></v-btn> </v-btn-toggle>
+                                                     <v-btn color="info" depressed small><v-icon style="color:white!important" small>mdi-eye</v-icon></v-btn>
+                                                     <v-btn color="info" depressed small @click="createPrescription(appointment.data.id)"><v-icon style="color:white!important" small>mdi-prescription</v-icon></v-btn>
+                                                </v-btn-toggle>
                                         </v-card-subtitle>
                                     </v-col>
                                </v-row>
@@ -205,7 +205,7 @@
 
 <script>
 import { initJsStore } from "@/service/idb_service.js";
-import { ABService } from "@/service/prescription_backups_service.js";
+import { ABService } from "@/service/Generic_Service.js";
 import { v4 as uuidv4 } from 'uuid';
 export default {
     async beforeCreate() {

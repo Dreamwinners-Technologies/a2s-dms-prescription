@@ -25,6 +25,7 @@
             <v-col>
               <h4>Cheif Complaints :</h4>
               <v-autocomplete
+                :disabled="selectedAppointment=='null'"
                 v-model="sideModels.chiefComplaints"
                 :items="sideData.chiefComplaints"
                 chips
@@ -43,6 +44,7 @@
               >
                 <template slot="append">
                   <v-btn
+                    :disabled="selectedAppointment=='null'"
                     @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='chiefComplaints'"
                     depressed
                     class="mt-0"
@@ -54,6 +56,7 @@
                 </template>
               </v-autocomplete>
               <v-textarea
+                :disabled="selectedAppointment=='null'"
                 style="margin-top:0px !important"
                 name="input-7-1"
                 outlined
@@ -335,7 +338,7 @@
               >
                 <v-row class="pa-5">
                   <v-icon large>mdi-prescription</v-icon> <v-spacer></v-spacer>
-                  <v-btn depressed @click.stop="adddialog = true" color="info"
+                  <v-btn :disabled="selectedAppointment=='null'" depressed @click.stop="adddialog = true" color="info"
                     >Add Drugs</v-btn
                   >
                 </v-row>
@@ -362,6 +365,7 @@
                   </v-col>
                 </v-row>
                 <v-row
+                  :v-if="selectedAppointment!=null"
                   v-for="(drug, idy) in appointment.data.prescription.medicines"
                   :key="idy"
                   style="text-align:center;border-bottom: 1px solid #e7e7e7"
@@ -427,7 +431,7 @@
                 class="pa-2"
                 style="border:2px solid #479EF4"
               >
-                <v-btn value="left" @click="prescriptionPriview=true">
+                <v-btn :disabled="selectedAppointment=='null'" value="left" @click="prescriptionPriview=true">
                   <span class="hidden-sm-and-down">Preview</span>
 
                   <v-icon right>
@@ -435,7 +439,7 @@
                   </v-icon>
                 </v-btn>
 
-                <v-btn value="center" @click="savePrescription">
+                <v-btn :disabled="selectedAppointment=='null'" value="center" @click="savePrescription">
                   <span class="hidden-sm-and-down">Save</span>
 
                   <v-icon right>
@@ -443,7 +447,7 @@
                   </v-icon>
                 </v-btn>
 
-                <v-btn value="right" @click="printPrescription()">
+                <v-btn :disabled="selectedAppointment=='null'" value="right" @click="printPrescription()">
                   <span class="hidden-sm-and-down">Save & Print</span>
 
                   <v-icon right>
@@ -717,7 +721,7 @@
 
 <script>
 import { initJsStore } from "@/service/idb_service.js";
-import { ABService } from "@/service/prescription_backups_service.js";
+import { ABService } from "@/service/Generic_Service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { htmlToPaper } from "vue-html-to-paper";
 export default {
@@ -789,18 +793,20 @@ export default {
         }
       ],
       localprescription: {
-            id: "",
-            prescriptionRequest: {
-                advice: [],
-                bloodPressure: 0,
-                chiefComplaints: [],
-                diagnosis: [],
-                investigationAdvice: [],
-                medicines: [],
-          onExamination: [],
-          pulse: 0,
-          temperature: 0
-        }
+          data: {
+              id: "",
+              prescriptionRequest: {
+                    advice: [],
+                    bloodPressure: 0,
+                    chiefComplaints: [],
+                    diagnosis: [],
+                    investigationAdvice: [],
+                    medicines: [],
+              onExamination: [],
+              pulse: 0,
+              temperature: 0
+            }
+          }
       },
       sideDataTextFieldModel: {
            chiefComplaints: "",
@@ -951,17 +957,35 @@ export default {
     },
     setPrescriptionData(){
       this.appointment.data.prescription.chiefComplaints = this.stringToArray(this.sideDataTextFieldModel.chiefComplaints)
-     this.appointment.data.prescription.onExamination = this.stringToArray(this.sideDataTextFieldModel.onExamination)
-     this.appointment.data.prescription.diagnosis = this.stringToArray(this.sideDataTextFieldModel.diagnosis)
-     this.appointment.data.prescription.investigationAdvice = this.stringToArray(this.sideDataTextFieldModel.investigationAdvice)
+      this.appointment.data.prescription.onExamination = this.stringToArray(this.sideDataTextFieldModel.onExamination)
+      this.appointment.data.prescription.diagnosis = this.stringToArray(this.sideDataTextFieldModel.diagnosis)
+      this.appointment.data.prescription.investigationAdvice = this.stringToArray(this.sideDataTextFieldModel.investigationAdvice)
     },
+    setLocalPrescriptionData(){
+      this.localprescription.id = this.appointment.data.id;
+      this.localprescription.data.id = this.localprescription.id
+      this.localprescription.data.prescriptionRequest.chiefComplaints = this.appointment.data.prescription.chiefComplaints
+      this.localprescription.data.prescriptionRequest.onExamination = this.appointment.data.prescription.onExamination
+      this.localprescription.data.prescriptionRequest.diagnosis = this.appointment.data.prescription.diagnosis
+      this.localprescription.data.prescriptionRequest.investigationAdvice = this.appointment.data.prescription.investigationAdvice
+      this.localprescription.data.prescriptionRequest.advice = this.appointment.data.prescription.advice
+      this.localprescription.data.prescriptionRequest.medicines = this.appointment.data.prescription.medicines
+      this.localprescription.data.prescriptionRequest.pulse = this.appointment.data.prescription.pulse
+      this.localprescription.data.prescriptionRequest.bloodPressure = this.appointment.data.prescription.bloodPressure
+      this.localprescription.data.prescriptionRequest.temperature = this.appointment.data.prescription.temperature
+    },
+
    async savePrescription(){
     this.setPrescriptionData()
-    let r = await this.ABS.addData("LocalPresciption", {
-      id: this.appointment.data.id,
-      data: this.localprescription
-    });
+    this.setLocalPrescriptionData()
+    let r = await this.ABS.updateDataById("LocalPresciption",this.localprescription);
       if (r) console.log(r);
+      else {
+        r = await this.ABS.addData("LocalPresciption", {
+        id: this.appointment.data.id,
+        data: this.localprescription.data
+        });
+      }
           r = await this.ABS.updateDataById("Appointment",this.appointment)
      if (r) { this.snackbar = true;}
     
