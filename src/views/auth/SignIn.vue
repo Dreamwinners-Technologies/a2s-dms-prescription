@@ -124,10 +124,11 @@
 
 <script>
 import axios from "axios";
+
 const API_URL =
-  "http://need-doctors-backend.southeastasia.cloudapp.azure.com:8100/";
-const LOGIN_URL = API_URL + "auth/login/";
+  "https://need-doctors-backend.herokuapp.com/";
 const OTP_VERIFY_API = API_URL + "auth/verify/otp?";
+const LOGIN_URL = API_URL + "auth/login";
 import { mapGetters } from "vuex";
 export default {
   data() {

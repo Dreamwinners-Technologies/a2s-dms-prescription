@@ -17,10 +17,16 @@
   </v-app>
 </template>
 <script>
+const API_URL =
+  "https://need-doctors-backend.herokuapp.com/";
+const PROFILE_URL = API_URL + "auth/profile";
+const PRESCRIPTION_URL = API_URL + "prescriptions/medicines?pageNo=";
 import {mapGetters} from "vuex";
 
 import { initJsStore } from "@/service/idb_service.js";
 import { DrugService } from "@/service/drugs_service.js";
+import { ABService } from "@/service/Generic_Service.js";
+
 import { Global } from "@/global";
 import axios from "axios";
 export default {
@@ -44,7 +50,7 @@ export default {
   
   data () {
     return {
-    
+    auth: "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
       dialog : false,
        currentProgress: 0
     }
@@ -59,10 +65,37 @@ export default {
    
     syncDB() {
       this.dialog = true;
-
       let ds = new DrugService();
+      this.saveProfileInfo()
+      // this.getLoggedProfileInfo(as);
       this.parseDrugs(ds,0);
       
+    },
+   getLoggedProfileInfo(){
+    console.log(PROFILE_URL)
+    console.log(this.auth)
+             axios({
+        method: "get",
+        url: PROFILE_URL,
+        headers: {
+          Authorization: this.auth,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(r => {
+          console.log(r.data);
+       return r.data;
+        })
+        .catch(r => {
+          console.log(r);
+        });
+    },
+   async saveProfileInfo(){
+     let as = new ABService();
+   let r = await as.addData("ProfData",{
+     Id: 1,
+           data: JSON.stringify(this.getLoggedProfileInfo())
+         })
     },
     parseDrugs(ds,cntr){
       //  to sync all the drugs change cntr > 10 to cntr > 107
@@ -74,17 +107,18 @@ export default {
       }
       axios
         .get(
-          `http://need-doctors-backend.southeastasia.cloudapp.azure.com:8100/drugs?pageNo=${cntr}&pageSize=200`
+            `${PRESCRIPTION_URL}${cntr}&pageSize=200`
         )
         .then(r => {
           let response = r.data,
-            currentDrugList = r.data.drugModelList;
+            currentDrugList = r.data.data.data;
+            console.log(currentDrugList)
           for (let i = 0; i < currentDrugList.length; i++) {
-            ds.addDrugs({ name: currentDrugList[i].name });
+            ds.addDrugs({ data: currentDrugList[i] });
           }
           this.currentProgress = cntr;
 
-          this.parseDrugs(ds,cntr+1)
+          this.parseDrugs(ds,cntr+1);
         });
     },
   },
@@ -93,6 +127,7 @@ export default {
   },
   mounted(){
     localStorage.setItem("selectedAppointment",null)
+    this.checkIfInitialLogInAndSync();
   }
 }
 </script>

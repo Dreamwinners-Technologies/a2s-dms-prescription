@@ -141,7 +141,7 @@ export default {
       localStorage.removeItem("uData");
       localStorage.setItem("IL", true);
       this.$router.push("/auth/signin");
-      this.clearTable("Drugs");
+      this.clearTable("Drugs","ProfData");
   },
   getCurrentLoggedUserType(){
     let user = JSON.parse(localStorage.getItem("uData"));

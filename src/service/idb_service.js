@@ -2,6 +2,18 @@ import { connection } from "./jsstore_con";
 import { DATA_TYPE } from "jsstore";
 
 const getDatabase = () => {
+    const tblProfile = {
+        name: 'ProfData',
+        columns: {
+            Id: {
+                primaryKey: true,
+                autoIncrement: false
+            },
+            data: {
+                dataType: DATA_TYPE.String
+            },
+        }
+    };
     const tblDrugs = {
         name: 'Drugs',
         columns: {
@@ -9,9 +21,9 @@ const getDatabase = () => {
                 primaryKey: true,
                 autoIncrement: true
             },
-            name: {
+            data: {
                 notNull: true,
-                dataType: DATA_TYPE.String
+                dataType: DATA_TYPE.Object
             }
         }
     };
@@ -133,7 +145,8 @@ const getDatabase = () => {
     };
     const dataBase = {
         name: "a2sdms",
-        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment]
+        version: 12,
+        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile]
     };
     return dataBase;
 };
