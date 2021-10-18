@@ -644,6 +644,7 @@
             <v-autocomplete
               v-model="addDrugModel.brand"
               :items="drugs"
+              item-text="medicineName"
               placeholder="Search Drug Name"
               class="mt-2 pa-0"
               outlined
@@ -924,7 +925,7 @@ export default {
       let drugs = await this.DS.getDrugs();
       drugs.forEach(function(item) {
         delete item.id;
-        output.push(item.name);
+        output.push(item.data);
       });
       this.drugs = output;
     },

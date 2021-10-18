@@ -13,7 +13,7 @@
           elevation="2"
           v-bind="attrs"
           v-on="on"
-          @click="initDB()"
+          @click="syncDBtoServer()"
         >
           <v-icon dark>
             mdi-cloud-upload
@@ -43,15 +43,21 @@
   </div>
 </template>
 <script>
+const API_URL =
+  "https://need-doctors-backend.herokuapp.com/";
+const BULK_PRESCRIPTION_API = API_URL + "appointments/bulk";
 import axios from "axios";
 import { initJsStore } from "@/service/idb_service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { Global } from "@/global";
-
+import { ABService } from "@/service/Generic_Service.js";
 export default {
   components: {},
   data() {
     return {
+      DS: null,
+      GS: null,
+       auth: "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
       students: [],
       dialog: false,
       currentProgress: 0
@@ -113,9 +119,55 @@ export default {
     },
     async addDrugs(d) {
       await this.db.addDrugsToTable(d);
+    },
+    async getLocalPrescriptionsParsed(){
+         let localAppointments = await this.GS.getData("LocalAppointment"),
+         output = [];
+         if(localAppointments){
+           for(let i = 0;i< localAppointments.length; i++ ){
+             output.push(localAppointments[i].data);
+           }
+           return output;
+         }
+         
+    },
+    sendBulkPrescriptionToServer(){
+       let localPrescriptions = Promise.resolve(this.getLocalPrescriptionsParsed());
+       let instance = this;
+
+       localPrescriptions.then(v=> {
+   console.log(v);
+       return;
+             axios({
+        method: "post",
+        url: BULK_PRESCRIPTION_API ,
+        data: v,
+        headers: {
+          Authorization: instance.auth,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(r => {
+          console.log(r.data);
+          instance.GS.clearTable("LocalAppointment");
+          this.syncAppointment();
+        })
+        .catch(r => {
+          console.log(r);
+        })
+       });
+
+    
+    },
+    syncAppointment(){},
+    syncDBwithServer(){
+
     }
   },
-  mounted() {}
+  mounted() {
+    this.GS = new ABService();
+    this.sendBulkPrescriptionToServer();
+  }
 };
 </script>
 <style scoped>
