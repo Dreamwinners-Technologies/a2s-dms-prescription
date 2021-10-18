@@ -38,7 +38,7 @@
                 Age: {{appointment.data.patientAge}} Years Old
             </v-col>
             <v-col>
-                Date: {{new Date().toLocaleDateString()}}
+                Date: {{appointment.data.appointmentDate}}
             </v-col>
         </v-row>
         <hr>
@@ -155,6 +155,7 @@ export default {
         return {
             ABS: null,
             selectedAppointment:"",
+            GET_APPONTMENT_API: "https://need-doctors-backend.herokuapp.com/appointments/prescriptions",
             windowSize: {
                 x: 500,
                 y: 200,
@@ -194,72 +195,28 @@ export default {
                     updatedBy: ""
                 }
             },
-            // prescription:{
-            //     id:"",
-            //     chiefComplaints: ["Fever for 3 days","Runing nose"],
-            //     diagnosis: ["","",""],
-            //     investigationAdvice: ["CBC with ESR","Plain X-Ray og chest : AP"],
-            //     onExamination: ["","",""],    
-            //     advice:["খাবার পরে খাবেন","খাবার পরে খাবেন"],
-            //     pulse: "88",
-            //     temperature: "102",
-            //     bloodPressure: "120/80",
-            //     medicines: [
-            //         {
-            //             id:"1",
-            //             brand: 'Ace | Paracetamol | 500mg',
-            //             dose: '১+০+১',
-            //             instruction: 'খাবার পরে খাবেন',
-            //             duration: '৭ দিন',
-            //             note: ''
-            //         },
-            //         {
-            //             id:"2",
-            //             brand: 'Napa Extra | Paracetamol | 200mg',
-            //             dose: '১+০+১',
-            //             instruction: 'খাবার পরে খাবেন',
-            //             duration: '১৫ দিন',
-            //             note: ' -'
-            //         },
-            //         {
-            //             id:"1",
-            //             brand: 'Ace | Paracetamol | 500mg',
-            //             dose: '১+০+১',
-            //             instruction: 'খাবার পরে খাবেন',
-            //             duration: '৭ দিন',
-            //             note: ''
-            //         },
-            //         {
-            //             id:"2",
-            //             brand: 'Napa Extra | Paracetamol | 200mg',
-            //             dose: '১+০+১',
-            //             instruction: 'খাবার পরে খাবেন',
-            //             duration: '১৫ দিন',
-            //             note: ' -'
-            //         },
-            //     ],
-            //     patient: {
-            //         id: "",
-            //         name: "",
-            //         age: "",
-            //         address: "",
-            //     }
-            // }
         }
     },
     methods: {
         print(){
             window.print()
         },
-        async getAppointmentData(){
+        getAppointmentData(){
             let id = this.selectedAppointment
             console.log(id)
             if(id!=null){
-                console.log("-----------------------------------")
-                let r = await this.ABS.getDataById("Appointment",id);
-                console.log("-----------------------------------")
-                this.appointment = r[0]
-                console.log(r)
+                axios({
+                method: 'GET',
+                url: `${this.GET_APPONTMENT_API}/`+id
+                })
+                .then((r) => {
+                this.appointment.data = r.data.data
+                console.log('Data')
+                console.log(r.data.data)
+                })
+                .catch(err => {
+                console.log(err)
+                })
             }
         },
     },
