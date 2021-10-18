@@ -55,14 +55,21 @@
             <v-list-item-title>Appointment List</v-list-item-title>
           </v-list-item>
           
-          <v-list-item v-if="!isDoctor" link to="doctor-approve">
+          <v-list-item v-if="isAdmin" link to="doctor-approve">
             <v-list-item-icon>
               <v-icon>mdi-doctor</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Doctor Approve</v-list-item-title>
+            <v-list-item-title>Doctor Controller</v-list-item-title>
           </v-list-item>
 
-          <v-list-item v-if="!isDoctor" link to="generic-controller">
+          <v-list-item v-if="isAdmin" link to="card-controller">
+            <v-list-item-icon>
+              <v-icon>mdi-card</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Card Controller</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="isAdmin" link to="generic-controller">
             <v-list-item-icon>
               <v-icon>mdi-pill</v-icon>
             </v-list-item-icon>
@@ -120,6 +127,7 @@ export default {
     return {
       onlineStatus: "Offline",
       isDoctor: "",
+      isAdmin: "",
       userData: "",
          ABS: null,
     }
@@ -147,6 +155,7 @@ export default {
     let user = JSON.parse(localStorage.getItem("uData"));
     this.userData = user;
     this.isDoctor = user.roles.includes("DOCTOR");
+    this.isAdmin = user.roles.includes("SUPER_ADMIN") || user.roles.includes("ADMIN");
     this.$store.commit("setCurrentLoggedUserType",user.roles);
   },
   async clearTable(...tables){

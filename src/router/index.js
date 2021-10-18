@@ -29,9 +29,15 @@ const routes = [{
             },
             {
                 path: 'doctor-approve',
-                name: 'Approve Controller',
+                name: 'Doctor Controller',
                 component: () =>
                     import ( /* webpackChunkName: "about" */ '../views/admin/ApproveController.vue')
+            },
+            {
+                path: 'card-controller',
+                name: 'Card Controller',
+                component: () =>
+                    import ( /* webpackChunkName: "about" */ '../views/admin/CardController.vue')
             },
             {
                 path: 'create-appointment',
