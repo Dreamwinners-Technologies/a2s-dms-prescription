@@ -13,7 +13,7 @@
           elevation="2"
           v-bind="attrs"
           v-on="on"
-          @click="syncDBtoServer()"
+          @click="sendBulkAppointmentsToServer()"
         >
           <v-icon dark>
             mdi-cloud-upload
@@ -45,7 +45,9 @@
 <script>
 const API_URL =
   "https://need-doctors-backend.herokuapp.com/";
-const BULK_PRESCRIPTION_API = API_URL + "appointments/bulk";
+const BULK_APPOINTMENTS_API = API_URL + "appointments/bulk";
+const BULK_PRESCRIPTION_API = API_URL + "appointments/prescriptions/bulk";
+const GET_APPOINtMENTS_API = API_URL + "appointments/";
 import axios from "axios";
 import { initJsStore } from "@/service/idb_service.js";
 import { DrugService } from "@/service/drugs_service.js";
@@ -120,24 +122,88 @@ export default {
     async addDrugs(d) {
       await this.db.addDrugsToTable(d);
     },
-    async getLocalPrescriptionsParsed(){
-         let localAppointments = await this.GS.getData("LocalAppointment"),
+    // local
+    async getLocalDataParsed(tableName){
+         let data = await this.GS.getData(tableName),
          output = [];
-         if(localAppointments){
-           for(let i = 0;i< localAppointments.length; i++ ){
-             output.push(localAppointments[i].data);
+         if(data){
+           for(let i = 0;i< data.length; i++ ){
+             output.push(data[i].data);
            }
            return output;
          }
          
     },
-    sendBulkPrescriptionToServer(){
-       let localPrescriptions = Promise.resolve(this.getLocalPrescriptionsParsed());
+    sendBulkAppointmentsToServer(){
+       let localPrescriptions = Promise.resolve(this.getLocalDataParsed("LocalAppointment"));
        let instance = this;
 
        localPrescriptions.then(v=> {
    console.log(v);
-       return;
+      //  return;
+             axios({
+        method: "post",
+        url: BULK_APPOINTMENTS_API ,
+        data: v,
+        headers: {
+          Authorization: instance.auth,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(r => {
+          console.log(r.data);
+          instance.GS.clearTable("LocalAppointment");
+          this.syncAppointment(true);
+        })
+        .catch(r => {
+          console.log(r);
+        })
+       });
+
+    
+    },
+    syncAppointment(isLocalPrescription){
+ axios({
+        method: "get",
+        url: `${GET_APPOINtMENTS_API}?date=${this.formatDate(new Date()).toString()}&pageNo=0&pageSize=100` ,
+        headers: {
+          Authorization: this.auth,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(r => {
+          let response = r.data.data.data;
+          console.log(response)
+         
+          for(let a = 0; a < response.length;a++){
+             console.log(response[a].id)
+        this.GS.updateDataById("Appointment", {
+            data: response[a]
+        },
+        {
+          id : response[a].id
+        });
+        console.log("updated appointments")
+          }
+           console.log(isLocalPrescription == true)
+          if(isLocalPrescription == true){
+            console.log("executed")
+this.sendPrescriptions();
+          }
+           
+        }).catch(e=> {
+          console.log(e)
+        });
+
+    },
+    sendPrescriptions(){
+      console.log("ok")
+  let localPrescriptions = Promise.resolve(this.getLocalDataParsed("LocalPresciption"));
+  let instance = this;
+
+       localPrescriptions.then(v=> {
+   console.log(v);
+      //  return;
              axios({
         method: "post",
         url: BULK_PRESCRIPTION_API ,
@@ -149,24 +215,35 @@ export default {
       })
         .then(r => {
           console.log(r.data);
-          instance.GS.clearTable("LocalAppointment");
-          this.syncAppointment();
+          instance.GS.clearTable("LocalPresciption");
+          this.syncAppointment(false);
         })
         .catch(r => {
           console.log(r);
         })
        });
-
-    
     },
-    syncAppointment(){},
-    syncDBwithServer(){
+    getSyncedAppointmentsFromServer(){
 
-    }
+    },
+    formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
   },
   mounted() {
     this.GS = new ABService();
-    this.sendBulkPrescriptionToServer();
+    // this.sendBulkAppointmentsToServer();
+    // console.log(this.formatDate(new Date()).toString())
   }
 };
 </script>

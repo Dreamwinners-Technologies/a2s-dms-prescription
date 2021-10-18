@@ -143,10 +143,26 @@ const getDatabase = () => {
             },
         }
     };
+    const tblLatestAppointment = {
+        name: 'LatestAppointment',
+        columns: {
+            lId: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            id: {
+                notNull: false,
+            },
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.Object
+            },
+        }
+    };
     const dataBase = {
         name: "a2sdms",
-        version: 12,
-        tables: [tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile]
+        version: 13,
+        tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile]
     };
     return dataBase;
 };

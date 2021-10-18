@@ -46,14 +46,10 @@ export class ABService {
         });
     }
 
-    updateDataById(tableName, data) {
+    updateDataById(tableName, data, id) {
         return connection.update({ in: tableName,
-            set: {
-                data: data.data
-            },
-            where: {
-                id: data.id
-            }
+            set: data,
+            where: id
         })
     }
 
