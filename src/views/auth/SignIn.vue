@@ -41,10 +41,10 @@
             ></v-img>
             <br />
             <h3 v-if="!isOTPMode" class="my-4">Sign in</h3>
-            <h3 v-if="isOTPMode" class="my-4">
+            <h4 v-if="isOTPMode" class="my-4">
               We just need the OTP send <br />
-              to you number to verify
-            </h3>
+              to your number to verify you Identity
+            </h4>
           </div>
           <v-form
             v-if="!isOTPMode"
@@ -87,11 +87,11 @@
               required
               outlined
             ></v-text-field>
-            <v-row class="mb-2" align="center">
+            <v-row justify="center" class="mb-2" align="center">
               <v-col class="">
                 Didn't get OTP?
               </v-col>
-              <v-col>
+              <v-col >
                 <v-btn
                   rounded=""
                   :disabled="countDown != 0"

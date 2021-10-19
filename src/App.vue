@@ -58,6 +58,7 @@ export default {
   },
   methods: {
    checkIfInitialLogInAndSync(){
+     console.log("initial login")
      let cu = JSON.parse(localStorage.getItem("uData")).roles;
      if(cu.includes("DOCTOR") && localStorage.getItem("IL") == "true"){
        this.syncDB();
