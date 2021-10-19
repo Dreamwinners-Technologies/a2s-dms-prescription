@@ -64,21 +64,35 @@
 
           <v-list-item v-if="isAdmin" link to="card-controller">
             <v-list-item-icon>
-              <v-icon>mdi-card</v-icon>
+              <v-icon>mdi-card-bulleted</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Card Controller</v-list-item-title>
           </v-list-item>
 
-          <v-list-item v-if="isAdmin" link to="generic-controller">
+          <v-list-item v-if="isAdmin" link to="medicine-request">
             <v-list-item-icon>
               <v-icon>mdi-pill</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Medicine Request</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="isAdmin" link to="medicine-controller">
+            <v-list-item-icon>
+              <v-icon>mdi-medical-bag</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Medicine Controller</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="isAdmin" link to="generic-controller">
+            <v-list-item-icon>
+              <v-icon>mdi-bowling</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Generic Contoller</v-list-item-title>
           </v-list-item>
           
           <v-list-item v-if="isDoctor" link to="edit-template">
             <v-list-item-icon>
-              <v-icon>mdi-cards-outline</v-icon>
+              <v-icon>mdi-page-layout-header</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Edit Template</v-list-item-title>
           </v-list-item>

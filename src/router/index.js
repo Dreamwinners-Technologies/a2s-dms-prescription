@@ -40,6 +40,18 @@ const routes = [{
                     import ( /* webpackChunkName: "about" */ '../views/admin/CardController.vue')
             },
             {
+                path: 'medicine-request',
+                name: 'Medicine Request',
+                component: () =>
+                    import ( /* webpackChunkName: "about" */ '../views/admin/MedicineRequest.vue')
+            },
+            {
+                path: 'medicine-controller',
+                name: 'Medicine Controller',
+                component: () =>
+                    import ( /* webpackChunkName: "about" */ '../views/admin/MedicineController.vue')
+            },
+            {
                 path: 'create-appointment',
                 name: 'Create Appointment',
                 component: () =>

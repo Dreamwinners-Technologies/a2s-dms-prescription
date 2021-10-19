@@ -30,7 +30,7 @@
                                        <b>Action</b>
                                    </v-col>
                                </v-row>
-                               <v-row v-for="card in cardList" :key="card" style="text-align:center;border-bottom: 1px solid #e7e7e7">
+                               <v-row v-for="card,idx in cardList" :key="idx" style="text-align:center;border-bottom: 1px solid #e7e7e7">
                                     <v-col class="ml-2" style="text-align:left" cols="5">
 
                                         <v-row>
@@ -60,7 +60,7 @@
                                              <v-btn-toggle>
                                                      <v-btn color="info" depressed small @click="seeCardInfo(card)"><v-icon style="color:white!important" small>mdi-eye</v-icon></v-btn>
                                                      <v-btn color="success" depressed small @click="approveCard(card.id)"><v-icon style="color:white!important" small>mdi-check</v-icon></v-btn>
-                                                     <v-btn color="error" depressed small @click="approveCard(card.id)"><v-icon style="color:white!important" small>mdi-delete</v-icon></v-btn>
+                                                     <v-btn color="error" depressed small @click="deleteCard(card.id)"><v-icon style="color:white!important" small>mdi-delete</v-icon></v-btn>
                                                 </v-btn-toggle>
                                         </v-card-subtitle>
                                     </v-col>
@@ -108,6 +108,7 @@ import axios from 'axios';
 export default {
   data () {
     return {
+        idx:0,
         cardInfoDialog: false,
         cardInfo:{},
         auth: "Bearer " + localStorage.getItem("token"),
@@ -164,13 +165,13 @@ export default {
             }
         })
         .then(r=>{
-            if(r.data.statusCode==200){
+            if(r.data.statusCode==201){
                 console.log(r)
                 this.getCardReq()
             }
         })
     },
-    approveCard(id){
+    deleteCard(id){
         axios({
             method: "delete",
             url: this.CARD_REQ_API+"/delete/"+id,
