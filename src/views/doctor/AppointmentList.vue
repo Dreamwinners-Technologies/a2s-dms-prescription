@@ -1,98 +1,162 @@
 <template>
-    <div>
-    <v-card rounded="0" elevation="0" color="#f2f5f8"> 
-            <v-breadcrumbs :items="items">
-            <template v-slot:divider>
-                <v-icon>mdi-chevron-right</v-icon>
-            </template>
-            </v-breadcrumbs>
-        </v-card>
+  <div>
+    <v-card rounded="0" elevation="0" color="#f2f5f8">
+      <v-breadcrumbs :items="items">
+        <template v-slot:divider>
+          <v-icon>mdi-chevron-right</v-icon>
+        </template>
+      </v-breadcrumbs>
+    </v-card>
     <v-container>
-
-        <!-- appointment list  -->
-                   <v-row>
-                       <v-col>
-                           <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
-                               <v-row class="pa-5">
-                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Appointment List</h3>
-                               </v-row>
-                               <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
-                                   <v-col cols="3">
-                                       <b>Name</b>
-                                   </v-col>
-                                   <v-col cols="1">
-                                       <b>Age</b>
-                                   </v-col>
-                                   <v-col>
-                                       <b>Phone Number</b>
-                                   </v-col>
-                                   <v-col>
-                                       <b>Date</b>
-                                   </v-col>
-                                   <v-col>
-                                       <b>Payment</b>
-                                   </v-col>
-                                   <v-col cols="2">
-                                       <b>Action</b>
-                                   </v-col>
-                               </v-row>
-                               <v-row v-for="appointment in appointmentList" :key="appointment.lId" style="text-align:center;border-bottom: 1px solid #e7e7e7">
-                                    <v-col class="ml-2" style="text-align:left" cols="3">
-
-                                        <v-row>
-                                            <v-col cols="3">
-                                               <v-avatar
-                                               class="my-3 white--text"
-                                                :color="getRandomColor()"
-                                                size="40"
-                                                ><h3>{{appointment.data.patientName.charAt(0)}}</h3></v-avatar>
-                                            </v-col>
-                                            <v-col>
-                                                 <h4 class="mt-5">
-                                                    {{appointment.data.patientName}}
-                                                </h4>   
-                                            </v-col>
-                                        </v-row>
-                                    </v-col>
-                                    <v-col cols="1">
-                                        <v-chip class="mt-3" small outlined color="teal">{{appointment.data.patientAge}}</v-chip>
-                                    </v-col>
-                                    <v-col>
-                                        <v-card-subtitle>
-                                            {{appointment.data.patientPhoneNo}}
-                                        </v-card-subtitle>
-                                    </v-col>
-                                    <v-col>
-                                        <v-card-subtitle>
-                                            {{appointment.data.appointmentDate}}
-                                        </v-card-subtitle>
-                                    </v-col>
-                                    <v-col>
-                                        <v-chip class="mt-3" small outlined color="green">{{appointment.data.paymentMethod}}</v-chip>
-                                    </v-col>
-                                    <v-col cols="2">
-                                        <v-card-subtitle>
-                                                 <v-btn-toggle>
-                                                     <v-btn color="info" depressed small><v-icon style="color:white!important" small>mdi-eye</v-icon></v-btn>
-                                                     <v-btn color="info" @click="print(appointment.data.id)" depressed small><v-icon style="color:white!important" small>mdi-printer</v-icon></v-btn> 
-                                                </v-btn-toggle>
-                                        </v-card-subtitle>
-                                    </v-col>
-                               </v-row>
-                           </v-card>
-                       </v-col>
-                   </v-row>   
-            
+      <!-- appointment list  -->
+      <v-row>
+        <v-col>
+          <v-card
+            class="pa-4 mt-2"
+            elevation="0"
+            style="border: 1px solid #e7e7e7"
+            width="100%"
+          >
+            <v-row class="pa-5">
+              <v-col cols="8">
+                <v-icon large>mdi-timetable</v-icon>
+                <h3 class="mt-1 ml-2">Appointment List</h3>
+              </v-col>
+              <v-col>
+                <v-menu
+                  ref="menu"
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :return-value.sync="date"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="date"
+                      label="Select Appoinment Date First"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="date" no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="menu = false">
+                      Cancel
+                    </v-btn>
+                    <v-btn text color="primary" @click="$refs.menu.save(date), getAppointments()">
+                      OK
+                    </v-btn>
+                  </v-date-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
+            <v-row
+              style="background-color:#f2f5f8;border-radius:8px;text-align:center"
+            >
+              <v-col cols="3">
+                <b>Name</b>
+              </v-col>
+              <v-col cols="1">
+                <b>Age</b>
+              </v-col>
+              <v-col>
+                <b>Phone Number</b>
+              </v-col>
+              <v-col>
+                <b>Date</b>
+              </v-col>
+              <v-col>
+                <b>Payment</b>
+              </v-col>
+              <v-col cols="2">
+                <b>Action</b>
+              </v-col>
+            </v-row>
+            <v-row
+              v-for="(appointment,i) in appointmentList"
+              :key="i"
+              style="text-align:center;border-bottom: 1px solid #e7e7e7"
+            >
+              <v-col class="ml-2" style="text-align:left" cols="3">
+                <v-row>
+                  <v-col cols="3">
+                    <v-avatar
+                      class="my-3 white--text"
+                      :color="getRandomColor()"
+                      size="40"
+                      ><h3>
+                        {{ appointment.patientName.charAt(0) }}
+                      </h3></v-avatar
+                    >
+                  </v-col>
+                  <v-col>
+                    <h4 class="mt-5">
+                      {{ appointment.patientName }}
+                    </h4>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col cols="1">
+                <v-chip class="mt-3" small outlined color="teal">{{
+                  appointment.patientAge
+                }}</v-chip>
+              </v-col>
+              <v-col>
+                <v-card-subtitle>
+                  {{ appointment.patientPhoneNo }}
+                </v-card-subtitle>
+              </v-col>
+              <v-col>
+                <v-card-subtitle>
+                  {{ appointment.appointmentDate }}
+                </v-card-subtitle>
+              </v-col>
+              <v-col>
+                <v-chip class="mt-3" small outlined color="green">{{
+                  appointment.paymentMethod
+                }}</v-chip>
+              </v-col>
+              <v-col cols="2">
+                <v-card-subtitle>
+                  <v-btn-toggle>
+                    <v-btn color="info" depressed small
+                      ><v-icon style="color:white!important" small
+                        >mdi-eye</v-icon
+                      ></v-btn
+                    >
+                    <v-btn
+                      color="info"
+                      @click="print(appointment.id)"
+                      depressed
+                      small
+                      ><v-icon style="color:white!important" small
+                        >mdi-printer</v-icon
+                      ></v-btn
+                    >
+                  </v-btn-toggle>
+                </v-card-subtitle>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-container>
-</div>  
+  </div>
 </template>
 
 <script>
+const API_URL = "https://need-doctors-backend.herokuapp.com/";
+const GET_APPOINtMENTS_API = API_URL + "appointments/";
 import { initJsStore } from "@/service/idb_service.js";
 import { ABService } from "@/service/Generic_Service.js";
-import { v4 as uuidv4 } from 'uuid';
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 export default {
-    async beforeCreate() {
+  async beforeCreate() {
     try {
       const isDbCreated = await initJsStore();
       if (isDbCreated) {
@@ -106,100 +170,128 @@ export default {
       Global.isIndexedDbSupported = false;
     }
   },
-  data () {
+  data() {
     return {
-        ABS: null,
-        menu: false,
-        createAppDialog: false,
-        genders: ["Male","Female"],
-        paymentMethods: ["Cash","Online"],
-        localAppointment: {
-                appointmentDate: "",
-                createdOn: 0,
-                gender: "Male",
-                id: "",
-                offline: true,
-                paid: false,
-                patientAddress: "",
-                patientAge: "",
-                patientName: "",
-                patientPhoneNo: "",
-                patientProblem: "",
-                paymentMethod: "Cash",
-                },
-         appointment: {
-                appointmentDate: "",
-                createdAt: 0,
-                createdBy: "",
-                doctorsFee: 0,
-                gender: "Male",
-                id: "",
-                isCompleted: false,
-                isExpired: false,
-                isPaid: false,
-                otherFees: 0,
-                patientAddress: "",
-                patientAge: "",
-                patientName: "",
-                patientPhoneNo: "",
-                patientProblem: "",
-                paymentMethod: "Cash",
-                prescription: {
-                advice: [],
-                bloodPressure: 0,
-                chiefComplaints: [],
-                diagnosis: [],
-                id: "",
-                investigationAdvice: [],
-                medicines: [],
-                onExamination: [],
-                pulse: 0,
-                temperature: 0
-                },
-                totalFee: 0,
-                updatedAt: 0,
-                updatedBy: ""
-            },
-        
-        appointmentList: [],
-        items: [
-            {
-            text: 'a2sDMS',
-            disabled: false,
-            href: '/',
-            },
-            {
-            text: 'Create Appointment',
-            disabled: true,
-            href: 'create-appointment',
-            },
-        ]
-    }
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+            auth: "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
+      menu: false,
+      modal: false,
+      ABS: null,
+      menu: false,
+      createAppDialog: false,
+      genders: ["Male", "Female"],
+      paymentMethods: ["Cash", "Online"],
+      localAppointment: {
+        appointmentDate: "",
+        createdOn: 0,
+        gender: "Male",
+        id: "",
+        offline: true,
+        paid: false,
+        patientAddress: "",
+        patientAge: "",
+        patientName: "",
+        patientPhoneNo: "",
+        patientProblem: "",
+        paymentMethod: "Cash"
+      },
+      appointment: {
+        appointmentDate: "",
+        createdAt: 0,
+        createdBy: "",
+        doctorsFee: 0,
+        gender: "Male",
+        id: "",
+        isCompleted: false,
+        isExpired: false,
+        isPaid: false,
+        otherFees: 0,
+        patientAddress: "",
+        patientAge: "",
+        patientName: "",
+        patientPhoneNo: "",
+        patientProblem: "",
+        paymentMethod: "Cash",
+        prescription: {
+          advice: [],
+          bloodPressure: 0,
+          chiefComplaints: [],
+          diagnosis: [],
+          id: "",
+          investigationAdvice: [],
+          medicines: [],
+          onExamination: [],
+          pulse: 0,
+          temperature: 0
+        },
+        totalFee: 0,
+        updatedAt: 0,
+        updatedBy: ""
+      },
+
+      appointmentList: [],
+      items: [
+        {
+          text: "a2sDMS",
+          disabled: false,
+          href: "/"
+        },
+        {
+          text: "Create Appointment",
+          disabled: true,
+          href: "create-appointment"
+        }
+      ]
+    };
   },
   methods: {
-      show () {
-        return 0
+    show() {
+      return 0;
     },
     getRandomColor() {
-        return 'rgb(' + 
-            (Math.floor(Math.random()*56)+200) + ', ' +
-            (Math.floor(Math.random()*56)+200) + ', ' +
-            (Math.floor(Math.random()*56)+200) +
-            ')';
-     },
-    async getAppointmentList(){
-        let data = await this.ABS.getData("Appointment");
-        console.log(data)
-        this.appointmentList = data;
+      return (
+        "rgb(" +
+        (Math.floor(Math.random() * 56) + 200) +
+        ", " +
+        (Math.floor(Math.random() * 56) + 200) +
+        ", " +
+        (Math.floor(Math.random() * 56) + 200) +
+        ")"
+      );
     },
-   print(id){
-       let routeData = this.$router.resolve("print/prescription/"+id);
-      window.open(routeData.href, '_blank');
-   }
+    async getAppointmentList() {
+      let data = await this.ABS.getData("Appointment");
+      console.log(data);
+      this.appointmentList = data;
+    },
+    print(id) {
+      let routeData = this.$router.resolve("print/prescription/" + id);
+      window.open(routeData.href, "_blank");
+    },
+    getAppointments() {
+      axios({
+        method: "get",
+        url: `${GET_APPOINtMENTS_API}?date=${this.date}&pageNo=0&pageSize=200`,
+        headers: {
+          Authorization: this.auth,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(r => {
+          let response = r.data.data.data;
+          this.appointmentList = response;
+          console.log(response);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   },
-  mounted(){
-       this.ABS = new ABService();
-       this.getAppointmentList();
+  mounted() {
+    this.ABS = new ABService();
+    this.getAppointments();
   }
-}
+};
 </script>

@@ -963,8 +963,8 @@ export default {
       this.appointment.data.prescription.investigationAdvice = this.stringToArray(this.sideDataTextFieldModel.investigationAdvice)
     },
     setLocalPrescriptionData(){
-      this.localprescription.id = this.appointment.data.id;
-      this.localprescription.data.appointmentId = this.localprescription.id
+      // this.localprescription.id = this.appointment.data.id;
+      this.localprescription.data.appointmentId = this.appointment.data.id
       this.localprescription.data.prescriptionRequest.chiefComplaints = this.appointment.data.prescription.chiefComplaints
       this.localprescription.data.prescriptionRequest.onExamination = this.appointment.data.prescription.onExamination
       this.localprescription.data.prescriptionRequest.diagnosis = this.appointment.data.prescription.diagnosis

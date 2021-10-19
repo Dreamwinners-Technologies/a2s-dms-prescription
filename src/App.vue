@@ -5,6 +5,7 @@
       <v-dialog v-model="dialog" persistent width="300" style="height:40px;">
         <v-card  color="#009688"
         class="text-center" style="color: #fff;">
+        <div class=""></div>
           Please wait, Syncing ... <br> {{currentProgress * 200}} drugs synced.
           <v-progress-linear
             indeterminate
