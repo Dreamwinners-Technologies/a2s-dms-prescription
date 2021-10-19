@@ -30,7 +30,8 @@
       <v-dialog v-model="dialog" persistent width="300" style="height:40px;">
         <v-card  color="#009688"
         class="text-center" style="color: #fff;">
-          Please wait, Syncing ... <br> {{currentProgress * 200}} drugs synced.
+          Please wait, Syncing ... <br>
+          {{message}}
           <v-progress-linear
             indeterminate
             color="white"
@@ -62,6 +63,7 @@ export default {
        auth: "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
       students: [],
       dialog: false,
+      message: "",
       currentProgress: 0
     };
   },
@@ -135,6 +137,8 @@ export default {
          
     },
     sendBulkAppointmentsToServer(){
+       this.dialog = true;
+       this.message = "Sending Appointments to Server ..."
        let localPrescriptions = Promise.resolve(this.getLocalDataParsed("LocalAppointment"));
        let instance = this;
 
@@ -163,6 +167,10 @@ export default {
     
     },
     syncAppointment(isLocalPrescription){
+     if(isLocalPrescription)
+      this.message = "Syncing appointments with server ..";
+      else 
+      this.message = "Finalizing Syncing.."
  axios({
         method: "get",
         url: `${GET_APPOINtMENTS_API}?date=${this.formatDate(new Date()).toString()}&pageNo=0&pageSize=100` ,
@@ -187,8 +195,10 @@ export default {
           }
            console.log(isLocalPrescription == true)
           if(isLocalPrescription == true){
-            console.log("executed")
 this.sendPrescriptions();
+
+          }else{
+            this.dialog = false;
           }
            
         }).catch(e=> {
@@ -197,6 +207,7 @@ this.sendPrescriptions();
 
     },
     sendPrescriptions(){
+      this.sendPrescriptions = "Syncing prescription now ."
       console.log("ok")
   let localPrescriptions = Promise.resolve(this.getLocalDataParsed("LocalPresciption"));
   let instance = this;

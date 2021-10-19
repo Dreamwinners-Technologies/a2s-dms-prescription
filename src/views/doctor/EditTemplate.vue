@@ -84,7 +84,8 @@
 </template>
 <script>
 import "quill/dist/quill.core.css";
-import 'quill/dist/quill.bubble.css'
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
 
 import { quillEditor } from "vue-quill-editor";
 export default {

@@ -76,6 +76,9 @@
                 <b>Action</b>
               </v-col>
             </v-row>
+            <v-row class="text-center" align="center" v-if="appointmentList.length == 0">
+     <v-col>  <h3> {{message}}</h3> </v-col>
+            </v-row>
             <v-row
               v-for="(appointment,i) in appointmentList"
               :key="i"
@@ -172,6 +175,7 @@ export default {
   },
   data() {
     return {
+      message: "No appoinments available at this date !",
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
@@ -271,6 +275,7 @@ export default {
       window.open(routeData.href, "_blank");
     },
     getAppointments() {
+      this.message = "Loading ... "
       axios({
         method: "get",
         url: `${GET_APPOINtMENTS_API}?date=${this.date}&pageNo=0&pageSize=200`,
@@ -286,6 +291,8 @@ export default {
         })
         .catch(e => {
           console.log(e);
+          this.appointmentList = [];
+          this.message = "No appoinments available at this date !";
         });
     }
   },
