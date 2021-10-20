@@ -59,7 +59,7 @@ export default {
   methods: {
    checkIfInitialLogInAndSync(){
      console.log("initial login")
-     if(localStorage.getItem("uData") == undefined) return;
+     if(localStorage.getItem("uData") === null) return;
      let cu = JSON.parse(localStorage.getItem("uData")).roles;
      if(cu.includes("DOCTOR") && localStorage.getItem("IL") == "true"){
        this.syncDB();
