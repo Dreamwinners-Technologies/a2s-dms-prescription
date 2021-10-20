@@ -51,7 +51,7 @@ export default {
   
   data () {
     return {
-    auth: "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
+    auth: "",
       dialog : false,
        currentProgress: 0
     }
@@ -75,6 +75,7 @@ export default {
       
     },
    getLoggedProfileInfo(){
+     this.auth = "Bearer " + JSON.parse(localStorage.getItem("uData")).token
     console.log(PROFILE_URL)
     console.log(this.auth)
              axios({
