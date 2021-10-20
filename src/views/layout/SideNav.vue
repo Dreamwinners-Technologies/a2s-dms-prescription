@@ -132,7 +132,7 @@
     </v-navigation-drawer>
 </template>
 <script>
-import { initJsStore } from "@/service/idb_service.js";
+import { dropDatabase } from "@/service/idb_service.js";
 import { ABService } from "@/service/Generic_Service.js";
 
 export default {
@@ -158,12 +158,13 @@ export default {
         return false;
       }
     },
-      logOut(){
+     async logOut(){
       localStorage.removeItem("token");
       localStorage.removeItem("uData");
       localStorage.setItem("IL", true);
       this.$router.push("/auth/signin");
-      this.clearTable("Drugs","ProfData");
+      // this.clearTable("Drugs","ProfData");
+       const dbDeleted = await dropDatabase();
   },
   getCurrentLoggedUserType(){
     let user = JSON.parse(localStorage.getItem("uData"));

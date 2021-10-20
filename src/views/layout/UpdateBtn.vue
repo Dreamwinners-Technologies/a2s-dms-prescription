@@ -70,7 +70,7 @@ export default {
   async beforeCreate() {},
   created() {},
   methods: {
-    async initDB() {
+    async initDB(){
       try {
         const isDbCreated = await initJsStore();
         if (isDbCreated) {
@@ -78,7 +78,6 @@ export default {
           this.syncDB();
         } else {
           console.log("db opened");
-          this.searchDrugs();
         }
       } catch (ex) {
         console.error(ex);
@@ -226,7 +225,13 @@ this.sendPrescriptions();
       })
         .then(r => {
           console.log(r.data);
-          instance.GS.clearTable("LocalPresciption");
+          // instance.GS.clearTable("LocalPresciption");
+          connection.dropDb().then(function() {
+    console.log('Db deleted successfully');
+}).catch(function(error) {
+    console.log(error);
+});;
+
           this.syncAppointment(false);
         })
         .catch(r => {

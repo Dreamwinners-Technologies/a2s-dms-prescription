@@ -171,3 +171,10 @@ export const initJsStore = async() => {
     const dataBase = getDatabase();
     return await connection.initDb(dataBase);
 };
+export const dropDatabase = async() => {
+    connection.dropDb().then(function() {
+        console.log('Db deleted successfully');
+    }).catch(function(error) {
+        console.log(error);
+    });;
+};

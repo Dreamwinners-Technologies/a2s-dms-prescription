@@ -65,7 +65,6 @@ export default {
        this.syncDB();
      }
    },
-   
     syncDB() {
       this.dialog = true;
       let ds = new DrugService();
