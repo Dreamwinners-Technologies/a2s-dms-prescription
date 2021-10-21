@@ -1,7 +1,7 @@
 <template>
 <v-app>
     <v-container>
-        <v-row>
+        <!-- <v-row>
             <v-col>
                 <h2 style="color:#479EF4">Dr Mojibur Rahman</h2>
                 MBBS <br>
@@ -22,7 +22,20 @@
                 ফোনঃ ০১৭৩৪৫৪৩০২৭
                 
             </v-col>
-        </v-row>
+        </v-row> -->
+         <v-row class="my-0">
+        <v-col>
+          <span class="preview" style="text-align: left !important;" v-html="leftHeader"></span>
+        </v-col>
+        <v-spacer> </v-spacer>
+        <v-col style="text-align:right !important">
+          <span
+          class="preview"
+            style="text-align: right !important;"
+            v-html="rightHeader"
+          ></span>
+        </v-col>
+      </v-row>
         <hr>
         <v-row justify="center" style="text-align:center">
             <v-col>
@@ -140,6 +153,8 @@
 export default {
     data(){
         return {
+            leftHeader: "",
+            rightHeader: "",
             prescription:{
                 id:"",
                 chiefComplaints: ["Fever for 3 days","Runing nose"],
@@ -199,10 +214,15 @@ export default {
         }
     },
     mounted(){
+        this.leftHeader = localStorage.getItem("leftHeader");
+        this.rightHeader = localStorage.getItem("rightHeader");
         this.print();
     }
 }
 </script>
-<style scoped="mode" parent-scope-off>
+<style>
+.preview p{
+    margin-bottom: 0px !important;
+}
  /* @import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"); */
 </style>

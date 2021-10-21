@@ -497,28 +497,19 @@
             <h3>Preview: Prescription of ( Rahim Mia )</h3>
         <div id="prescription">
         <v-container>
-        <v-row class="my-0">
-            <v-col>
-                <h2 style="color:#479EF4">Dr Mojibur Rahman</h2>
-                MBBS <br>
-                Dhaka Medical College <br>
-                Room No 508,Trusted Care Hostpital <br>
-                Narsingdi sadar <br>
-                Phone: 01734543027 <br>
-            </v-col>
-            <v-spacer>
-            </v-spacer>
-            <v-col style="text-align:right !important">
-                 <h2 style="color:#479EF4">ডাঃ মোঃ মজিবুর রহমান
-                 </h2>
-                এম বি বি এস <br>
-                ঢাকা মেডিকেল কলেজ <br>
-                চেম্বারঃ ৫০৮,  ট্রাস্টেড কেয়ার হাসপাতাল <br>
-                নরসিংদী সদর, নরসিংদী <br>
-                ফোনঃ ০১৭৩৪৫৪৩০২৭
-                
-            </v-col>
-        </v-row>
+         <v-row class="my-0">
+        <v-col>
+          <span class="preview" style="text-align: left !important;" v-html="leftHeader"></span>
+        </v-col>
+        <v-spacer> </v-spacer>
+        <v-col style="text-align:right !important">
+          <span
+          class="preview"
+            style="text-align: right !important;"
+            v-html="rightHeader"
+          ></span>
+        </v-col>
+      </v-row>
         <hr>
         <v-row class="my-0" style="text-align:center">
             <v-col>
@@ -742,6 +733,8 @@ export default {
   // },
   data() {
     return {
+                  leftHeader: "",
+            rightHeader: "",
       ABS: null,
       DS: null,
       snackbar: false,
@@ -1023,6 +1016,8 @@ export default {
     }
   },
   mounted() {
+            this.leftHeader = localStorage.getItem("leftHeader");
+        this.rightHeader = localStorage.getItem("rightHeader");
     this.ABS = new ABService();
     this.DS = new DrugService();
     this.getSideData("chiefComplaints");

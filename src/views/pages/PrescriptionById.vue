@@ -4,7 +4,7 @@
     <div class="body">
         <v-container>
         <div class="print-container" >
-        <v-row class="my-0">
+        <!-- <v-row class="my-0">
             <v-col>
                 <h2 style="color:#479EF4">Dr Mojibur Rahman</h2>
                 MBBS <br>
@@ -25,7 +25,20 @@
                 ফোনঃ ০১৭৩৪৫৪৩০২৭
                 
             </v-col>
-        </v-row>
+        </v-row> -->
+         <v-row class="my-0">
+        <v-col>
+          <span class="preview" style="text-align: left !important;" v-html="leftHeader"></span>
+        </v-col>
+        <v-spacer> </v-spacer>
+        <v-col style="text-align:right !important">
+          <span
+          class="preview"
+            style="text-align: right !important;"
+            v-html="rightHeader"
+          ></span>
+        </v-col>
+      </v-row>
         <hr>
         <v-row class="my-0" style="text-align:center">
             <v-col>
@@ -153,6 +166,8 @@ import { ABService } from "@/service/Generic_Service.js";
 export default {
     data(){
         return {
+                        leftHeader: "",
+            rightHeader: "",
             ABS: null,
             selectedAppointment:"",
             windowSize: {
@@ -213,6 +228,8 @@ export default {
         },
     },
     mounted(){
+                this.leftHeader = localStorage.getItem("leftHeader");
+        this.rightHeader = localStorage.getItem("rightHeader");
         this.selectedAppointment = this.$route.params.id;
         this.ABS = new ABService();
         this.getAppointmentData();
@@ -221,6 +238,9 @@ export default {
 </script>
 
 <style scoped>
+.preview .v-application p{
+    margin-bottom: 0px !important;
+}
 html{
     margin:0 !important;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
@@ -261,4 +281,5 @@ html{
 .v-footer {
     background-color: white;
 }
+
 </style>
