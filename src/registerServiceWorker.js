@@ -21,7 +21,7 @@ register(`${process.env.BASE_URL}service-worker.js`, {
         },
         updated() {
             console.log('New content is available; please refresh.');
-            location.reload();
+            // location.reload();
         },
         offline() {
             console.log('No internet connection found. App is running in offline mode.')
