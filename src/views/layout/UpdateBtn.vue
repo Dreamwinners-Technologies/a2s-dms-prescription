@@ -200,18 +200,24 @@ export default {
         .then(r => {
           let response = r.data.data.data;
           console.log(response);
-
+    //  let a = this.GS.getDataById("Appointment","123");
+    //  console.log(a)
+    this.GS.clearTable("Appointment");
           for (let a = 0; a < response.length; a++) {
             console.log(response[a].id);
-            this.GS.updateDataById(
-              "Appointment",
-              {
-                data: response[a]
-              },
-              {
-                id: response[a].id
-              }
-            );
+            this.GS.addData("Appointment", {
+      data: response[a],
+      id:  response[a].id,
+    });
+            // this.GS.updateDataById(
+            //   "Appointment",
+            //   {
+            //     data: response[a]
+            //   },
+            //   {
+            //     id: response[a].id
+            //   }
+            // );
             console.log("updated appointments");
           }
           console.log(isLocalPrescription == true);
