@@ -877,6 +877,22 @@ export default {
       if(id!=null){
         let data = await this.ABS.getDataById("Appointment",id);
         this.appointment = data[0]
+        if( this.appointment.data.prescription == null){
+        this.appointment.data.prescription = {
+                advice: [],
+                bloodPressure: 0,
+                chiefComplaints: [],
+                diagnosis: [],
+                id: "",
+                investigationAdvice: [],
+                medicines: [],
+                onExamination: [],
+                pulse: 0,
+                temperature: 0
+        };
+        }
+
+        console.log(this.appointment)
         this.setSideModelData()
       }
     },
