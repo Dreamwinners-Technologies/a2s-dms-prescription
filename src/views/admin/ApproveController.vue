@@ -1,8 +1,26 @@
 <template>
   <v-row class="ml-4 mr-4">
     <v-col>
-      <v-snackbar
-      top :color="snackbarColor" v-model="snackbar" timeout="1500">
+      <v-dialog title="Add New Drug" v-model="dialog" max-width="300px">
+      <v-card class="pa-5">
+        <h3>Delete Permission </h3> 
+      <v-row>
+        <v-col>
+            <span>Phone No: {{ deletePermissionNumberModel}}</span>
+        </v-col>
+      </v-row>
+   <v-row>
+     <v-spacer></v-spacer>
+     <v-col>
+        <v-btn @click="deleteDoctorPrescriptionPermission" depressed color="error"
+          ><v-icon class="mr-2">mdi-delete</v-icon> Delete</v-btn
+        >
+     </v-col>
+   </v-row>
+      </v-card>
+    </v-dialog>
+            
+      <v-snackbar top :color="snackbarColor" v-model="snackbar" timeout="1500">
         {{ snackbarText }}
       </v-snackbar>
       <v-card
@@ -80,158 +98,74 @@
           </v-form>
         </template>
       </v-card>
-
+      <!--  -->
       <v-card
         class="pa-4 mt-2"
         elevation="0"
         style="border: 1px solid #e7e7e7"
         width="100%"
       >
-        <template>
-          <v-data-table
-            :headers="headers"
-            :items="doctorsList"
-            sort-by="calories"
-            class="elevation-1"
-          >
-            <template v-slot:top>
-              <v-toolbar flat>
-                <v-toolbar-title> <h3>Doctors List</h3> </v-toolbar-title>
-                <v-divider class="mx-4" inset vertical></v-divider>
-                <v-spacer></v-spacer>
-                <!-- <v-dialog
-          v-model="dialog"
-          max-width="500px"
+        <v-row class="pa-5">
+          <v-icon large>mdi-account-multiple</v-icon>
+          <h3 class="mt-1 ml-2">
+            Presciption Permitted Doctors List
+          </h3>
+        </v-row>
+        <v-row
+          style="background-color:#f2f5f8;border-radius:8px;text-align:center"
         >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
-            >
-              New Item
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Dessert name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.calories"
-                      label="Calories"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="Fat (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Carbs (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Protein (g)"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
+          <v-col cols="3">
+            <b>ID</b>
+          </v-col>
+          <v-col cols="3">
+            <b>Name</b>
+          </v-col>
+          <v-col cols="2">
+            <b>Phone No</b>
+          </v-col>
+          <v-col cols="2">
+            <b>User Name</b>
+          </v-col>
+          <v-col cols="2">
+            <b>Action</b>
+          </v-col>
+        </v-row>
+        <v-row
+          v-for="(doctor, idy) in doctorsList"
+          :key="idy"
+          style="text-align:center;border-bottom: 1px solid #e7e7e7"
+        >
+          <v-col cols="3">
+            <v-card-subtitle>
+              {{ doctor.id }}
+            </v-card-subtitle>
+          </v-col>
+          <v-col cols="3">
+            <v-card-subtitle>
+              {{ doctor.name }}
+            </v-card-subtitle>
+          </v-col>
+          <v-col cols="2">
+            <v-card-subtitle>
+              {{ doctor.phoneNo }}
+            </v-card-subtitle>
+          </v-col>
+          <v-col cols="2">
+            <v-card-subtitle>
+              {{ doctor.userName }}
+            </v-card-subtitle>
+          </v-col>
+          <v-col cols="2">
+            <v-card-subtitle>
+              <!-- <v-btn color="info" depressed small class="mr-2"
+                ><v-icon small>mdi-pencil-outline</v-icon></v-btn
+              > -->
+              <v-btn @click="dialog = true,deletePermissionNumberModel = doctor.phoneNo" color="error" depressed small
+                ><v-icon small>mdi-delete</v-icon></v-btn
               >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog> -->
-                <v-dialog v-model="dialogDelete" max-width="500px">
-                  <v-card>
-                    <v-card-title class="text-h5"
-                      >Are you sure you want to delete this item?</v-card-title
-                    >
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="closeDelete"
-                        >Cancel</v-btn
-                      >
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="deleteItemConfirm"
-                        >OK</v-btn
-                      >
-                      <v-spacer></v-spacer>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-toolbar>
-            </template>
-            <template v-slot:item.actions="{ item }">
-              <v-icon small class="mr-2" @click="editItem(item)">
-                mdi-pencil
-              </v-icon>
-              <v-icon small>
-                mdi-delete
-              </v-icon>
-            </template>
-            <template v-slot:no-data>
-              <v-btn color="primary">
-                Reset
-              </v-btn>
-            </template>
-          </v-data-table>
-        </template>
+            </v-card-subtitle>
+          </v-col>
+        </v-row>
       </v-card>
     </v-col>
   </v-row>
@@ -239,13 +173,17 @@
 <script>
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
+const API_URL = "https://need-doctors-backend.herokuapp.com/";
+const DELETE_PRESCRIPTION_PERMISSION_API = API_URL + "admin/prescription/doctors/";
 export default {
   data() {
     return {
       auth: "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
       snackbar: false,
+      dialog : false,
       snackbarColor: "",
       snackbarText: "",
+      deletePermissionNumberModel: "",
       // for admin related datas
       doctorPrescriptionRequestModel: {
         appointmentPerDay: 0,
@@ -253,34 +191,13 @@ export default {
         fee: 0
       },
       doctorPrescriptionRequestNumber: "",
-      headers: [
-        {
-          text: "Id",
-          align: "start",
-          sortable: false,
-          value: "id"
-        },
-        { text: "Name", value: "name" },
-        { text: "Phone No", value: "phoneNo" },
-        { text: "User Name", value: "userName" },
-        { text: "Actions", value: "actions", sortable: false }
-      ],
       doctorsList: []
     };
   },
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    }
   },
 
   watch: {
-    dialog(val) {
-      val || this.close();
-    },
-    dialogDelete(val) {
-      val || this.closeDelete();
-    }
   },
 
   created() {},
@@ -288,47 +205,32 @@ export default {
     this.getPrescriptionDoctorList();
   },
   methods: {
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
+   deleteDoctorPrescriptionPermission(){
+   this.dialog = false;
+         axios({
+        method: "delete",
+        url:   `${DELETE_PRESCRIPTION_PERMISSION_API}${this.deletePermissionNumberModel}`,
+        headers: {
+          Authorization: this.auth,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(response => {
+          console.log(response);
+           this.snackbar = true;
+          this.snackbarColor = "success";
+          this.snackbarText = "The doctor's permisson has been deleted!";
+          this.getPrescriptionDoctorList();
 
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-
-    deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
-      this.close();
-    },
+        })
+        .catch(err => {
+          console.log(err.response);
+           this.snackbar = true;
+          this.snackbarColor = "error";
+          this.snackbarText =
+            err.response.data.message;
+        });
+   },
     getPrescriptionDoctorList() {
       axios
         .get(

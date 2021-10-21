@@ -222,7 +222,7 @@
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
-import moderatorController from "@/views/admin/ModeratorController"
+import moderatorController from "@/views/admin/ModeratorController";
 export default {
   components: {
 moderatorController
