@@ -8,7 +8,10 @@
     >
       {{ snackbarText }}
        </v-snackbar>
-<!-- Dialog -->
+<!-- Dialog 
+
+
+-->
   <v-dialog title="Add New Drug" v-model="adddialog" max-width="400px">
       <v-card class="pa-5">
         <h3>Add New Moderator</h3>
