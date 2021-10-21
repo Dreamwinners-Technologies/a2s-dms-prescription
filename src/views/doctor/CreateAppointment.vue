@@ -285,7 +285,7 @@ export default {
             href: '/',
             },
             {
-            text: 'Create Appointment',
+            text: 'Todays Appointment',
             disabled: true,
             href: 'create-appointment',
             },

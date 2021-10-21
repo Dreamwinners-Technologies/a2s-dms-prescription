@@ -21,9 +21,16 @@
     <v-card
     elevation="0"
     style="border:1px solid #e7e7e7">
-      <v-card-title>
-        Search Generic:
-      </v-card-title>
+      <v-row class="pt-5 px-5">
+      <v-col>
+        <h3>Search Generic:</h3>
+      </v-col>
+      <v-spacer>
+      </v-spacer>
+      <v-col>
+        <v-btn :disabled="genericInfo.genericId==0" @click="deleteGeneric(genericInfo.genericId)" depressed color="error">Delete Generic</v-btn><v-btn class="ml-2" @click="addGenericDialog=true" depressed color="info">ADD Generic</v-btn>
+      </v-col>
+      </v-row>
       <v-row class="ma-4">
         <v-col>
         <v-autocomplete
@@ -42,10 +49,10 @@
         >
           <template v-slot:no-data>
             <v-list-item>
-              <v-list-item-title>
+                <v-list-item-title>
                 Search By
                 <strong>Generic Name</strong>
-              </v-list-item-title>
+                </v-list-item-title>
             </v-list-item>
           </template>
           <template v-slot:selection="{ attr, on, item, selected }">
@@ -205,6 +212,138 @@
       </v-row>
     </v-card>
   </v-container>
+
+
+  <v-dialog max-width="800px" v-model="addGenericDialog">
+    <v-card class="pa-5">
+      <h3>Add Generic</h3> <br>
+      <v-row>
+        <v-col>
+          <v-textarea
+              v-model="genericModel.genericName"
+              auto-grow
+              filled
+              color="teal"
+              label="Generic Name"
+              rows="1"
+              required>
+            </v-textarea>
+          <v-textarea
+              v-model="genericModel.precaution"
+              auto-grow
+              filled
+              color="teal"
+              label="Precaution"
+              rows="1"
+              required>
+            </v-textarea>
+            <v-textarea
+              v-model="genericModel.contraIndication"
+              auto-grow
+              filled
+              color="teal"
+              label="Contra Indication"
+              rows="1"
+              required>
+            </v-textarea>
+            <v-textarea
+              v-model="genericModel.indication"
+              auto-grow
+              filled
+              color="teal"
+              label="Indication"
+              rows="1"
+              required>
+            </v-textarea>
+             <v-textarea
+              v-model="genericModel.interaction"
+              auto-grow
+              filled
+              color="teal"
+              label="Interaction"
+              rows="1"
+              required>
+            </v-textarea>
+            <v-textarea
+              v-model="genericModel.dose"
+              auto-grow
+              filled
+              color="teal"
+              label="Dose"
+              rows="1"
+              required>
+            </v-textarea>
+             <v-textarea
+              v-model="genericModel.sideEffect"
+              auto-grow
+              filled
+              color="teal"
+              label="Side Effect"
+              rows="1"
+              required>
+            </v-textarea>
+            <v-textarea
+              v-model="genericModel.modeOfAction"
+              auto-grow
+              filled
+              color="teal"
+              label="Mode of Action"
+              rows="1"
+              required>
+            </v-textarea>
+            <v-textarea
+              v-model="genericModel.pregnancyCategoryNote"
+              auto-grow
+              filled
+              color="teal"
+              label="Pregnancy Category Note"
+              rows="1">
+            </v-textarea>
+            <v-textarea
+              v-model="genericModel.adultDose"
+              auto-grow
+              filled
+              color="teal"
+              label="Adult Dose"
+              rows="1"
+              required>
+            </v-textarea>
+             <v-textarea
+              v-model="genericModel.childDose"
+              auto-grow
+              filled
+              color="teal"
+              label="Child Dose"
+              rows="1"
+              required>
+            </v-textarea>
+             <v-textarea
+              v-model="genericModel.renalDose"
+              auto-grow
+              filled
+              color="teal"
+              label="Renal Dose"
+              rows="1"
+              required>
+            </v-textarea>
+             <v-textarea
+              v-model="genericModel.administration"
+              auto-grow
+              filled
+              color="teal"
+              label="Administration"
+              rows="1"
+              required>
+            </v-textarea>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-btn depressed color="info" @click="addGeneric()">Save</v-btn>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-dialog>
 </div>
 </template>
 <script>
@@ -216,11 +355,14 @@ export default {
     isLoading2: false,
     successMsg: false,
     errorMsg: false,
+    addGenericDialog: false,
     drugs: [],
     model: null,
     search: null,
     tab: null,
-    GET_GENERIC_API: 'http://need-doctors-backend.southeastasia.cloudapp.azure.com:8100/drugs/generics',
+    auth: "Bearer " + localStorage.getItem("token"),
+    GET_GENERIC_API: 'https://need-doctors-backend.herokuapp.com/drugs/generics',
+    GENERIC_API:'https://need-doctors-backend.herokuapp.com/medicines/generics',
     genericList: [],
     genericInfo: {
       administration: '',
@@ -238,6 +380,22 @@ export default {
       pregnancyCategoryNote: '',
       renalDose: '',
       sideEffect: ''
+    },
+    genericModel: {
+      administration: "",
+      adultDose: "",
+      childDose: "",
+      contraIndication: "",
+      dose: "",
+      genericName: "",
+      indication: "",
+      interaction: "",
+      modeOfAction: "",
+      precaution: "",
+      pregnanciesCategoryId: 0,
+      pregnancyCategoryNote: "",
+      renalDose: "",
+      sideEffect: ""
     },
      items: [
             {
@@ -270,6 +428,42 @@ export default {
     },
     submit () {
       this.$refs.observer.validate()
+    },
+    addGeneric(){
+      console.log(this.genericModel)
+      axios({
+            method:"post",
+            url: this.GENERIC_API,
+            data: this.genericModel,
+            headers: {
+            Authorization: this.auth,
+            "Content-Type": "application/json"
+            }
+        })
+        .then(r=>{
+            if(r.data.statusCode==201){
+                console.log("Generic Added")
+                this.addGenericDialog = false
+            }
+        })
+    },
+    deleteGeneric(id){
+      console.log(this.genericModel)
+      axios({
+            method:"delete",
+            url: this.GENERIC_API+'/'+id,
+            headers: {
+            Authorization: this.auth,
+            "Content-Type": "application/json"
+            }
+        })
+        .then(r=>{
+            if(r.data.statusCode==200){
+                console.log("Generic Deleted")
+                this.getGenericInfo.genericId = 0
+                this.getGeneticList()
+            }
+        })
     },
     getGenericInfo () {
       axios({
