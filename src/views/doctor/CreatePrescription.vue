@@ -988,15 +988,29 @@ export default {
    async savePrescription(){
     this.setPrescriptionData()
     this.setLocalPrescriptionData()
-    let r = await this.ABS.updateDataById("LocalPresciption",this.localprescription);
+    let r = await this.ABS.updateDataById("LocalPresciption",
+                  {
+                data: this.localprescription.data
+              },
+              {
+                id:  this.localprescription.data.appointmentId
+              }
+    );
       if (r) console.log(r);
       else {
-        r = await this.ABS.addData("LocalPresciption", {
+        let x = await this.ABS.addData("LocalPresciption", {
         id: this.appointment.data.id,
         data: this.localprescription.data
         });
       }
-          r = await this.ABS.updateDataById("Appointment",this.appointment)
+          let z = await this.ABS.updateDataById("Appointment",
+                           {
+                data: this.appointment.data
+              },
+              {
+                id:  this.appointment.data.id
+              }
+          )
      if (r) { this.snackbar = true;}
     
     },
