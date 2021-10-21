@@ -241,7 +241,7 @@ export default {
         });
     },
     sendPrescriptions() {
-      this.sendPrescriptions = "Syncing prescription now .";
+      this.message = "Syncing prescription now .";
       console.log("ok");
       let localPrescriptions = Promise.resolve(
         this.getLocalDataParsed("LocalPresciption")
