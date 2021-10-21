@@ -7,6 +7,9 @@
         </template>
       </v-breadcrumbs>
     </v-card>
+    <v-card class="py-2" rounded="0" elevation="0" color="error">
+      <h5 style="color:white;text-align:center">This feature is only work in online</h5>
+    </v-card>
     <v-container>
       <!-- appointment list  -->
       <v-row>
@@ -18,11 +21,8 @@
             width="100%"
           >
             <v-row class="pa-5">
-              <v-col cols="8">
-                <v-icon large>mdi-timetable</v-icon>
-                <h3 class="mt-1 ml-2">Appointment List</h3>
-              </v-col>
-              <v-col>
+                <v-icon large>mdi-timetable</v-icon><h3 class="mt-5 ml-2">Appointment By Date</h3>
+                <v-spacer></v-spacer>
                 <v-menu
                   ref="menu"
                   v-model="menu"
@@ -32,7 +32,7 @@
                   offset-y
                   min-width="auto"
                 >
-                  <template v-slot:activator="{ on, attrs }">
+                  <template style="width:50px !important;" v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="date"
                       label="Select Appoinment Date First"
@@ -52,7 +52,6 @@
                     </v-btn>
                   </v-date-picker>
                 </v-menu>
-              </v-col>
             </v-row>
             <v-row
               style="background-color:#f2f5f8;border-radius:8px;text-align:center"

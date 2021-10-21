@@ -46,13 +46,20 @@
             <v-list-item-icon>
               <v-icon>mdi-clipboard-plus</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Create Appointment</v-list-item-title>
+            <v-list-item-title>Todays Appointment</v-list-item-title>
           </v-list-item>
           <v-list-item v-if="isDoctor" link to="appointment-list">
             <v-list-item-icon>
               <v-icon>mdi-clipboard-text</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Appointment List</v-list-item-title>
+            <v-list-item-title>Previous Appointment</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="isDoctor" link to="fav-medicine">
+            <v-list-item-icon>
+              <v-icon>mdi-heart</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Favourite Medicine</v-list-item-title>
           </v-list-item>
           
           <v-list-item v-if="isAdmin" link to="doctor-approve">
