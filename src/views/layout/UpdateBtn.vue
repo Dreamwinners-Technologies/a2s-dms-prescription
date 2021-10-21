@@ -228,14 +228,16 @@ export default {
           }
         })
         .catch(e => {
-          console.log(e.response.status);
-          if(e.response.status == 404 ){
-                      if (isLocalPrescription == true) {
-            this.sendPrescriptions();
-          } else {
-            this.dialog = false;
-          }
-          }
+          // console.log(e.response.status);
+          // if(e.response.status == 404 ){
+          //             if (isLocalPrescription == true) {
+         
+          // } else {
+          //   this.dialog = false;
+          // }
+          // }
+             this.sendPrescriptions();
+             this.dialog = false;
         });
     },
     sendPrescriptions() {
