@@ -157,7 +157,7 @@ export default {
     parseDrugs(ds,cntr){
       //  to sync all the drugs change cntr > 10 to cntr > 107
       // 
-      if(cntr>10){      
+      if(cntr>107){      
         this.dialog = false;
         localStorage.setItem("IL",false);
         return;
