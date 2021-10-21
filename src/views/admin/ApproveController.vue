@@ -1,5 +1,14 @@
 <template>
-  <v-row class="ml-4 mr-4">
+<div>
+  <v-card rounded="0" elevation="0" color="#f2f5f8"> 
+      <v-breadcrumbs :items="items">
+      <template v-slot:divider>
+          <v-icon>mdi-chevron-right</v-icon>
+      </template>
+      </v-breadcrumbs>
+  </v-card>
+  <v-container>
+    <v-row>
     <v-col>
       <v-dialog title="Add New Drug" v-model="dialog" max-width="300px">
       <v-card class="pa-5">
@@ -88,10 +97,11 @@
               </v-col>
               <v-col cols="12">
                 <v-btn
-                  color="#3f8485"
+                  depressed
+                  color="info"
                   class="white--text"
                   @click="giveDoctorPrescriptionPermission"
-                  >Submit</v-btn
+                  >Submit Approval</v-btn
                 >
               </v-col>
             </v-row>
@@ -114,19 +124,19 @@
         <v-row
           style="background-color:#f2f5f8;border-radius:8px;text-align:center"
         >
-          <v-col cols="3">
-            <b>ID</b>
-          </v-col>
-          <v-col cols="3">
+          <v-col>
             <b>Name</b>
           </v-col>
-          <v-col cols="2">
+          <v-col>
             <b>Phone No</b>
           </v-col>
-          <v-col cols="2">
+          <v-col>
             <b>User Name</b>
           </v-col>
-          <v-col cols="2">
+          <v-col>
+            <b>Fee</b>
+          </v-col>
+          <v-col>
             <b>Action</b>
           </v-col>
         </v-row>
@@ -135,27 +145,27 @@
           :key="idy"
           style="text-align:center;border-bottom: 1px solid #e7e7e7"
         >
-          <v-col cols="3">
+          <v-col style="text-align:left !important;">
             <v-card-subtitle>
-              {{ doctor.id }}
+              <h4>{{ doctor.name }}</h4>
             </v-card-subtitle>
           </v-col>
-          <v-col cols="3">
-            <v-card-subtitle>
-              {{ doctor.name }}
-            </v-card-subtitle>
-          </v-col>
-          <v-col cols="2">
+          <v-col>
             <v-card-subtitle>
               {{ doctor.phoneNo }}
             </v-card-subtitle>
           </v-col>
-          <v-col cols="2">
+          <v-col>
             <v-card-subtitle>
               {{ doctor.userName }}
             </v-card-subtitle>
           </v-col>
-          <v-col cols="2">
+          <v-col>
+            <v-card-subtitle>
+              {{ doctor.doctorPrescription.fee }} TK
+            </v-card-subtitle>
+          </v-col>
+          <v-col>
             <v-card-subtitle>
               <!-- <v-btn color="info" depressed small class="mr-2"
                 ><v-icon small>mdi-pencil-outline</v-icon></v-btn
@@ -169,6 +179,8 @@
       </v-card>
     </v-col>
   </v-row>
+  </v-container>
+</div>
 </template>
 <script>
 import axios from "axios";
@@ -191,7 +203,19 @@ export default {
         fee: 0
       },
       doctorPrescriptionRequestNumber: "",
-      doctorsList: []
+      doctorsList: [],
+      items: [
+            {
+            text: 'a2sDMS',
+            disabled: false,
+            href: '/',
+            },
+            {
+            text: 'Doctor Controller',
+            disabled: true,
+            href: 'doctor-approve',
+            },
+        ],
     };
   },
   computed: {
