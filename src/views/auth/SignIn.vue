@@ -116,7 +116,7 @@
     </v-row>
     <v-footer fixed>
       <p style="text-align:center;margin:auto; !important">
-        Copyright © a2sdms | 2021 - {{ year }}
+         Copyright  {{ year }} © a2sdms Prescription
       </p>
     </v-footer>
   </v-container>
