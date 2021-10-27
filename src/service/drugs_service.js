@@ -28,6 +28,14 @@ export class DrugService {
             }
         })
     }
+    getDrugsById(id) {
+        return connection.select({
+            from: this.tableName,
+            where: {
+                drugId: id
+            }
+        })
+    }
 
     removeStudent(id) {
         return connection.remove({

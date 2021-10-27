@@ -39,10 +39,10 @@
                                        <b>Action</b>
                                    </v-col>
                                </v-row>
-                               <v-row v-for="medicine,idx in favMedicine" :key="idx" style="text-align:center;border-bottom: 1px solid #e7e7e7">
+                               <v-row v-for="(medicine,idx) in favMedicine" :key="idx" style="text-align:center;border-bottom: 1px solid #e7e7e7">
                                     <v-col class="ml-2" style="text-align:left" cols="4">
 
-                                        <v-row>
+                                        <v-row  align-content="center">
                                             <v-col cols="2">
                                                <v-avatar
                                                class="my-3 white--text"
@@ -51,10 +51,10 @@
                                                 ><v-icon>mdi-pill</v-icon></v-avatar>
                                             </v-col>
                                             <v-col>
-                                                 <h4 class="mt-2">
+                                                 <h3 class="m-2">
                                                     {{medicine.brandName}} <br>
-                                                    <v-chip :color="getRandomColor()" class="mt-2" x-small>{{medicine.genericName}}</v-chip>
-                                                </h4>   
+                                                    <v-chip small :color="getRandomColor()" class="mt-2" x-small>{{medicine.genericName}}</v-chip>
+                                                </h3>   
                                             </v-col>
                                         </v-row>
                                     </v-col>
@@ -102,13 +102,13 @@
                             clearable
                             hide-details
                             hide-selected
-                            item-text="medicineName"
-                            item-value="id"
+                            item-text="data.medicineName"
+                            item-value="drugId"
                             label="Search Company Name"
                             >
                             </v-autocomplete>
 
-                            {{item}}
+                            <!-- {{item}} -->
                         </v-col>
                         <v-col class="ma-0" style="text-align:right !important;">
                             <v-btn depressed @click="addToFav(item)" color="info"><v-icon class="mr-2">mdi-content-save</v-icon>Add Favourite</v-btn>
@@ -127,23 +127,10 @@ import { DrugService } from "@/service/drugs_service.js";
 import { ABService } from "@/service/Generic_Service.js";
 import { v4 as uuidv4 } from 'uuid';
 export default {
-    async beforeCreate() {
-    try {
-      const isDbCreated = await initJsStore();
-      if (isDbCreated) {
-        console.log("db created");
-      } else {
-        console.log("db opened");
-      }
-    } catch (ex) {
-      console.error(ex);
-      alert(ex.message);
-      Global.isIndexedDbSupported = false;
-    }
-  },
   data () {
     return {
         ABS: null,
+        DS: null,
         menu: false,
         addFavDialog: false,
         item:{},
@@ -184,17 +171,18 @@ export default {
       let output = [];
       let drugs = await this.DS.getDrugs();
       drugs.forEach(function(item) {
-        delete item.id;
-        output.push(item.data);
+        output.push(item);
       });
       this.drugs = output;
+      console.log(this.drugs)
     },
     async addToFav() {
       let drug = await this.DS.getDrugsById(this.item);
       this.addFavourite(drug)
     },
     addFavourite(item){
-        this.favMedicine.push(item);
+        console.log(item)
+        this.favMedicine.push(item[0].data);
         console.log(this.favMedicine)
     }
   },
@@ -206,3 +194,8 @@ export default {
   }
 }
 </script>
+<style>
+.m-2{
+    margin-top: -12px;
+}
+</style>
