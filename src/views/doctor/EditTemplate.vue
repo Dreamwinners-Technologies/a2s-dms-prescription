@@ -38,7 +38,6 @@
           <h2>Left Header</h2>
           <v-card rounded="0" elevation="0" color="#f2f5f8">
             <quill-editor v-model="leftHeader" :options="editorOption" />
-            <!--  @change="onEditorChange($event)" -->
           </v-card>
         </v-col>
         <v-col cols="6">
@@ -48,10 +47,17 @@
           </v-card>
         </v-col>
       </v-row>
-      <!-- <v-row>
-       <v-col><h2 class="text-center">Preview</h2></v-col>
-   </v-row> -->
     </div>
+     <div class="pa-4 wd">
+      <v-row>
+        <v-col cols="12">
+          <h2 class="text-center">???</h2>
+          <v-card rounded="0" elevation="0" color="#f2f5f8">
+            <quill-editor v-model="thirdHeader" :options="editorOption" />
+          </v-card>
+        </v-col>
+      </v-row>
+     </div>
     <div class="text-center pa-4">
                 <v-row style="text-align:center !important;">
             <v-col>
@@ -99,6 +105,7 @@ export default {
         snackbar: false,
       leftHeader: "",
       rightHeader: "",
+      thirdHeader: "",
       editorOption: {
         modules: {
           toolbar: [

@@ -100,7 +100,7 @@
                 >
                   Resend
                 </v-btn>
-                <span v-if="countDown != 0"> in {{ countDown }}s</span>
+                <span class="pt-1 d-inline-block" v-if="countDown != 0"> in {{ countDown }}s</span>
               </v-col>
             </v-row>
             <v-row class="mt-0">
@@ -239,6 +239,10 @@ export default {
             this.errorMsg = true;
           } else if (err.request) {
             // client never received a response, or request never left
+            this.alert = true;
+            this.successMsg = false;
+            this.errorMsg = true;
+            this.apiResponse = err.request;
           } else {
             // anything else
           }
