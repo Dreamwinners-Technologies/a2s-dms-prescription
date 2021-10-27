@@ -439,7 +439,7 @@
                   </v-icon>
                 </v-btn>
 
-                <v-btn :disabled="selectedAppointment=='null'" value="center" @click="savePrescription">
+                <v-btn :disabled="selectedAppointment=='null'" value="center" @click="savePrescription(true)">
                   <span class="hidden-sm-and-down">Save</span>
 
                   <v-icon right>
@@ -944,7 +944,7 @@ export default {
       this.$htmlToPaper("prescription");
     },
     printPrescription(){
-      this.savePrescription()
+      this.savePrescription(true)
       let routeData = this.$router.resolve("print/prescription/"+this.selectedAppointment);
       window.open(routeData.href, '_blank');
     },
@@ -985,7 +985,8 @@ export default {
       this.localprescription.data.prescriptionRequest.temperature = this.appointment.data.prescription.temperature
     },
 
-   async savePrescription(){
+   async savePrescription(firstTime){
+
     this.setPrescriptionData()
     this.setLocalPrescriptionData()
     let r = await this.ABS.updateDataById("LocalPresciption",
@@ -1012,6 +1013,8 @@ export default {
               }
           )
      if (r) { this.snackbar = true;}
+     if(firstTime)
+     this.savePrescription(false)
     
     },
     stringToArray(string){

@@ -65,7 +65,7 @@
             <br />
             <v-row class="mt-0">
               <v-col style="text-align:center" class="pb-0 pt-0">
-                <v-btn color="#3f8485" class="white--text" @click="submit"
+                <v-btn color="#3f8485" :disabled="dialog" class="white--text" @click="submit"
                   >Sign In</v-btn
                 >
               </v-col>
@@ -230,7 +230,7 @@ export default {
         })
         .catch(err => {
           console.log(err.response);
-          if (err.response.status === 401) {
+          if (err.response) {
             // client received an error response (5xx, 4xx)
             this.apiResponse = "Password or Email or Both didn't match!";
             this.dialog = false;
@@ -242,7 +242,9 @@ export default {
             this.alert = true;
             this.successMsg = false;
             this.errorMsg = true;
-            this.apiResponse = err.request;
+            console.log(err.request)
+            this.apiResponse = "Internet Disconnected!";
+            this.dialog = false;
           } else {
             // anything else
           }
