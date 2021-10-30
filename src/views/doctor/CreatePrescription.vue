@@ -1,13 +1,7 @@
 <template>
   <div>
-          <v-snackbar
-      v-model="snackbar"
-      top
-      color="success"
-      centered
-      timeout="1000"
-    >
-     Prescitption has been saved
+    <v-snackbar v-model="snackbar" top color="success" centered timeout="1000">
+      Prescitption has been saved
     </v-snackbar>
 
     <v-card rounded="0" elevation="0" color="#f2f5f8">
@@ -18,14 +12,13 @@
       </v-breadcrumbs>
     </v-card>
     <v-row>
-
       <v-col lg="3" md="3" sm="12" cols="12">
         <v-card class="ma-5" elevation="0">
           <v-row>
             <v-col>
               <h4>Cheif Complaints :</h4>
               <v-autocomplete
-                :disabled="selectedAppointment=='null'"
+                :disabled="selectedAppointment == 'null'"
                 v-model="sideModels.chiefComplaints"
                 :items="sideData.chiefComplaints"
                 chips
@@ -44,8 +37,11 @@
               >
                 <template slot="append">
                   <v-btn
-                    :disabled="selectedAppointment=='null'"
-                    @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='chiefComplaints'"
+                    :disabled="selectedAppointment == 'null'"
+                    @click.stop="
+                      (dialogSideData = true),
+                        (sideDataSubmitCurrentTableName = 'chiefComplaints')
+                    "
                     depressed
                     class="mt-0"
                     small
@@ -56,7 +52,7 @@
                 </template>
               </v-autocomplete>
               <v-textarea
-                :disabled="selectedAppointment=='null'"
+                :disabled="selectedAppointment == 'null'"
                 style="margin-top:0px !important"
                 name="input-7-1"
                 outlined
@@ -92,7 +88,10 @@
               >
                 <template slot="append">
                   <v-btn
-                   @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='onExamination'"
+                    @click.stop="
+                      (dialogSideData = true),
+                        (sideDataSubmitCurrentTableName = 'onExamination')
+                    "
                     depressed
                     class="mt-0"
                     small
@@ -134,11 +133,14 @@
                 outlined
                 color="teal"
                 dense
-                 @change="setSideDataTextFieldTextByTableName('diagnosis')"
+                @change="setSideDataTextFieldTextByTableName('diagnosis')"
               >
                 <template slot="append">
                   <v-btn
-                  @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='diagnosis'"
+                    @click.stop="
+                      (dialogSideData = true),
+                        (sideDataSubmitCurrentTableName = 'diagnosis')
+                    "
                     depressed
                     class="mt-0"
                     small
@@ -180,11 +182,16 @@
                 outlined
                 color="teal"
                 dense
-                 @change="setSideDataTextFieldTextByTableName('investigationAdvice')"
+                @change="
+                  setSideDataTextFieldTextByTableName('investigationAdvice')
+                "
               >
                 <template slot="append">
                   <v-btn
-                  @click.stop="dialogSideData = true, sideDataSubmitCurrentTableName='investigationAdvice'"
+                    @click.stop="
+                      (dialogSideData = true),
+                        (sideDataSubmitCurrentTableName = 'investigationAdvice')
+                    "
                     depressed
                     class="mt-0"
                     small
@@ -218,10 +225,24 @@
           <v-row>
             <v-col>
               <v-row class="pa-4">
-                  <h4>Patient Information :</h4>
-                  <v-spacer></v-spacer>
-                  <v-btn v-if="selectedAppointment!='null'" @click="crearSelectedAppointment" class="mr-2" small depressed>Clear</v-btn>
-                  <v-btn v-if="selectedAppointment!='null'" @click="$router.push('/create-appointment')" small depressed color="info">Change Appointment</v-btn>
+                <h4>Patient Information :</h4>
+                <v-spacer></v-spacer>
+                <v-btn
+                  v-if="selectedAppointment != 'null'"
+                  @click="crearSelectedAppointment"
+                  class="mr-2"
+                  small
+                  depressed
+                  >Clear</v-btn
+                >
+                <v-btn
+                  v-if="selectedAppointment != 'null'"
+                  @click="$router.push('/create-appointment')"
+                  small
+                  depressed
+                  color="info"
+                  >Change Appointment</v-btn
+                >
               </v-row>
               <v-card
                 color="teal lighten-5"
@@ -231,15 +252,20 @@
                 style="border: 1px solid #e7e7e7"
                 width="100%"
               >
-              <v-row v-if="selectedAppointment=='null'" class="pa-4">
-                <v-col class="mx-auto" style="text-align:center !important;">
+                <v-row v-if="selectedAppointment == 'null'" class="pa-4">
+                  <v-col class="mx-auto" style="text-align:center !important;">
                     <p>
                       Please select an appointment to create prescription.
                     </p>
-                    <v-btn @click="$router.push('/create-appointment')" depressed color="info">Select Appointment</v-btn>
+                    <v-btn
+                      @click="$router.push('/create-appointment')"
+                      depressed
+                      color="info"
+                      >Select Appointment</v-btn
+                    >
                   </v-col>
                 </v-row>
-                <v-row v-if="selectedAppointment!='null'">
+                <v-row v-if="selectedAppointment != 'null'">
                   <v-col>
                     <v-card-subtitle>
                       <b>Patient ID:</b> <br />PID0234
@@ -248,19 +274,19 @@
                   <v-col>
                     <v-card-subtitle>
                       <b>Patient Name:</b> <br />
-                      {{appointment.data.patientName}}
+                      {{ appointment.data.patientName }}
                     </v-card-subtitle>
                   </v-col>
                   <v-col>
                     <v-card-subtitle>
                       <b>Age</b> <br />
-                      {{appointment.data.patientAge}} Years Old
+                      {{ appointment.data.patientAge }} Years Old
                     </v-card-subtitle>
                   </v-col>
                   <v-col>
                     <v-card-subtitle>
                       <b>Phone Number:</b> <br />
-                      {{appointment.data.patientPhoneNo}}
+                      {{ appointment.data.patientPhoneNo }}
                     </v-card-subtitle>
                   </v-col>
                 </v-row>
@@ -338,7 +364,11 @@
               >
                 <v-row class="pa-5">
                   <v-icon large>mdi-prescription</v-icon> <v-spacer></v-spacer>
-                  <v-btn :disabled="selectedAppointment=='null'" depressed @click.stop="adddialog = true" color="info"
+                  <v-btn
+                    :disabled="selectedAppointment == 'null'"
+                    depressed
+                    @click.stop="adddialog = true"
+                    color="info"
                     >Add Drugs</v-btn
                   >
                 </v-row>
@@ -365,7 +395,7 @@
                   </v-col>
                 </v-row>
                 <v-row
-                  :v-if="selectedAppointment!=null"
+                  :v-if="selectedAppointment != null"
                   v-for="(drug, idy) in appointment.data.prescription.medicines"
                   :key="idy"
                   style="text-align:center;border-bottom: 1px solid #e7e7e7"
@@ -409,7 +439,9 @@
                         ><v-icon small>mdi-pencil-outline</v-icon></v-btn
                       ><v-btn
                         color="error"
-                        @click="appointment.data.prescription.medicines.splice(idy, 1)"
+                        @click="
+                          appointment.data.prescription.medicines.splice(idy, 1)
+                        "
                         depressed
                         small
                         ><v-icon small>mdi-delete</v-icon></v-btn
@@ -431,7 +463,11 @@
                 class="pa-2"
                 style="border:2px solid #479EF4"
               >
-                <v-btn :disabled="selectedAppointment=='null'" value="left" @click="prescriptionPriview=true">
+                <v-btn
+                  :disabled="selectedAppointment == 'null'"
+                  value="left"
+                  @click="prescriptionPriview = true"
+                >
                   <span class="hidden-sm-and-down">Preview</span>
 
                   <v-icon right>
@@ -439,7 +475,11 @@
                   </v-icon>
                 </v-btn>
 
-                <v-btn :disabled="selectedAppointment=='null'" value="center" @click="savePrescription(true)">
+                <v-btn
+                  :disabled="selectedAppointment == 'null'"
+                  value="center"
+                  @click="savePrescription(true)"
+                >
                   <span class="hidden-sm-and-down">Save</span>
 
                   <v-icon right>
@@ -447,7 +487,11 @@
                   </v-icon>
                 </v-btn>
 
-                <v-btn :disabled="selectedAppointment=='null'" value="right" @click="printPrescription()">
+                <v-btn
+                  :disabled="selectedAppointment == 'null'"
+                  value="right"
+                  @click="printPrescription()"
+                >
                   <span class="hidden-sm-and-down">Save & Print</span>
 
                   <v-icon right>
@@ -464,165 +508,208 @@
     </v-row>
 
     <!-- prescription here  -->
-         <v-dialog
-      v-model="dialogSideData"
-      max-width="300px"
-    >
-  <v-card class="pa-4">
-    <h2>Save Information</h2>
-    <v-form>
-      <v-text-field
-              v-model="sideDataSubmitModel"
-              placeholder=""
-              class="mt-2 pa-0"
-              outlined
-              color="teal"
-              dense
-              label=""
-            >
-            </v-text-field>
-            <v-btn @click="submitSideData()"
+    <v-dialog v-model="dialogSideData" max-width="300px">
+      <v-card class="pa-4">
+        <h2>Save Information</h2>
+        <v-form>
+          <v-text-field
+            v-model="sideDataSubmitModel"
+            placeholder=""
+            class="mt-2 pa-0"
+            outlined
+            color="teal"
+            dense
+            label=""
+          >
+          </v-text-field>
+          <v-btn
+            @click="submitSideData()"
             color="primary"
             class="text-center"
             depressed
-            >
-              Submit
-            </v-btn>
-    </v-form>
-  </v-card>
-     </v-dialog>
+          >
+            Submit
+          </v-btn>
+        </v-form>
+      </v-card>
+    </v-dialog>
 
-    <v-dialog title="Add New Drug" v-model="prescriptionPriview" max-width="980px">
-        <v-card class="pa-5">
-            <h3>Preview: Prescription of ( Rahim Mia )</h3>
+    <v-dialog
+      title="Add New Drug"
+      v-model="prescriptionPriview"
+      max-width="980px"
+    >
+      <v-card class="pa-5">
+        <h3>Preview: Prescription of ( Rahim Mia )</h3>
         <div id="prescription">
-        <v-container>
-         <v-row class="my-0">
-        <v-col>
-          <span class="preview" style="text-align: left !important;" v-html="leftHeader"></span>
-        </v-col>
-        <v-spacer> </v-spacer>
-        <v-col style="text-align:right !important">
-          <span
-          class="preview"
-            style="text-align: right !important;"
-            v-html="rightHeader"
-          ></span>
-        </v-col>
-      </v-row>
-        <hr>
-        <v-row class="my-0" style="text-align:center">
-            <v-col>
+          <v-container>
+            <v-row class="my-0">
+              <v-col>
+                <span
+                  class="preview"
+                  style="text-align: left !important;"
+                  v-html="leftHeader"
+                ></span>
+              </v-col>
+              <v-spacer> </v-spacer>
+              <v-col style="text-align:right !important">
+                <span
+                  class="preview"
+                  style="text-align: right !important;"
+                  v-html="rightHeader"
+                ></span>
+              </v-col>
+            </v-row>
+            <hr />
+            <v-row class="my-0" style="text-align:center">
+              <v-col>
                 Patient ID: #P1234
-            </v-col>
-            <v-col cols="4">
-                Name: {{appointment.data.patientName}}
-            </v-col>
-            <v-col>
-                Age: {{appointment.data.patientAge}} Years Old
-            </v-col>
-            <v-col>
-                Date: {{new Date().toLocaleDateString()}}
-            </v-col>
-        </v-row>
-        <hr>
-        <v-row class="ma-0" style="height:1160px">
-            <v-col cols="4" style="border-right: 1px solid #f0f0f0 !important;">
+              </v-col>
+              <v-col cols="4"> Name: {{ appointment.data.patientName }} </v-col>
+              <v-col> Age: {{ appointment.data.patientAge }} Years Old </v-col>
+              <v-col> Date: {{ new Date().toLocaleDateString() }} </v-col>
+            </v-row>
+            <hr />
+            <v-row class="ma-0" style="height:1160px">
+              <v-col
+                cols="4"
+                style="border-right: 1px solid #f0f0f0 !important;"
+              >
                 <v-row>
-                    <v-col>
-                    <b>Cheif Complaints :</b><br><br>
+                  <v-col>
+                    <b>Cheif Complaints :</b><br /><br />
                     <ul class="px-4" style="list-style-type:none">
-                        <li v-for="item in appointment.data.prescription.chiefComplaints" :key="item">
-                            {{item}}
-                        </li>
+                      <li
+                        v-for="item in appointment.data.prescription
+                          .chiefComplaints"
+                        :key="item"
+                      >
+                        {{ item }}
+                      </li>
                     </ul>
-                    </v-col>
-                </v-row>
-                 <v-row>
-                    <v-col>
-                    <b>On Examination :</b><br><br>
-                    <ul class="px-4" style="list-style-type:none">
-                        <li>Pulse: {{appointment.data.prescription.pulse}} mg</li>
-                        <li>BP: {{appointment.data.prescription.bloodPressure}} mmHg</li>
-                        <li>Temp: {{appointment.data.prescription.temperature}} Degree F</li>
-                        <li v-for="item in appointment.data.prescription.onExamination" :key="item">
-                            {{item}}
-                        </li>
-                    </ul>
-                    </v-col>
+                  </v-col>
                 </v-row>
                 <v-row>
-                    <v-col>
-                    <b>Diagnosis :</b><br><br>
+                  <v-col>
+                    <b>On Examination :</b><br /><br />
                     <ul class="px-4" style="list-style-type:none">
-                        <li v-for="item in appointment.data.prescription.diagnosis" :key="item">
-                            {{item}}
-                        </li>
+                      <li>
+                        Pulse: {{ appointment.data.prescription.pulse }} mg
+                      </li>
+                      <li>
+                        BP:
+                        {{ appointment.data.prescription.bloodPressure }} mmHg
+                      </li>
+                      <li>
+                        Temp:
+                        {{ appointment.data.prescription.temperature }} Degree F
+                      </li>
+                      <li
+                        v-for="item in appointment.data.prescription
+                          .onExamination"
+                        :key="item"
+                      >
+                        {{ item }}
+                      </li>
                     </ul>
-                    </v-col>
+                  </v-col>
                 </v-row>
-                 <v-row>
-                    <v-col>
-                    <b>Investigation Advice :</b><br><br>
+                <v-row>
+                  <v-col>
+                    <b>Diagnosis :</b><br /><br />
                     <ul class="px-4" style="list-style-type:none">
-                        <li v-for="item in appointment.data.prescription.investigationAdvice" :key="item">
-                            {{item}}
-                        </li>
+                      <li
+                        v-for="item in appointment.data.prescription.diagnosis"
+                        :key="item"
+                      >
+                        {{ item }}
+                      </li>
                     </ul>
-                    </v-col>
+                  </v-col>
                 </v-row>
-            </v-col>
-            <v-divider
-            class="mx-0"
-            vertical
-            ></v-divider>
-            <v-col cols="7">
-                    <v-row>
-                        <v-col>
-                            <v-icon large>mdi-prescription</v-icon>
-                            <br>
-                        </v-col>
-                    </v-row>
-                    <v-row class="my-0" style="margin-bottom: 10px !important" v-for="item in appointment.data.prescription.medicines" :key="item">
-                        <v-col class="mx-4">
-                            <b style="font-size: 15px !important;">{{item.brand}}</b><br>
-                            {{item.dose}} --- {{item.instruction}} --- {{item.duration}} <br>
-                            Note: {{item.note}}
-                        </v-col>
-                    </v-row>
-                    <br>
-                    <v-footer>
-                        <v-row>
-                            <v-col class="mx-2 mt-4">
-                                <b>Given Advice: </b><p style="margin:0px;display:block" v-for="item in appointment.data.prescription.advice" :key="item"> {{item}} </p>
-                            </v-col>
-                        </v-row>
-                    </v-footer>
-            </v-col>
-        </v-row>
-        <!-- <br> 
+                <v-row>
+                  <v-col>
+                    <b>Investigation Advice :</b><br /><br />
+                    <ul class="px-4" style="list-style-type:none">
+                      <li
+                        v-for="item in appointment.data.prescription
+                          .investigationAdvice"
+                        :key="item"
+                      >
+                        {{ item }}
+                      </li>
+                    </ul>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-divider class="mx-0" vertical></v-divider>
+              <v-col cols="7">
+                <v-row>
+                  <v-col>
+                    <v-icon large>mdi-prescription</v-icon>
+                    <br />
+                  </v-col>
+                </v-row>
+                <v-row
+                  class="my-0"
+                  style="margin-bottom: 10px !important"
+                  v-for="item in appointment.data.prescription.medicines"
+                  :key="item"
+                >
+                  <v-col class="mx-4">
+                    <b style="font-size: 15px !important;">{{ item.brand }}</b
+                    ><br />
+                    {{ item.dose }} --- {{ item.instruction }} ---
+                    {{ item.duration }} <br />
+                    Note: {{ item.note }}
+                  </v-col>
+                </v-row>
+                <br />
+                <v-footer>
+                  <v-row>
+                    <v-col class="mx-2 mt-4">
+                      <b>Given Advice: </b>
+                      <p
+                        style="margin:0px;display:block"
+                        v-for="item in appointment.data.prescription.advice"
+                        :key="item"
+                      >
+                        {{ item }}
+                      </p>
+                    </v-col>
+                  </v-row>
+                </v-footer>
+              </v-col>
+            </v-row>
+            <!-- <br> 
         <br> -->
-        <br>
-        <br>
-        <v-footer absolute>
-        <v-container>
-            <v-row class="pt-2" style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;">
-            <v-col>
-                Made By <br>
-                A2S DMS Prescription
-            </v-col>
-            <v-spacer>
-            </v-spacer>
-            <v-col style="text-align:right !important">
-                 https://prescription.a2sdms.com
-            </v-col>
-        </v-row>
-        </v-container>
-        </v-footer>
-    </v-container>
+            <br />
+            <br />
+            <v-footer absolute>
+              <v-container>
+                <v-row
+                  class="pt-2"
+                  style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;"
+                >
+                  <v-col>
+                    Made By <br />
+                    A2S DMS Prescription
+                  </v-col>
+                  <v-spacer> </v-spacer>
+                  <v-col style="text-align:right !important">
+                    https://prescription.a2sdms.com
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-footer>
+          </v-container>
         </div>
-            <v-btn depressed color="info"><v-icon class="mr-2" @click="prescriptionPriview = false">mdi-content-save</v-icon>Print Prescription</v-btn>
-        </v-card>
+        <v-btn depressed color="info"
+          ><v-icon class="mr-2" @click="prescriptionPriview = false"
+            >mdi-content-save</v-icon
+          >Print Prescription</v-btn
+        >
+      </v-card>
     </v-dialog>
 
     <!-- dialog here -->
@@ -717,24 +804,10 @@ import { ABService } from "@/service/Generic_Service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { htmlToPaper } from "vue-html-to-paper";
 export default {
-  // async beforeCreate() {
-  //   try {
-  //     const isDbCreated = await initJsStore();
-  //     if (isDbCreated) {
-  //       console.log("db created");
-  //     } else {
-  //       console.log("db opened");
-  //     }
-  //   } catch (ex) {
-  //     console.error(ex);
-  //     alert(ex.message);
-  //     Global.isIndexedDbSupported = false;
-  //   }
-  // },
   data() {
     return {
-                  leftHeader: "",
-            rightHeader: "",
+      leftHeader: "",
+      rightHeader: "",
       ABS: null,
       DS: null,
       snackbar: false,
@@ -787,130 +860,139 @@ export default {
         }
       ],
       localprescription: {
-          data: {
-              appointmentId: "",
-              prescriptionRequest: {
-                    advice: [],
-                    bloodPressure: 0,
-                    chiefComplaints: [],
-                    diagnosis: [],
-                    investigationAdvice: [],
-                    medicines: [],
-              onExamination: [],
-              pulse: 0,
-              temperature: 0
-            }
+        data: {
+          appointmentId: "",
+          prescriptionRequest: {
+            advice: [],
+            bloodPressure: 0,
+            chiefComplaints: [],
+            diagnosis: [],
+            investigationAdvice: [],
+            medicines: [],
+            onExamination: [],
+            pulse: 0,
+            temperature: 0
           }
+        }
       },
       sideDataTextFieldModel: {
-           chiefComplaints: "",
-            diagnosis: "",
-            investigationAdvice: "",
-            onExamination: "",
+        chiefComplaints: "",
+        diagnosis: "",
+        investigationAdvice: "",
+        onExamination: ""
       },
       appointment: {
-            data: {
-              appointmentDate: "",
-              createdAt: 0,
-              createdBy: "",
-              doctorsFee: 0,
-              gender: "Male",
-              id: "",
-              isCompleted: false,
-              isExpired: false,
-              isPaid: false,
-              otherFees: 0,
-              patientAddress: "",
-              patientAge: "",
-              patientName: "",
-              patientPhoneNo: "",
-              patientProblem: "",
-              paymentMethod: "Cash",
-              prescription: {
-                advice: [],
-                bloodPressure: 0,
-                chiefComplaints: [],
-                diagnosis: [],
-                id: "",
-                investigationAdvice: [],
-                medicines: [],
-                onExamination: [],
-                pulse: 0,
-                temperature: 0
-              },
-            totalFee: 0,
-            updatedAt: 0,
-            updatedBy: ""
-            }
-        },
+        data: {
+          appointmentDate: "",
+          createdAt: 0,
+          createdBy: "",
+          doctorsFee: 0,
+          gender: "Male",
+          id: "",
+          isCompleted: false,
+          isExpired: false,
+          isPaid: false,
+          otherFees: 0,
+          patientAddress: "",
+          patientAge: "",
+          patientName: "",
+          patientPhoneNo: "",
+          patientProblem: "",
+          paymentMethod: "Cash",
+          prescription: {
+            advice: [],
+            bloodPressure: 0,
+            chiefComplaints: [],
+            diagnosis: [],
+            id: "",
+            investigationAdvice: [],
+            medicines: [],
+            onExamination: [],
+            pulse: 0,
+            temperature: 0
+          },
+          totalFee: 0,
+          updatedAt: 0,
+          updatedBy: ""
+        }
+      }
     };
   },
   methods: {
     test() {
-      console.log("yo")
+      console.log("yo");
     },
     show() {
       return 0;
     },
-   async submitSideData(){
-    let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {
-      data: this.sideDataSubmitModel
-    });
-      if (r){
-         this.getSideData(this.sideDataSubmitCurrentTableName);
-         this.dialogSideData = false;
-      };
+    async submitSideData() {
+      let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {
+        data: this.sideDataSubmitModel
+      });
+      if (r) {
+        this.getSideData(this.sideDataSubmitCurrentTableName);
+        this.dialogSideData = false;
+      }
       this.sideDataSubmitModel = "";
     },
-    async getAppointmentData(){
-      let id = localStorage.getItem("selectedAppointment")
-      this.selectedAppointment = id
-      console.log("Selected ------------------------")
-      console.log(this.selectedAppointment)
-      if(id!=null){
-        let data = await this.ABS.getDataById("Appointment",id);
-        this.appointment = data[0]
-        if( this.appointment.data.prescription == null){
-        this.appointment.data.prescription = {
-                advice: [],
-                bloodPressure: 0,
-                chiefComplaints: [],
-                diagnosis: [],
-                id: "",
-                investigationAdvice: [],
-                medicines: [],
-                onExamination: [],
-                pulse: 0,
-                temperature: 0
-        };
+    async getAppointmentData() {
+      let id = localStorage.getItem("selectedAppointment");
+      this.selectedAppointment = id;
+      console.log("Selected ------------------------");
+      console.log(this.selectedAppointment);
+      if (id != null) {
+        let data = await this.ABS.getDataById("Appointment", id);
+        this.appointment = data[0];
+        if (this.appointment.data.prescription == null) {
+          this.appointment.data.prescription = {
+            advice: [],
+            bloodPressure: 0,
+            chiefComplaints: [],
+            diagnosis: [],
+            id: "",
+            investigationAdvice: [],
+            medicines: [],
+            onExamination: [],
+            pulse: 0,
+            temperature: 0
+          };
         }
 
-        console.log(this.appointment)
-        this.setSideModelData()
+        console.log(this.appointment);
+        this.setSideModelData();
       }
     },
-    setSideModelData(){
-        console.log("data..................................")
-        console.log(this.appointment.data.prescription.chiefComplaints)
-        console.log(this.arrayToString(this.appointment.data.prescription.chiefComplaints))
-        this.sideDataTextFieldModel.chiefComplaints = this.arrayToString(this.appointment.data.prescription.chiefComplaints)
-        this.sideDataTextFieldModel.onExamination = this.arrayToString(this.appointment.data.prescription.onExamination)
-        this.sideDataTextFieldModel.diagnosis = this.arrayToString(this.appointment.data.prescription.diagnosis)
-        this.sideDataTextFieldModel.investigationAdvice = this.arrayToString(this.appointment.data.prescription.investigationAdvice)
+    setSideModelData() {
+      console.log("data..................................");
+      console.log(this.appointment.data.prescription.chiefComplaints);
+      console.log(
+        this.arrayToString(this.appointment.data.prescription.chiefComplaints)
+      );
+      this.sideDataTextFieldModel.chiefComplaints = this.arrayToString(
+        this.appointment.data.prescription.chiefComplaints
+      );
+      this.sideDataTextFieldModel.onExamination = this.arrayToString(
+        this.appointment.data.prescription.onExamination
+      );
+      this.sideDataTextFieldModel.diagnosis = this.arrayToString(
+        this.appointment.data.prescription.diagnosis
+      );
+      this.sideDataTextFieldModel.investigationAdvice = this.arrayToString(
+        this.appointment.data.prescription.investigationAdvice
+      );
     },
-    crearSelectedAppointment(){
-      localStorage.setItem("selectedAppointment",null)
+    crearSelectedAppointment() {
+      localStorage.setItem("selectedAppointment", null);
     },
     setSideDataTextFieldTextByTableName(tableName) {
       let autoCompleteFieldData = this.sideModels[tableName];
       // concating the data from v-auto to to respective
-      // text-field with , 
+      // text-field with ,
       this.sideDataTextFieldModel[tableName] +=
-        this.sideModels[tableName][
-          this.sideModels[tableName].length - 1
-        ] + " ,";
-        console.log(this.sideDataTextFieldModel[tableName])
-        //deleting the selectd v-auto data
+        this.sideModels[tableName][this.sideModels[tableName].length - 1] +
+        " ,";
+      console.log(this.sideDataTextFieldModel[tableName]);
+      //deleting the selectd v-auto data
       setTimeout(() => {
         autoCompleteFieldData.pop();
       }, 100);
@@ -943,16 +1025,20 @@ export default {
       this.prescriptionPriview = true;
       this.$htmlToPaper("prescription");
     },
-    printPrescription(){
-      this.savePrescription(true)
-      let routeData = this.$router.resolve("print/prescription/"+this.selectedAppointment);
-      window.open(routeData.href, '_blank');
+    printPrescription() {
+      this.savePrescription(true);
+      let routeData = this.$router.resolve(
+        "print/prescription/" + this.selectedAppointment
+      );
+      window.open(routeData.href, "_blank");
     },
     addDrug() {
       if (this.drugUpdateIdx == -1) {
         this.appointment.data.prescription.medicines.push(this.addDrugModel);
       } else {
-        this.appointment.data.prescription.medicines[this.drugUpdateIdx] = this.addDrugModel;
+        this.appointment.data.prescription.medicines[
+          this.drugUpdateIdx
+        ] = this.addDrugModel;
         this.drugUpdateIdx = -1;
       }
 
@@ -965,76 +1051,85 @@ export default {
         note: ""
       };
     },
-    setPrescriptionData(){
-      this.appointment.data.prescription.chiefComplaints = this.stringToArray(this.sideDataTextFieldModel.chiefComplaints)
-      this.appointment.data.prescription.onExamination = this.stringToArray(this.sideDataTextFieldModel.onExamination)
-      this.appointment.data.prescription.diagnosis = this.stringToArray(this.sideDataTextFieldModel.diagnosis)
-      this.appointment.data.prescription.investigationAdvice = this.stringToArray(this.sideDataTextFieldModel.investigationAdvice)
+    setPrescriptionData() {
+      this.appointment.data.prescription.chiefComplaints = this.stringToArray(
+        this.sideDataTextFieldModel.chiefComplaints
+      );
+      this.appointment.data.prescription.onExamination = this.stringToArray(
+        this.sideDataTextFieldModel.onExamination
+      );
+      this.appointment.data.prescription.diagnosis = this.stringToArray(
+        this.sideDataTextFieldModel.diagnosis
+      );
+      this.appointment.data.prescription.investigationAdvice = this.stringToArray(
+        this.sideDataTextFieldModel.investigationAdvice
+      );
     },
-    setLocalPrescriptionData(){
+    setLocalPrescriptionData() {
       // this.localprescription.id = this.appointment.data.id;
-      this.localprescription.data.appointmentId = this.appointment.data.id
-      this.localprescription.data.prescriptionRequest.chiefComplaints = this.appointment.data.prescription.chiefComplaints
-      this.localprescription.data.prescriptionRequest.onExamination = this.appointment.data.prescription.onExamination
-      this.localprescription.data.prescriptionRequest.diagnosis = this.appointment.data.prescription.diagnosis
-      this.localprescription.data.prescriptionRequest.investigationAdvice = this.appointment.data.prescription.investigationAdvice
-      this.localprescription.data.prescriptionRequest.advice = this.appointment.data.prescription.advice
-      this.localprescription.data.prescriptionRequest.medicines = this.appointment.data.prescription.medicines
-      this.localprescription.data.prescriptionRequest.pulse = this.appointment.data.prescription.pulse
-      this.localprescription.data.prescriptionRequest.bloodPressure = this.appointment.data.prescription.bloodPressure
-      this.localprescription.data.prescriptionRequest.temperature = this.appointment.data.prescription.temperature
+      this.localprescription.data.appointmentId = this.appointment.data.id;
+      this.localprescription.data.prescriptionRequest.chiefComplaints = this.appointment.data.prescription.chiefComplaints;
+      this.localprescription.data.prescriptionRequest.onExamination = this.appointment.data.prescription.onExamination;
+      this.localprescription.data.prescriptionRequest.diagnosis = this.appointment.data.prescription.diagnosis;
+      this.localprescription.data.prescriptionRequest.investigationAdvice = this.appointment.data.prescription.investigationAdvice;
+      this.localprescription.data.prescriptionRequest.advice = this.appointment.data.prescription.advice;
+      this.localprescription.data.prescriptionRequest.medicines = this.appointment.data.prescription.medicines;
+      this.localprescription.data.prescriptionRequest.pulse = this.appointment.data.prescription.pulse;
+      this.localprescription.data.prescriptionRequest.bloodPressure = this.appointment.data.prescription.bloodPressure;
+      this.localprescription.data.prescriptionRequest.temperature = this.appointment.data.prescription.temperature;
     },
 
-   async savePrescription(firstTime){
-
-    this.setPrescriptionData()
-    this.setLocalPrescriptionData()
-    let r = await this.ABS.updateDataById("LocalPresciption",
-                  {
-                data: this.localprescription.data
-              },
-              {
-                id:  this.localprescription.data.appointmentId
-              }
-    );
+    async savePrescription(firstTime) {
+      this.setPrescriptionData();
+      this.setLocalPrescriptionData();
+      let r = await this.ABS.updateDataById(
+        "LocalPresciption",
+        {
+          data: this.localprescription.data
+        },
+        {
+          id: this.localprescription.data.appointmentId
+        }
+      );
       if (r) console.log(r);
       else {
         let x = await this.ABS.addData("LocalPresciption", {
-        id: this.appointment.data.id,
-        data: this.localprescription.data
+          id: this.appointment.data.id,
+          data: this.localprescription.data
         });
       }
-          let z = await this.ABS.updateDataById("Appointment",
-                           {
-                data: this.appointment.data
-              },
-              {
-                id:  this.appointment.data.id
-              }
-          )
-     if (r) { this.snackbar = true;}
-     if(firstTime)
-     this.savePrescription(false)
-    
+      let z = await this.ABS.updateDataById(
+        "Appointment",
+        {
+          data: this.appointment.data
+        },
+        {
+          id: this.appointment.data.id
+        }
+      );
+      if (r) {
+        this.snackbar = true;
+      }
+      if (firstTime) this.savePrescription(false);
     },
-    stringToArray(string){
-      var data = string+ ''
-      var arr = data.split(',');
-      console.log(arr)
+    stringToArray(string) {
+      var data = string + "";
+      var arr = data.split(",");
+      console.log(arr);
       return arr;
     },
-    arrayToString(arr){
-      console.log(arr)
+    arrayToString(arr) {
+      console.log(arr);
       // var arr = array.pop()
-      var str = arr.toString()
-      console.log("....................................")
-      console.log(str)
+      var str = arr.toString();
+      console.log("....................................");
+      console.log(str);
       return str;
     }
   },
   mounted() {
-            this.leftHeader = localStorage.getItem("leftHeader");
-        this.rightHeader = localStorage.getItem("rightHeader");
+    this.leftHeader = localStorage.getItem("leftHeader");
+    this.rightHeader = localStorage.getItem("rightHeader");
     this.ABS = new ABService();
     this.DS = new DrugService();
     this.getSideData("chiefComplaints");

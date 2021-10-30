@@ -235,6 +235,7 @@ moderatorController
       GET_LOGGED_IN_PROFILE_API:
         "https://buggie-backend.herokuapp.com/auth/user-info",
       user: {},
+      usedData :{},
       auth: "Bearer " + localStorage.getItem("token"),
       userInfo: {
         firstName: "Tasnim",
@@ -382,7 +383,9 @@ moderatorController
   },
   mounted() {
     // this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    // this.getProfileInfo();
+     this.getProfileInfo();
+    let user = JSON.parse(localStorage.getItem("uData"));
+    this.userData = user;
     this.setSideDataBasedOnUser();
   }
 };

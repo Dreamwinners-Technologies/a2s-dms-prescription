@@ -8,7 +8,9 @@
       </v-breadcrumbs>
     </v-card>
     <v-card class="py-2" rounded="0" elevation="0" color="error">
-      <h5 style="color:white;text-align:center">This feature is only work in online</h5>
+      <h5 style="color:white;text-align:center">
+        This feature works only when online
+      </h5>
     </v-card>
     <v-container>
       <!-- appointment list  -->
@@ -21,37 +23,45 @@
             width="100%"
           >
             <v-row class="pa-5">
-                <v-icon large>mdi-timetable</v-icon><h3 class="mt-5 ml-2">Appointment By Date</h3>
-                <v-spacer></v-spacer>
-                <v-menu
-                  ref="menu"
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  :return-value.sync="date"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
+              <v-icon large>mdi-timetable</v-icon>
+              <h3 class="mt-5 ml-2">Appointment By Date</h3>
+              <v-spacer></v-spacer>
+              <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :return-value.sync="date"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template
+                  style="width:50px !important;"
+                  v-slot:activator="{ on, attrs }"
                 >
-                  <template style="width:50px !important;" v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="date"
-                      label="Select Appoinment Date First"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="date" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="menu = false">
-                      Cancel
-                    </v-btn>
-                    <v-btn text color="primary" @click="$refs.menu.save(date), getAppointments()">
-                      OK
-                    </v-btn>
-                  </v-date-picker>
-                </v-menu>
+                  <v-text-field
+                    v-model="date"
+                    label="Select Appoinment Date First"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="date" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="menu = false">
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menu.save(date), getAppointments()"
+                  >
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
             </v-row>
             <v-row
               style="background-color:#f2f5f8;border-radius:8px;text-align:center"
@@ -75,11 +85,17 @@
                 <b>Action</b>
               </v-col>
             </v-row>
-            <v-row class="text-center" align="center" v-if="appointmentList.length == 0">
-     <v-col>  <h3> {{message}}</h3> </v-col>
+            <v-row
+              class="text-center"
+              align="center"
+              v-if="appointmentList.length == 0"
+            >
+              <v-col>
+                <h3>{{ message }}</h3>
+              </v-col>
             </v-row>
             <v-row
-              v-for="(appointment,i) in appointmentList"
+              v-for="(appointment, i) in appointmentList"
               :key="i"
               style="text-align:center;border-bottom: 1px solid #e7e7e7"
             >
@@ -178,7 +194,7 @@ export default {
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
-            auth: "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
+      auth: "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
       menu: false,
       modal: false,
       ABS: null,
@@ -274,7 +290,7 @@ export default {
       window.open(routeData.href, "_blank");
     },
     getAppointments() {
-      this.message = "Loading ... "
+      this.message = "Loading ... ";
       axios({
         method: "get",
         url: `${GET_APPOINtMENTS_API}?date=${this.date}&pageNo=0&pageSize=200`,

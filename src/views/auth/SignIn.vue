@@ -61,6 +61,7 @@
               :rules="[rules.required, rules.min]"
               required
               outlined
+              prepend-inner-icon="mdi-phone"
             ></v-text-field>
             <br />
             <v-row class="mt-0">
@@ -86,6 +87,7 @@
               :rules="[rules.required]"
               required
               outlined
+               prepend-inner-icon="mdi-account-check"
             ></v-text-field>
             <v-row justify="center" class="mb-2" align="center">
               <v-col class="">
@@ -200,7 +202,21 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err.response);
+            if (err.response) {
+            // client received an error response (5xx, 4xx)
+            this.dialog = false;
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = err.response.data.message;
+          } else if (err.request) {
+            // client never received a response, or request never left
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "Internet Disconnected!";
+            this.dialog = false;
+          } else {
+            // anything else
+          }
         });
     },
     login(data) {
@@ -232,18 +248,17 @@ export default {
           console.log(err.response);
           if (err.response) {
             // client received an error response (5xx, 4xx)
-            this.apiResponse = "Password or Email or Both didn't match!";
             this.dialog = false;
             this.alert = true;
-            this.successMsg = false;
-            this.errorMsg = true;
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "Password or Email or Both didn't match!";
           } else if (err.request) {
             // client never received a response, or request never left
             this.alert = true;
-            this.successMsg = false;
-            this.errorMsg = true;
-            console.log(err.request)
-            this.apiResponse = "Internet Disconnected!";
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "Internet Disconnected!";
             this.dialog = false;
           } else {
             // anything else

@@ -2,6 +2,9 @@
   <v-app>
     <router-view />
     <div class="text-center">
+          <v-snackbar top :color="snackbarColor" v-model="snackbar" timeout="1500">
+      {{ snackbarText }}
+    </v-snackbar>
       <v-dialog v-model="dialog" persistent width="300" style="height:40px;">
         <v-card color="#009688" class="text-center" style="color: #fff;">
           <div class=""></div>
@@ -56,7 +59,10 @@ export default {
       GS: null,
       auth: "",
       dialog: false,
-      currentProgress: 0
+      currentProgress: 0,
+      snackbar: false,
+      snackbarColor: "",
+      snackbarText: "",
     };
   },
   methods: {
@@ -74,7 +80,6 @@ export default {
       let ds = new DrugService();
       this.syncAppointment();
       this.saveProfileInfo();
-      // this.getLoggedProfileInfo(as);
       this.parseDrugs(ds, 0);
     },
     getLoggedProfileInfo() {
@@ -113,7 +118,26 @@ export default {
           localStorage.setItem("leftHeader", r.data.data.leftHeader);
           localStorage.setItem("rightHeader", r.data.data.rightHeader);
         })
-        .catch(r => {});
+        .catch(err => {
+if (err.response) {
+            // client received an error response (5xx, 4xx)
+             console.log(err.response)
+            this.dialog = false;
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = err.response.data.message;
+          } else if (err.request) {
+            // client never received a response, or request never left
+            this.dialog = false;
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "Internet Disconnected!";
+          } else {
+            // anything else
+          }
+
+
+        });
     },
     async saveProfileInfo() {
       let as = new ABService();
@@ -147,8 +171,23 @@ export default {
             console.log("updated appointments");
           }
         })
-        .catch(e => {
-          console.log(e.response.status);
+        .catch(err => {
+          if (err.response) {
+            // client received an error response (5xx, 4xx)
+            console.log(err.response)
+            // this.dialog = false;
+            // this.snackbar = true;
+            // this.snackbarColor = "error";
+            // this.snackbarText = err.response.data.message;
+          } else if (err.request) {
+            // client never received a response, or request never left
+            this.dialog = false;
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "Internet Disconnected!";
+          } else {
+            // anything else
+          }
         });
     },
     parseDrugs(ds, cntr) {
@@ -169,6 +208,23 @@ export default {
         this.currentProgress = cntr;
 
         this.parseDrugs(ds, cntr + 1);
+      })
+      .catch(err => {
+        if (err.response) {
+            // client received an error response (5xx, 4xx)
+            this.dialog = false;
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = err.response.data.message;
+          } else if (err.request) {
+            // client never received a response, or request never left
+            this.dialog = false;
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "Internet Disconnected!";
+          } else {
+            // anything else
+          }
       });
     },
     formatDate(date) {
@@ -189,7 +245,6 @@ export default {
   watch: {
     $route(to, from) {
       // react to route changes...
-      console.log(from.fullPath);
       if (from.fullPath == "/auth/signin") {
         this.checkIfInitialLogInAndSync();
       }

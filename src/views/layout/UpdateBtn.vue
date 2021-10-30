@@ -200,15 +200,15 @@ export default {
         .then(r => {
           let response = r.data.data.data;
           console.log(response);
-    //  let a = this.GS.getDataById("Appointment","123");
-    //  console.log(a)
-    this.GS.clearTable("Appointment");
+          //  let a = this.GS.getDataById("Appointment","123");
+          //  console.log(a)
+          this.GS.clearTable("Appointment");
           for (let a = 0; a < response.length; a++) {
             console.log(response[a].id);
             this.GS.addData("Appointment", {
-      data: response[a],
-      id:  response[a].id,
-    });
+              data: response[a],
+              id: response[a].id
+            });
             // this.GS.updateDataById(
             //   "Appointment",
             //   {
@@ -231,13 +231,13 @@ export default {
           // console.log(e.response.status);
           // if(e.response.status == 404 ){
           //             if (isLocalPrescription == true) {
-         
+
           // } else {
           //   this.dialog = false;
           // }
           // }
-             this.sendPrescriptions();
-             this.dialog = false;
+          this.sendPrescriptions();
+          this.dialog = false;
         });
     },
     sendPrescriptions() {
@@ -262,7 +262,7 @@ export default {
         })
           .then(r => {
             console.log(r.data);
-             instance.GS.clearTable("LocalPresciption");
+            instance.GS.clearTable("LocalPresciption");
             this.syncAppointment(false);
           })
           .catch(r => {
