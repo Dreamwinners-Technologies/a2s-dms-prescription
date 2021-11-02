@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/layout/Home'
+import Home from '../views/layout/Home';
+import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -139,5 +140,25 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
-
+router.beforeEach((to, from, next) => {
+    // access store via `router.app.$store` here.
+    console.log(store.getters)
+        // next()
+        // else if ..  from.fullPath != "/auth/signin" && 
+    if (store.getters.hasPrescriptionAccess == undefined) {
+        next();
+    } else if (from.fullPath === "/auth/signin" || to.fullPath === "/auth/signin") {
+        console.log("1st condition");
+        next();
+    } else if (to.name != "Dashboard" && store.getters.hasPrescriptionAccess == false) {
+        console.log("2nd condition");
+        next({ name: 'Dashboard' });
+    } else if (store.getters.hasPrescriptionAccess == true) {
+        console.log("3rd condition");
+        next()
+    } else if (to.name === "Dashboard") {
+        console.log("4rd condition");
+        next();
+    }
+})
 export default router

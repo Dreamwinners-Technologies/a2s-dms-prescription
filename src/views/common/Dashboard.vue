@@ -383,7 +383,7 @@ moderatorController
   },
   mounted() {
     // this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-     this.getProfileInfo();
+     //this.getProfileInfo();
     let user = JSON.parse(localStorage.getItem("uData"));
     this.userData = user;
     this.setSideDataBasedOnUser();

@@ -3,10 +3,19 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+function getPrescriptionAccessDetails() {
+    try {
+        return (JSON.parse(localStorage.getItem("uData")).hasPrescriptionAccess);
+    } catch (e) {
+        return undefined;
+    }
+}
+
 export default new Vuex.Store({
     state: {
         userLoginResponse: {},
         currentLoggedUserType: "",
+        hasPrescriptionAccess: getPrescriptionAccessDetails(),
     },
     mutations: {
         setUserLoginResponse(state, data) {
@@ -15,11 +24,15 @@ export default new Vuex.Store({
         setCurrentLoggedUserType(state, data) {
             state.currentLoggedUserType = data;
         },
+        setHasPrescriptionAccess(state, data) {
+            state.hasPrescriptionAccess = data;
+        },
     },
     actions: {},
     modules: {},
     getters: {
         userLoginResponse: state => state.userLoginResponse,
         currentLoggedUserType: state => state.currentLoggedUserType,
+        hasPrescriptionAccess: state => state.hasPrescriptionAccess,
     }
 })

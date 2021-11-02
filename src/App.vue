@@ -2,9 +2,15 @@
   <v-app>
     <router-view />
     <div class="text-center">
-          <v-snackbar top :color="snackbarColor" v-model="snackbar" timeout="1500">
-      {{ snackbarText }}
-    </v-snackbar>
+      <v-snackbar bottom right :value="updateExists" :timeout="-1" color="primary">
+  An update is available
+  <v-btn text @click="refreshApp">
+    Update
+  </v-btn>
+</v-snackbar>
+      <v-snackbar top :color="snackbarColor" v-model="snackbar" timeout="1500">
+        {{ snackbarText }}
+      </v-snackbar>
       <v-dialog v-model="dialog" persistent width="300" style="height:40px;">
         <v-card color="#009688" class="text-center" style="color: #fff;">
           <div class=""></div>
@@ -29,6 +35,8 @@ const PRESCRIPTION_HEADER_API = API_URL + "prescriptions/headers";
 const GET_APPOINtMENTS_API = API_URL + "appointments/";
 import { mapGetters } from "vuex";
 
+import updte from "@/mixins/update.js";
+
 import { initJsStore } from "@/service/idb_service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { ABService } from "@/service/Generic_Service.js";
@@ -36,7 +44,13 @@ import { ABService } from "@/service/Generic_Service.js";
 import { Global } from "@/global";
 import axios from "axios";
 export default {
+  mixins: [updte],
   async beforeCreate() {
+    // this.$store.commit(
+    //   "setHasPrescriptionAccess",
+    //   JSON.parse(localStorage.getItem("uData")).hasPrescriptionAccess
+    // );
+    console.log(this.$store.state.hasPrescriptionAccess)
     try {
       const isDbCreated = await initJsStore();
       if (isDbCreated) {
@@ -62,7 +76,7 @@ export default {
       currentProgress: 0,
       snackbar: false,
       snackbarColor: "",
-      snackbarText: "",
+      snackbarText: ""
     };
   },
   methods: {
@@ -71,6 +85,7 @@ export default {
       if (localStorage.getItem("uData") === null) return;
       let cu = JSON.parse(localStorage.getItem("uData")).roles;
       if (cu.includes("DOCTOR") && localStorage.getItem("IL") == "true") {
+         console.log("lolo");
         this.getPrescriptionHeader();
         this.syncDB();
       }
@@ -79,7 +94,7 @@ export default {
       this.dialog = true;
       let ds = new DrugService();
       this.syncAppointment();
-      this.saveProfileInfo();
+      this.getLoggedProfileInfo();
       this.parseDrugs(ds, 0);
     },
     getLoggedProfileInfo() {
@@ -96,7 +111,11 @@ export default {
       })
         .then(r => {
           console.log(r.data);
-          return r.data;
+          let as = new ABService();
+          let res = as.addData("ProfData", {
+            Id: 1,
+            data: JSON.stringify(r.data)
+          });
         })
         .catch(r => {
           console.log(r);
@@ -119,9 +138,9 @@ export default {
           localStorage.setItem("rightHeader", r.data.data.rightHeader);
         })
         .catch(err => {
-if (err.response) {
+          if (err.response) {
             // client received an error response (5xx, 4xx)
-             console.log(err.response)
+            console.log(err.response);
             this.dialog = false;
             this.snackbar = true;
             this.snackbarColor = "error";
@@ -135,8 +154,6 @@ if (err.response) {
           } else {
             // anything else
           }
-
-
         });
     },
     async saveProfileInfo() {
@@ -174,7 +191,7 @@ if (err.response) {
         .catch(err => {
           if (err.response) {
             // client received an error response (5xx, 4xx)
-            console.log(err.response)
+            console.log(err.response);
             // this.dialog = false;
             // this.snackbar = true;
             // this.snackbarColor = "error";
@@ -198,19 +215,21 @@ if (err.response) {
         localStorage.setItem("IL", false);
         return;
       }
-      axios.get(`${PRESCRIPTION_URL}${cntr}&pageSize=200`).then(r => {
-        let response = r.data,
-          currentDrugList = r.data.data.data;
-        console.log(currentDrugList);
-        for (let i = 0; i < currentDrugList.length; i++) {
-          ds.addDrugs({ data: currentDrugList[i] });
-        }
-        this.currentProgress = cntr;
+      axios
+        .get(`${PRESCRIPTION_URL}${cntr}&pageSize=200`)
+        .then(r => {
+          let response = r.data,
+            currentDrugList = r.data.data.data;
+          console.log(currentDrugList);
+          for (let i = 0; i < currentDrugList.length; i++) {
+            ds.addDrugs({ data: currentDrugList[i] });
+          }
+          this.currentProgress = cntr;
 
-        this.parseDrugs(ds, cntr + 1);
-      })
-      .catch(err => {
-        if (err.response) {
+          this.parseDrugs(ds, cntr + 1);
+        })
+        .catch(err => {
+          if (err.response) {
             // client received an error response (5xx, 4xx)
             this.dialog = false;
             this.snackbar = true;
@@ -225,7 +244,7 @@ if (err.response) {
           } else {
             // anything else
           }
-      });
+        });
     },
     formatDate(date) {
       var d = new Date(date),
@@ -254,6 +273,9 @@ if (err.response) {
     this.GS = new ABService();
     localStorage.setItem("selectedAppointment", null);
     this.checkIfInitialLogInAndSync();
+  },
+  created() {
+    // console.log(JSON.parse(localStorage.getItem("uData")).hasPrescriptionAccess)
   }
 };
 </script>

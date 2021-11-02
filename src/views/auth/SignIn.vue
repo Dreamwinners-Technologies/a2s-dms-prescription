@@ -196,6 +196,7 @@ export default {
           console.log(response);
           if (response.status == 200) {
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("IL", true);
             localStorage.setItem("uData", JSON.stringify(response.data));
             // Redirect to a specified route
             this.$router.push("/");
