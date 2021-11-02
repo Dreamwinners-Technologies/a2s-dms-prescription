@@ -174,6 +174,7 @@ export const initJsStore = async() => {
 export const dropDatabase = async() => {
     connection.dropDb().then(function() {
         console.log('Db deleted successfully');
+        location.reload(); // this reload is to fix not saving sync data to idb after login out and then login 
     }).catch(function(error) {
         console.log(error);
     });;

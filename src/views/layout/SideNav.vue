@@ -169,9 +169,11 @@ export default {
       localStorage.removeItem("token");
       localStorage.removeItem("uData");
       localStorage.setItem("IL", true);
-      this.$router.push("/auth/signin");
+      
       // this.clearTable("Drugs","ProfData");
        const dbDeleted = await dropDatabase();
+       this.$router.push("/auth/signin");
+      
   },
   getCurrentLoggedUserType(){
     let user = JSON.parse(localStorage.getItem("uData"));

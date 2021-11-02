@@ -91,7 +91,6 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "about" */ '../views/common/About.vue')
             },
-
         ]
     },
 
@@ -108,7 +107,7 @@ const routes = [{
     },
     {
         path: '/auth/no-permission',
-        name: 'No Permission Error',
+        name: 'NoPermissionError',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
@@ -150,14 +149,19 @@ router.beforeEach((to, from, next) => {
     } else if (from.fullPath === "/auth/signin" || to.fullPath === "/auth/signin") {
         console.log("1st condition");
         next();
-    } else if (to.name != "Dashboard" && store.getters.hasPrescriptionAccess == false) {
+    } else if (to.name != "NoPermissionError" && store.getters.hasPrescriptionAccess == false) {
         console.log("2nd condition");
-        next({ name: 'Dashboard' });
+        next({ name: 'NoPermissionError' });
+    } else if (to.name == "NoPermissionError" && store.getters.hasPrescriptionAccess == false) {
+        next();
     } else if (store.getters.hasPrescriptionAccess == true) {
         console.log("3rd condition");
         next()
+    } else if (to.name === "NoPermissionError" && store.getters.hasPrescriptionAccess == true) {
+        console.log("4th condition");
+        next({ name: 'Dashboard' });
     } else if (to.name === "Dashboard") {
-        console.log("4rd condition");
+        console.log("5th condition");
         next();
     }
 })
