@@ -139,11 +139,22 @@ addModerator(){
           this.getModeratorList();
 
         })
-        .catch(e=> {
+        .catch(err=> {
           console.log(e.response)
           this.snackbar = true;
           this.snackbarText = e.response.data.message;
           this.snackbarColor = "error";
+                    if (err.response) {
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = err.response.data.message;
+          } else if (err.request) {
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "Internet Disconnected!";
+          } else {
+            // anything else
+          }
         });
 }
   },

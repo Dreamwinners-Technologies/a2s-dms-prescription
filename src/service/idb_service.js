@@ -169,6 +169,7 @@ const getDatabase = () => {
 
 export const initJsStore = async() => {
     const dataBase = getDatabase();
+    connection.logStatus = false;
     return await connection.initDb(dataBase);
 };
 export const dropDatabase = async() => {

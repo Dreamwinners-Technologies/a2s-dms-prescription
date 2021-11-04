@@ -30,7 +30,7 @@
                                        <b>Action</b>
                                    </v-col>
                                </v-row>
-                               <v-row v-for="card,idx in cardList" :key="idx" style="text-align:center;border-bottom: 1px solid #e7e7e7">
+                               <v-row v-for="(card,idx) in cardList" :key="idx" style="text-align:center;border-bottom: 1px solid #e7e7e7">
                                     <v-col class="ml-2" style="text-align:left" cols="5">
 
                                         <v-row>

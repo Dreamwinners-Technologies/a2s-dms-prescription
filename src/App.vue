@@ -5,6 +5,7 @@
       <v-snackbar bottom right :value="updateExists" :timeout="-1" color="primary">
   An update is available
   <v-btn text @click="refreshApp">
+    
     Update
   </v-btn>
 </v-snackbar>
@@ -17,6 +18,8 @@
           Please wait, Syncing ... <br />
           <h2 class="">{{ currentProgress * 10 }} %</h2>
           synced.
+          <br>
+          Don't reload or stop internet.
           <v-progress-linear
             indeterminate
             color="white"
@@ -40,6 +43,8 @@ import updte from "@/mixins/update.js";
 import { initJsStore } from "@/service/idb_service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { ABService } from "@/service/Generic_Service.js";
+
+// import { dropDatabase } from "@/service/idb_service.js";
 
 import { Global } from "@/global";
 import axios from "axios";
@@ -76,7 +81,8 @@ export default {
       currentProgress: 0,
       snackbar: false,
       snackbarColor: "",
-      snackbarText: ""
+      snackbarText: "",
+      syncError: false,
     };
   },
   methods: {
@@ -85,7 +91,6 @@ export default {
       if (localStorage.getItem("uData") === null) return;
       let cu = JSON.parse(localStorage.getItem("uData")).roles;
       if (cu.includes("DOCTOR") && localStorage.getItem("IL") == "true") {
-         console.log("lolo");
         this.getPrescriptionHeader();
         this.syncDB();
       }
@@ -98,6 +103,7 @@ export default {
       this.parseDrugs(ds, 0);
     },
     getLoggedProfileInfo() {
+      if(this.syncError) return;
       this.auth = "Bearer " + JSON.parse(localStorage.getItem("uData")).token;
       console.log(PROFILE_URL);
       console.log(this.auth);
@@ -199,9 +205,10 @@ export default {
           } else if (err.request) {
             // client never received a response, or request never left
             this.dialog = false;
+            this.syncError = true;
             this.snackbar = true;
             this.snackbarColor = "error";
-            this.snackbarText = "Internet Disconnected!";
+            this.snackbarText = "Internet Disconnected! Couldn't Sync.";
           } else {
             // anything else
           }
@@ -234,13 +241,19 @@ export default {
             this.dialog = false;
             this.snackbar = true;
             this.snackbarColor = "error";
+            console.log("Here 1")
+            this.syncError = true;
             this.snackbarText = err.response.data.message;
+            return;
           } else if (err.request) {
             // client never received a response, or request never left
+            console.log("Here 2")
             this.dialog = false;
             this.snackbar = true;
+            this.syncError = true;
             this.snackbarColor = "error";
-            this.snackbarText = "Internet Disconnected!";
+            this.snackbarText = "Internet Disconnected! Couldn't Sync.";
+            return;
           } else {
             // anything else
           }

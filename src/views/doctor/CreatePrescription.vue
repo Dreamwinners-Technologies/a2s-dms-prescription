@@ -943,7 +943,8 @@ export default {
       if (id != null) {
         let data = await this.ABS.getDataById("Appointment", id);
         this.appointment = data[0];
-        if (this.appointment.data.prescription == null) {
+        console.log(this.appointment.data.prescription)
+        if (this.appointment.data.prescription == undefined) {
           this.appointment.data.prescription = {
             advice: [],
             bloodPressure: 0,

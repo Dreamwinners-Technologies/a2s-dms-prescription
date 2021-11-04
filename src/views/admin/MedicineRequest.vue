@@ -1,5 +1,8 @@
 <template>
 <div>
+        <v-snackbar top :color="snackbarColor" v-model="snackbar" timeout="1500">
+        {{ snackbarText }}
+      </v-snackbar>
     <v-card rounded="0" elevation="0" color="#f2f5f8"> 
             <v-breadcrumbs :items="items">
             <template v-slot:divider>
@@ -33,7 +36,7 @@
                                        <b>Action</b>
                                    </v-col>
                                </v-row>
-                               <v-row v-for="medicine,idx in medicineList" :key="idx" style="text-align:center;border-bottom: 1px solid #e7e7e7">
+                               <v-row v-for="(medicine,idx) in medicineList" :key="idx" style="text-align:center;border-bottom: 1px solid #e7e7e7">
                                     <v-col class="ml-2" style="text-align:left" cols="3">
 
                                         <v-row>
@@ -253,6 +256,9 @@ import axios from 'axios';
 export default {
   data () {
     return {
+            snackbar: false,
+      snackbarColor: "",
+      snackbarText: "",
         idx:0,
         medicineInfoDialog: false,
         medicineInfo:{},
@@ -298,7 +304,17 @@ export default {
                 this.medicineList=r.data.data.data
                 console.log(this.medicineList)
             }
-        })
+        }).catch(err=>{
+          if (err.response) {
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = err.response.data.message;
+          } else if (err.request) {
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "Internet Disconnected!";
+          }
+        });
     },
     
     seeMedicineInfo(item){
