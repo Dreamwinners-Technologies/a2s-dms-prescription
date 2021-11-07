@@ -113,7 +113,7 @@
             <v-list-item-icon>
               <v-icon>mdi-information-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>About</v-list-item-title>
+            <v-list-item-title>Help</v-list-item-title>
           </v-list-item>
         </v-list>
 

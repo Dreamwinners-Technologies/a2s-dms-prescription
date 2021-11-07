@@ -51,7 +51,7 @@
      <div class="pa-4 wd">
       <v-row>
         <v-col cols="12">
-          <h2 class="text-center">???</h2>
+          <h2 class="text-center">Bottom Header</h2>
           <v-card rounded="0" elevation="0" color="#f2f5f8">
             <quill-editor v-model="thirdHeader" :options="editorOption" />
           </v-card>
