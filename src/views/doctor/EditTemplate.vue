@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div>    
+    <v-breadcrumbs :items="items">
+        <template v-slot:divider>
+          <v-icon>mdi-chevron-right</v-icon>
+        </template>
+    </v-breadcrumbs>
+
     <v-snackbar
       v-model="snackbar"
       top
@@ -124,8 +130,21 @@ export default {
             highlight: text => hljs.highlightAuto(text).value
           }
         }
-      }
+      },
+      items: [
+        {
+          text: "a2sDMS",
+          disabled: false,
+          href: "https://a2sdms.com"
+        },
+        {
+          text: "Edit Template",
+          disabled: true,
+          href: "rx-prescription"
+        }
+      ],
     };
+    
   },
   methods: {
       savePrescriptionTemplateHeader(){
@@ -152,5 +171,8 @@ export default {
 }
 .preview p{
     margin-bottom: 0px;
+}
+.v-breadcrumbs  {
+  background-color: #F2F5F8;
 }
 </style>
