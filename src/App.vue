@@ -142,6 +142,7 @@ export default {
           console.log(r.data);
           localStorage.setItem("leftHeader", r.data.data.leftHeader);
           localStorage.setItem("rightHeader", r.data.data.rightHeader);
+          localStorage.setItem("middleHeader", r.data.data.middleHeader);
         })
         .catch(err => {
           if (err.response) {

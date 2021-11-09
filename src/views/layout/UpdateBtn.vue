@@ -138,6 +138,7 @@ export default {
         url: EDIT_PRESCRIPTION_HEADER_API,
         data: {
           leftHeader: localStorage.getItem("leftHeader") || "",
+          middleHeader: localStorage.getItem("middleHeader") || "",
           rightHeader: localStorage.getItem("rightHeader") || ""
         },
         headers: {

@@ -6,25 +6,19 @@
         <div class="print-container" >
         <v-row class="my-0">
             <v-col>
-                <h2 style="color:#479EF4">Dr Mojibur Rahman</h2>
-                MBBS <br>
-                Dhaka Medical College <br>
-                Room No 508,Trusted Care Hostpital <br>
-                Narsingdi sadar <br>
-                Phone: 01734543027 <br>
-            </v-col>
-            <v-spacer>
-            </v-spacer>
-            <v-col style="text-align:right !important">
-                 <h2 style="color:#479EF4">ডাঃ মোঃ মজিবুর রহমান
-                 </h2>
-                এম বি বি এস <br>
-                ঢাকা মেডিকেল কলেজ <br>
-                চেম্বারঃ ৫০৮,  ট্রাস্টেড কেয়ার হাসপাতাল <br>
-                নরসিংদী সদর, নরসিংদী <br>
-                ফোনঃ ০১৭৩৪৫৪৩০২৭
-                
-            </v-col>
+                <span
+                  class="preview"
+                  style="text-align: left !important;"
+                  v-html="appointment.data.prescriptionHeaderModel.leftHeader"
+                ></span>
+              </v-col>
+              <v-col style="text-align:right !important">
+                <span
+                  class="preview"
+                  style="text-align: right !important;"
+                  v-html="appointment.data.prescriptionHeaderModel.rightHeader"
+                ></span>
+              </v-col>
         </v-row>
         <hr>
         <v-row class="my-0" style="text-align:center">
@@ -42,7 +36,7 @@
             </v-col>
         </v-row>
         <hr>
-        <v-row class="ma-0" style="height:1120px">
+        <v-row class="ma-0" style="height:630px">
             <v-col cols="4" style="border-right: 1px solid #f0f0f0 !important;">
                 <v-row>
                     <v-col>
@@ -116,21 +110,31 @@
                     </div>
             </v-col>
         </v-row>
-        <v-footer>
-            <v-row class="pt-2" style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;">
-            <v-col>
-                Made By <br>
-                A2S DMS Prescription
-            </v-col>
-            <v-spacer>
-            </v-spacer>
-            <v-col style="text-align:right !important">
-                 https://prescription.a2sdms.com
-            </v-col>
-        </v-row>
-        </v-footer>
+       <v-row class="mt-0" v-if="appointment.data.prescriptionHeaderModel.middleHeader!=null">
+              <v-col style="border-top: 1px solid #f0f0f0 !important;">
+                <span class="preview" style="text-align: center !important;" v-html="appointment.data.prescriptionHeaderModel.middleHeader"></span>
+              </v-col>
+            </v-row>
+            <br>
+            <br>
+            <br>
+            <v-footer absolute>
+              <v-row
+                class="pt-2"
+                style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;"
+              >
+                <v-col>
+                  Made By <br />
+                  A2S DMS Prescription
+                </v-col>
+                <v-spacer> </v-spacer>
+                <v-col style="text-align:right !important">
+                  https://prescription.a2sdms.com
+                </v-col>
+              </v-row>
+            </v-footer>
         </div>
-        <br>
+        <!-- <br>
         <br>
         <v-footer style="border: 1px solid #f7f7f7" class="py-2" fixed>
             <v-row>
@@ -139,7 +143,7 @@
                     <v-btn depressed color="info" @click="print()"><v-icon class="mr-2">mdi-printer</v-icon>Print Now</v-btn>
                 </v-col>
             </v-row>
-        </v-footer>
+        </v-footer> -->
     </v-container>
     </div>
     </v-main>
@@ -259,12 +263,14 @@ html{
 @media print {
     .body , .container {
         visibility: hidden !important;
+        padding: 0%;
+        margin: 0%;
     }
     .print-container {
         visibility: visible;
     }
     @page {
-        size: A3;
+        size: A4;
     }
 }
 </style>

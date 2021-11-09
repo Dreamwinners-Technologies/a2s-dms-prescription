@@ -33,6 +33,14 @@
           ></span>
         </v-col>
       </v-row>
+      <br>
+      <hr>
+      <br>
+      <v-row>
+         <v-col>
+           <span class="preview" style="text-align: center !important;" v-html="middleHeader"></span>
+         </v-col>
+      </v-row>
     </v-container>
         </div>
         </v-card>
@@ -59,7 +67,7 @@
         <v-col cols="12">
           <h2 class="text-center">Bottom Header</h2>
           <v-card rounded="0" elevation="0" color="#f2f5f8">
-            <quill-editor v-model="thirdHeader" :options="editorOption" />
+            <quill-editor v-model="middleHeader" :options="editorOption" />
           </v-card>
         </v-col>
       </v-row>
@@ -111,7 +119,7 @@ export default {
         snackbar: false,
       leftHeader: "",
       rightHeader: "",
-      thirdHeader: "",
+      middleHeader: "",
       editorOption: {
         modules: {
           toolbar: [
@@ -151,11 +159,13 @@ export default {
           this.snackbar = true;
           localStorage.setItem("leftHeader", this.leftHeader);
           localStorage.setItem("rightHeader", this.rightHeader);
+          localStorage.setItem("middleHeader", this.middleHeader);
       }
   },
   mounted(){
       this.leftHeader = localStorage.getItem("leftHeader");
       this.rightHeader = localStorage.getItem("rightHeader");
+      this.middleHeader = localStorage.getItem("middleHeader");
   }
 };
 </script>
