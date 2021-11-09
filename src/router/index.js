@@ -144,24 +144,21 @@ router.beforeEach((to, from, next) => {
     console.log(store.getters)
         // next()
         // else if ..  from.fullPath != "/auth/signin" && 
-    if (store.getters.hasPrescriptionAccess == undefined) {
+    if (store.getters.adminRole == true) {
+        next
+    } else if (store.getters.hasPrescriptionAccess == undefined) {
         next();
     } else if (from.fullPath === "/auth/signin" || to.fullPath === "/auth/signin") {
-        console.log("1st condition");
         next();
     } else if (to.name != "NoPermissionError" && store.getters.hasPrescriptionAccess == false) {
-        console.log("2nd condition");
         next({ name: 'NoPermissionError' });
     } else if (to.name == "NoPermissionError" && store.getters.hasPrescriptionAccess == false) {
         next();
     } else if (store.getters.hasPrescriptionAccess == true) {
-        console.log("3rd condition");
         next()
     } else if (to.name === "NoPermissionError" && store.getters.hasPrescriptionAccess == true) {
-        console.log("4th condition");
         next({ name: 'Dashboard' });
     } else if (to.name === "Dashboard") {
-        console.log("5th condition");
         next();
     }
 })
