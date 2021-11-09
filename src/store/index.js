@@ -11,11 +11,20 @@ function getPrescriptionAccessDetails() {
     }
 }
 
+function hasAdminRole() {
+    try {
+        return (JSON.parse(localStorage.getItem("uData")).roles).includes("ADMIN");
+    } catch (e) {
+        return undefined;
+    }
+}
+
 export default new Vuex.Store({
     state: {
         userLoginResponse: {},
         currentLoggedUserType: "",
         hasPrescriptionAccess: getPrescriptionAccessDetails(),
+        adminRole: hasAdminRole(),
     },
     mutations: {
         setUserLoginResponse(state, data) {
