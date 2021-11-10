@@ -12,7 +12,6 @@
                   v-html="leftHeader"
                 ></span>
               </v-col>
-              <v-spacer> </v-spacer>
               <v-col style="text-align:right !important">
                 <span
                   class="preview"
@@ -31,7 +30,7 @@
               <v-col> Date: {{ new Date().toLocaleDateString() }} </v-col>
             </v-row>
             <hr />
-            <v-row class="ma-0" style="height:1120px">
+            <v-row class="ma-0" style="height:640px">
               <v-col
                 cols="4"
                 style="border-right: 1px solid #f0f0f0 !important;"
@@ -141,7 +140,13 @@
                 </v-footer>
               </v-col>
             </v-row>
-            <v-footer>
+            <v-row class="mt-0" v-if="middleHeader!=null">
+              <v-col style="border-top: 1px solid #f0f0f0 !important;">
+                <span class="preview" style="text-align: center !important;" v-html="middleHeader"></span>
+              </v-col>
+            </v-row>
+            <br>
+            <v-footer absolute>
               <v-row
                 class="pt-2"
                 style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;"
@@ -190,6 +195,7 @@ export default {
     return {
       leftHeader: "",
       rightHeader: "",
+      middleHeader: "",
       ABS: null,
       selectedAppointment: "",
       windowSize: {
@@ -252,6 +258,7 @@ export default {
   mounted() {
     this.leftHeader = localStorage.getItem("leftHeader");
     this.rightHeader = localStorage.getItem("rightHeader");
+    this.middleHeader = localStorage.getItem("middleHeader");
     this.selectedAppointment = this.$route.params.id;
     this.ABS = new ABService();
     this.getAppointmentData();
@@ -295,12 +302,14 @@ html {
   .body,
   .container {
     visibility: hidden !important;
+    padding: 0;
+    margin: 0;
   }
   .print-container {
     visibility: visible;
   }
   @page {
-    size: A3;
+    size: A4;
   }
 }
 .v-footer {

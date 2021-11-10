@@ -15,7 +15,7 @@
           contain
           min-width="100"
           src="../../assets/hero-logo.png"
-          width="100"
+          width="200"
         />
       </div>
 

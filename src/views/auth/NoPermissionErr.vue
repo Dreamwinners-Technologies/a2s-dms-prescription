@@ -5,6 +5,15 @@
       align="center"
       justify="center"
     >
+     <v-col class="d-flex justify-center align-center">
+          <h1>Hi , {{userData.name}}</h1>
+     </v-col>
+    </v-row>
+    <v-row
+      style="padding-top:10px;vertical-align: middle; !important"
+      align="center"
+      justify="center"
+    >
       <v-col class="d-flex justify-center align-center">
         <v-card
           flat
@@ -20,7 +29,7 @@
                 
                 <p>প্রেসক্রিপশন ব্যাবহারের জন্য এডমিন এর সাথে যোগাযোগ করুন।</p>
                 <h4>মোঃ আরিফুল ইসলাম <br> ফোনঃ ০১৭১০০০০৪০৫</h4> <br>
-                <v-btn depressed small   color="info"><v-icon small>mdi-arrow-left</v-icon>Back to Login</v-btn>
+                <v-btn depressed small @click="logOut"  color="info"><v-icon class="mr-2" small>mdi-exit-to-app</v-icon>Log Out</v-btn>
            </v-col>
        </v-row>
         </v-card>
@@ -35,16 +44,49 @@
 </template>
 
 <script>
+import { dropDatabase } from "@/service/idb_service.js";
 export default {
     data(){
         return {
             year: new Date().getFullYear(),
+            userData: {
+              name: "null"
+            },
+            isDoctor: "",
+            isAdmin: "",
         }
     },
-  mounted() {
-    if (localStorage.token != undefined) {
-      this.$router.push("/");
+  methods: {
+    async logOut(){
+        localStorage.removeItem("token");
+        localStorage.removeItem("uData");
+        localStorage.setItem("IL", true);
+        
+        // this.clearTable("Drugs","ProfData");
+        const dbDeleted = await dropDatabase();
+        this.$router.push("/auth/signin");
+        
+    },
+    getCurrentLoggedUserType(){
+      let user = JSON.parse(localStorage.getItem("uData"));
+      this.userData = user;
+      this.isDoctor = user.roles.includes("DOCTOR");
+      this.isAdmin = user.roles.includes("SUPER_ADMIN") || user.roles.includes("ADMIN");
+    },
+    checkPermission(){
+      if (localStorage.token != undefined) {
+        if(this.isAdmin || this.userData.hasPrescriptionAccess){
+          this.$router.push("/");
+        }
+      }
     }
+  },
+  mounted() {
+    if(localStorage.getItem("token") == null){
+       this.$router.push("/auth/signin")
+     }
+    this.getCurrentLoggedUserType()
+    // this.checkPermission()
   }
  
 };

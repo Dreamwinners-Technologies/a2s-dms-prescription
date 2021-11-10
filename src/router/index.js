@@ -142,8 +142,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     // access store via `router.app.$store` here.
     console.log(store.getters.adminRole)
-        // next()
-        // else if ..  from.fullPath != "/auth/signin" && 
+
     if (store.getters.adminRole == true && to.name == "NoPermissionError") {
         next({ name: "Dashboard" });
     } else if (store.getters.adminRole == true && store.getters.hasPrescriptionAccess == false) {

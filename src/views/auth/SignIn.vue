@@ -34,9 +34,8 @@
           ></v-progress-linear>
           <div align="center">
             <v-img
-              max-width="200"
-              min-width="170"
-              height="80"
+              max-width="280"
+              min-width="200"
               src="@/assets/hero-logo.png"
             ></v-img>
             <br />

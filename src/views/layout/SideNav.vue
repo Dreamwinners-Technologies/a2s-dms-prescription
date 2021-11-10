@@ -103,12 +103,12 @@
             </v-list-item-icon>
             <v-list-item-title>Edit Template</v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="isDoctor" link to="settings">
+          <!-- <v-list-item v-if="isDoctor" link to="settings">
             <v-list-item-icon>
               <v-icon>mdi-power-settings</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Settings</v-list-item-title>
-          </v-list-item>
+          </v-list-item> -->
           <v-list-item link to="about">
             <v-list-item-icon>
               <v-icon>mdi-information-outline</v-icon>
@@ -186,8 +186,14 @@ export default {
       for(let table of tables){
         await this.ABS.clearTable(table);
       }
-  }
-
+  },
+  checkPermission(){
+      if (localStorage.token != undefined) {
+        if(!this.isAdmin && !this.userData.hasPrescriptionAccess){
+          this.$router.push("/auth/no-permission");
+        }
+      }
+    }
   },
 
   mounted() {
@@ -197,6 +203,8 @@ export default {
      }
     this.setOnlineStatus();
     this.getCurrentLoggedUserType();
+    // this.checkPermission();
+
    
   }
 }

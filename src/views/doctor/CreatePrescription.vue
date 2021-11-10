@@ -535,7 +535,7 @@
     </v-dialog>
 
     <v-dialog
-      title="Add New Drug"
+      title="Prescription Preview"
       v-model="prescriptionPriview"
       max-width="980px"
     >
@@ -570,7 +570,7 @@
               <v-col> Date: {{ new Date().toLocaleDateString() }} </v-col>
             </v-row>
             <hr />
-            <v-row class="ma-0" style="height:1160px">
+            <v-row class="ma-0" style="height:800px">
               <v-col
                 cols="4"
                 style="border-right: 1px solid #f0f0f0 !important;"
@@ -681,6 +681,11 @@
                 </v-footer>
               </v-col>
             </v-row>
+            <v-row class="mt-0" v-if="middleHeader!=null">
+              <v-col style="border-top: 1px solid #f0f0f0 !important;">
+                <span class="preview" style="text-align: center !important;" v-html="middleHeader"></span>
+              </v-col>
+            </v-row>
             <!-- <br> 
         <br> -->
             <br />
@@ -693,7 +698,7 @@
                 >
                   <v-col>
                     Made By <br />
-                    A2S DMS Prescription
+                    A2S Need Bangladesh | Prescription
                   </v-col>
                   <v-spacer> </v-spacer>
                   <v-col style="text-align:right !important">
@@ -808,6 +813,7 @@ export default {
     return {
       leftHeader: "",
       rightHeader: "",
+      middleHeader: "",
       ABS: null,
       DS: null,
       snackbar: false,
@@ -1131,6 +1137,7 @@ export default {
   mounted() {
     this.leftHeader = localStorage.getItem("leftHeader");
     this.rightHeader = localStorage.getItem("rightHeader");
+    this.middleHeader = localStorage.getItem("middleHeader");
     this.ABS = new ABService();
     this.DS = new DrugService();
     this.getSideData("chiefComplaints");

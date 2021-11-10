@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div>    
+    <v-breadcrumbs :items="items">
+        <template v-slot:divider>
+          <v-icon>mdi-chevron-right</v-icon>
+        </template>
+    </v-breadcrumbs>
+
     <v-snackbar
       v-model="snackbar"
       top
@@ -27,6 +33,14 @@
           ></span>
         </v-col>
       </v-row>
+      <br>
+      <hr>
+      <br>
+      <v-row>
+         <v-col>
+           <span class="preview" style="text-align: center !important;" v-html="middleHeader"></span>
+         </v-col>
+      </v-row>
     </v-container>
         </div>
         </v-card>
@@ -53,7 +67,7 @@
         <v-col cols="12">
           <h2 class="text-center">Bottom Header</h2>
           <v-card rounded="0" elevation="0" color="#f2f5f8">
-            <quill-editor v-model="thirdHeader" :options="editorOption" />
+            <quill-editor v-model="middleHeader" :options="editorOption" />
           </v-card>
         </v-col>
       </v-row>
@@ -105,7 +119,7 @@ export default {
         snackbar: false,
       leftHeader: "",
       rightHeader: "",
-      thirdHeader: "",
+      middleHeader: "",
       editorOption: {
         modules: {
           toolbar: [
@@ -124,19 +138,34 @@ export default {
             highlight: text => hljs.highlightAuto(text).value
           }
         }
-      }
+      },
+      items: [
+        {
+          text: "a2sDMS",
+          disabled: false,
+          href: "https://a2sdms.com"
+        },
+        {
+          text: "Edit Template",
+          disabled: true,
+          href: "rx-prescription"
+        }
+      ],
     };
+    
   },
   methods: {
       savePrescriptionTemplateHeader(){
           this.snackbar = true;
           localStorage.setItem("leftHeader", this.leftHeader);
           localStorage.setItem("rightHeader", this.rightHeader);
+          localStorage.setItem("middleHeader", this.middleHeader);
       }
   },
   mounted(){
       this.leftHeader = localStorage.getItem("leftHeader");
       this.rightHeader = localStorage.getItem("rightHeader");
+      this.middleHeader = localStorage.getItem("middleHeader");
   }
 };
 </script>
@@ -152,5 +181,8 @@ export default {
 }
 .preview p{
     margin-bottom: 0px;
+}
+.v-breadcrumbs  {
+  background-color: #F2F5F8;
 }
 </style>
