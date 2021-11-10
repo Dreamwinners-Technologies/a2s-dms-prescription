@@ -4,7 +4,7 @@
     <div class="text-center">
       <v-snackbar bottom right :value="updateExists" :timeout="-1" color="primary">
   An update is available
-  <v-btn text @click="refreshApp">
+  <v-btn color="white" class="black--text" text @click="refreshApp">
     
     Update
   </v-btn>
