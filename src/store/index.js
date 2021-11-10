@@ -12,19 +12,11 @@ function getPrescriptionAccessDetails() {
 }
 
 function hasAdminRole() {
-<<<<<<< HEAD
-    console.log()
     try {
         let roles = (JSON.parse(localStorage.getItem("uData")).roles),
             hasAdminRole = roles.includes("ADMIN");
         return hasAdminRole;
     } catch (e) {
-        console.log(e)
-=======
-    try {
-        return (JSON.parse(localStorage.getItem("uData")).roles).includes("ADMIN");
-    } catch (e) {
->>>>>>> 31629b2ea577999201d59662d4a53472e64079c6
         return undefined;
     }
 }
