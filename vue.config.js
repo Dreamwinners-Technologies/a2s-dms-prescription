@@ -28,9 +28,7 @@ module.exports = {
         theme_color: "#63B884",
         scope: "/",
         offline_enabled: true,
-        workboxPluginMode: 'InjectManifest',
         workboxOptions: {
-            swSrc: 'dev/sw.js',
             exclude: ['_redirects'],
         }
     }
