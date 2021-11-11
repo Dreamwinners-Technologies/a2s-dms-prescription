@@ -83,6 +83,15 @@ const routes = [{
                     import ( /* webpackChunkName: "about" */ '../views/doctor/FavouriteMedicine.vue')
             },
             {
+                path: 'doctor-support',
+                name: 'Doctor Support',
+                // route level code-splitting
+                // this generates a separate chunk (about.[hash].js) for this route
+                // which is lazy-loaded when the route is visited.
+                component: () =>
+                    import ( /* webpackChunkName: "about" */ '../views/admin/DoctorSupport.vue')
+            },
+            {
                 path: 'about',
                 name: 'About',
                 // route level code-splitting
@@ -141,12 +150,11 @@ const router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
     // access store via `router.app.$store` here.
-    console.log(store.getters.adminRole)
-
-    if (store.getters.adminRole == true && to.name == "NoPermissionError") {
-        next({ name: "Dashboard" });
-    } else if (store.getters.adminRole == true && store.getters.hasPrescriptionAccess == false) {
-        next();
+    console.log(store.getters)
+        // next()
+        // else if ..  from.fullPath != "/auth/signin" && 
+    if (store.getters.adminRole == true) {
+        next
     } else if (store.getters.hasPrescriptionAccess == undefined) {
         next();
     } else if (from.fullPath === "/auth/signin" || to.fullPath === "/auth/signin") {

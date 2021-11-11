@@ -346,7 +346,8 @@ moderatorController
           }
         ];
         this.userInfo.dashboard.push(...o);
-      } else {
+      } 
+      if(this.currentLoggedUserType.includes('DOCTOR')) {
         let o = [
           {
             text: "Todays Appointment",

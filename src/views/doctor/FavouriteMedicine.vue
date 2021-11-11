@@ -33,7 +33,7 @@
                                        <b>Strength</b>
                                    </v-col>
                                    <v-col>
-                                       <b>Price</b>
+                                       <b>Type</b>
                                    </v-col>
                                    <v-col>
                                        <b>Action</b>
@@ -51,10 +51,10 @@
                                                 ><v-icon>mdi-pill</v-icon></v-avatar>
                                             </v-col>
                                             <v-col>
-                                                 <h3 class="m-2">
-                                                    {{medicine.brandName}} <br>
+                                                 <h4 class="mt-2">
+                                                    {{medicine.medicineName}} <br>
                                                     <v-chip small :color="getRandomColor()" class="mt-2" x-small>{{medicine.genericName}}</v-chip>
-                                                </h3>   
+                                                </h4>   
                                             </v-col>
                                         </v-row>
                                     </v-col>
@@ -70,13 +70,13 @@
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
-                                            {{medicine.price}}
+                                            {{medicine.type}}
                                         </v-card-subtitle>
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
                                              <v-btn-toggle>
-                                                     <v-btn color="error" depressed small ><v-icon style="color:white!important;" small>mdi-delete</v-icon></v-btn>
+                                                     <v-btn color="error" @click="deletefromfav(medicine.id)" depressed small ><v-icon style="color:white!important;" small>mdi-delete</v-icon></v-btn>
                                             </v-btn-toggle>
                                         </v-card-subtitle>
                                     </v-col>
@@ -122,10 +122,8 @@
 </template>
 
 <script>
-import { initJsStore } from "@/service/idb_service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { ABService } from "@/service/Generic_Service.js";
-import { v4 as uuidv4 } from 'uuid';
 export default {
   data () {
     return {
@@ -163,7 +161,7 @@ export default {
      },
     
     async getfavMedicineList(){
-        let data = await this.ABS.getData("Drugs");
+        let data = JSON.parse(localStorage.getItem("favMedicineList"));
         console.log(data)
         this.favMedicine = data;
     },
@@ -184,13 +182,25 @@ export default {
         console.log(item)
         this.favMedicine.push(item[0].data);
         console.log(this.favMedicine)
+        localStorage.setItem("favMedicineList",JSON.stringify(this.favMedicine));
+        this.addFavDialog = false;
+    },
+    deletefromfav(id){
+        let medList = this.favMedicine
+        for(var i=0;i<medList.length;i++){
+            if(medList[i].id==id){
+                medList.splice(i, 1);
+            }
+        }
+        this.favMedicine = medList
+        localStorage.setItem("favMedicineList",JSON.stringify(this.favMedicine));
     }
   },
   mounted(){
        this.ABS = new ABService();
        this.DS = new DrugService();
         this.getDrugs();
-    //    this.getfavMedicineList();
+       this.getfavMedicineList();
   }
 }
 </script>
