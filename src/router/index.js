@@ -153,8 +153,10 @@ router.beforeEach((to, from, next) => {
     console.log(store.getters)
         // next()
         // else if ..  from.fullPath != "/auth/signin" && 
-    if (store.getters.adminRole == true) {
-        next
+    if (store.getters.adminRole == true && to.name == "NoPermissionError") {
+        next({ name: "Dashboard" });
+    } else if (store.getters.adminRole == true && store.getters.hasPrescriptionAccess == false) {
+        next();
     } else if (store.getters.hasPrescriptionAccess == undefined) {
         next();
     } else if (from.fullPath === "/auth/signin" || to.fullPath === "/auth/signin") {
