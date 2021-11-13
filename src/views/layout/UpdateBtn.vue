@@ -48,6 +48,7 @@ const BULK_APPOINTMENTS_API = API_URL + "appointments/bulk";
 const BULK_PRESCRIPTION_API = API_URL + "appointments/prescriptions/bulk";
 const GET_APPOINtMENTS_API = API_URL + "appointments/";
 const EDIT_PRESCRIPTION_HEADER_API = API_URL + "prescriptions/headers";
+const FAV_MEDICINE_API = API_URL + "prescriptions/favourite-drugs";
 import axios from "axios";
 import { initJsStore } from "@/service/idb_service.js";
 import { DrugService } from "@/service/drugs_service.js";
@@ -63,7 +64,10 @@ export default {
       students: [],
       dialog: false,
       message: "",
-      currentProgress: 0
+      currentProgress: 0,
+      favMedicineList: {
+        favouriteDrugs: []
+      }
     };
   },
   async beforeCreate() {},
@@ -133,6 +137,7 @@ export default {
       }
     },
     syncPrescriptionHeader() {
+      this.message = "Saving prescription Template...";
       axios({
         method: "put",
         url: EDIT_PRESCRIPTION_HEADER_API,
@@ -153,10 +158,31 @@ export default {
           console.log(r);
         });
     },
+    syncFavMedicine() {
+      this.message = "Updateing Fav Medicine!";
+      console.log("fav medicine")
+      console.log(this.favMedicineList)
+      axios({
+        method: "put",
+        url: FAV_MEDICINE_API,
+        data: this.favMedicineList,
+        headers: {
+          Authorization: this.auth,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(r => {
+          console.log(r.data);
+        })
+        .catch(r => {
+          console.log(r);
+        });
+    },
     sendBulkAppointmentsToServer() {
       this.dialog = true;
-      this.message = "Sending Appointments to Server ...";
       this.syncPrescriptionHeader();
+      this.syncFavMedicine();
+      this.message = "Sending Appointments to Server ...";
       let localPrescriptions = Promise.resolve(
         this.getLocalDataParsed("LocalAppointment")
       );
@@ -288,6 +314,7 @@ export default {
     this.GS = new ABService();
     // this.sendBulkAppointmentsToServer();
     // console.log(this.formatDate(new Date()).toString())
+    this.favMedicineList.favouriteDrugs = JSON.parse(localStorage.getItem("favMedicineList"));
   }
 };
 </script>

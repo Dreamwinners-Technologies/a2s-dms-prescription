@@ -103,12 +103,12 @@
             </v-list-item-icon>
             <v-list-item-title>Edit Template</v-list-item-title>
           </v-list-item>
-          <!-- <v-list-item v-if="isDoctor" link to="settings">
+          <v-list-item v-if="isAdmin" link to="doctor-support">
             <v-list-item-icon>
-              <v-icon>mdi-power-settings</v-icon>
+              <v-icon>mdi-message-alert</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Settings</v-list-item-title>
-          </v-list-item> -->
+            <v-list-item-title>Doctor Support</v-list-item-title>
+          </v-list-item>
           <v-list-item link to="about">
             <v-list-item-icon>
               <v-icon>mdi-information-outline</v-icon>
