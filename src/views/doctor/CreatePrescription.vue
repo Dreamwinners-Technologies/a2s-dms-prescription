@@ -88,6 +88,7 @@
               >
                 <template slot="append">
                   <v-btn
+                  :disabled="selectedAppointment == 'null'"
                     @click.stop="
                       (dialogSideData = true),
                         (sideDataSubmitCurrentTableName = 'onExamination')
@@ -137,6 +138,7 @@
               >
                 <template slot="append">
                   <v-btn
+                  :disabled="selectedAppointment == 'null'"
                     @click.stop="
                       (dialogSideData = true),
                         (sideDataSubmitCurrentTableName = 'diagnosis')
@@ -188,6 +190,7 @@
               >
                 <template slot="append">
                   <v-btn
+                  :disabled="selectedAppointment == 'null'"
                     @click.stop="
                       (dialogSideData = true),
                         (sideDataSubmitCurrentTableName = 'investigationAdvice')
@@ -533,14 +536,41 @@
         </v-form>
       </v-card>
     </v-dialog>
-
+    <v-dialog v-model="dialogAddDrugsHintData" max-width="300px">
+      <v-card class="pa-4">
+        <h2>Save Information</h2>
+        <v-form>
+          <v-text-field
+            v-model="addDrugsHintDataSubmitModel"
+            placeholder=""
+            class="mt-2 pa-0"
+            outlined
+            color="teal"
+            dense
+            label=""
+          >
+          </v-text-field>
+          <v-btn
+            @click="submitAddDrugsHintData()"
+            color="primary"
+            class="text-center"
+            depressed
+          >
+            Submit
+          </v-btn>
+        </v-form>
+      </v-card>
+    </v-dialog>
     <v-dialog
       title="Prescription Preview"
       v-model="prescriptionPriview"
       max-width="980px"
     >
       <v-card class="pa-5">
-        <h3>Preview: Prescription of ( Rahim Mia )</h3>
+        <div class="text-center">
+          <h3>Preview of Prescription</h3>
+        </div>
+
         <div id="prescription">
           <v-container>
             <v-row class="my-0">
@@ -681,9 +711,13 @@
                 </v-footer>
               </v-col>
             </v-row>
-            <v-row class="mt-0" v-if="middleHeader!=null">
+            <v-row class="mt-0" v-if="middleHeader != null">
               <v-col style="border-top: 1px solid #f0f0f0 !important;">
-                <span class="preview" style="text-align: center !important;" v-html="middleHeader"></span>
+                <span
+                  class="preview"
+                  style="text-align: center !important;"
+                  v-html="middleHeader"
+                ></span>
               </v-col>
             </v-row>
             <!-- <br> 
@@ -727,7 +761,8 @@
             <v-autocomplete
               v-model="addDrugModel.brand"
               :items="drugs"
-              item-text="medicineName"
+              :item-value="getFullOrMiniDrugsName"
+              :item-text="getFullOrMiniDrugsName"
               placeholder="Search Drug Name"
               class="mt-2 pa-0"
               outlined
@@ -747,7 +782,7 @@
               dense
               label="Dose"
             >
-              <template slot="append">
+              <!-- <template slot="append">
                 <v-btn
                   depressed
                   class="mt-0"
@@ -757,23 +792,42 @@
                 >
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
-              </template>
+              </template> -->
             </v-autocomplete>
           </v-col>
           <v-col>
-            <v-text-field
+            <v-combobox
               v-model="addDrugModel.instruction"
-              placeholder="Search Drug Name"
+              placeholder="Provide instruction"
+              :items="addDrugHintData.instruction"
               class="mt-2 pa-0"
               outlined
+              :search-input.sync="searchModel.instruction"
+              persistent-hint
+              hide-selected
+              small-chips
               color="teal"
               dense
               label="Instruction"
             >
-            </v-text-field>
+              <template slot="append">
+                <v-btn
+                  depressed
+                  class="mt-0"
+                  small
+                  style="vertical-align:center;margin-top:-2px !important; margin-right:-4px !important"
+                 @click.stop="
+                      (dialogAddDrugsHintData = true),
+                        (addDrugsHintDataSubmitCurrentTableName = 'instruction')
+                    "
+                >
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </template>
+            </v-combobox>
           </v-col>
           <v-col>
-            <v-text-field
+            <!-- <v-text-field
               v-model="addDrugModel.duration"
               placeholder="Duration"
               class="mt-2 pa-0"
@@ -782,7 +836,45 @@
               dense
               label="Duration"
             >
-            </v-text-field>
+            </v-text-field> -->
+            <v-combobox
+              v-model="addDrugModel.duration"
+              placeholder="Duration"
+              :items="addDrugHintData.duration"
+              class="mt-2 pa-0"
+              outlined
+              :search-input.sync="searchModel.duration"
+              persistent-hint
+              hide-selected
+              small-chips
+              color="teal"
+              dense
+              label="Duration"
+            >
+              <template slot="append">
+                <v-btn
+                  depressed
+                  class="mt-0"
+                  small
+                  style="vertical-align:center;margin-top:-2px !important; margin-right:-4px !important"
+                                   @click.stop="
+                      (dialogAddDrugsHintData = true),
+                        (addDrugsHintDataSubmitCurrentTableName = 'duration')"
+                >
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </template>
+            </v-combobox>
+          </v-col>
+        </v-row>
+        <v-row class="mt-0" dense>
+          <v-col class="tick">
+            <v-checkbox
+              v-model="isMedicineFull"
+              @change="setDrugsDataStyle"
+              label="Drugs Full Info"
+            >
+            </v-checkbox>
           </v-col>
         </v-row>
         <v-textarea
@@ -808,9 +900,15 @@ import { initJsStore } from "@/service/idb_service.js";
 import { ABService } from "@/service/Generic_Service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { htmlToPaper } from "vue-html-to-paper";
+import VueSuggest from "vue-simple-suggest";
+import "vue-simple-suggest/dist/styles.css";
 export default {
+  components: {
+    VueSuggest
+  },
   data() {
     return {
+      isMedicineFull: false,
       leftHeader: "",
       rightHeader: "",
       middleHeader: "",
@@ -818,8 +916,11 @@ export default {
       DS: null,
       snackbar: false,
       dialogSideData: false,
+      dialogAddDrugsHintData: false,
       sideDataSubmitModel: "",
+      addDrugsHintDataSubmitModel: "",
       sideDataSubmitCurrentTableName: "",
+      addDrugsHintDataSubmitCurrentTableName: "",
       input: "",
       icon: "",
       input: "",
@@ -841,6 +942,26 @@ export default {
         onExamination: [],
         diagnosis: [],
         investigationAdvice: []
+      },
+      // drugsHintData: {
+      //    instruction: [],
+      //    duration: []
+      // },
+      addDrugHintData: {
+        instruction: ["Take medicine now", "Only before sleep"],
+        duration: [
+          "1 day",
+          "2 days",
+          "3 days",
+          "4 days",
+          "5 days",
+          "6 days",
+          "7 days",
+          "10 days",
+          "15 days",
+          "30 days"
+        ],
+        note: []
       },
       addDrugModel: {
         brand: "",
@@ -887,6 +1008,10 @@ export default {
         investigationAdvice: "",
         onExamination: ""
       },
+      searchModel: {
+        instruction: "",
+        duration: ""
+      },
       appointment: {
         data: {
           appointmentDate: "",
@@ -931,6 +1056,14 @@ export default {
     show() {
       return 0;
     },
+    setDrugsDataStyle() {
+      this.addDrugModel.brand = "";
+    },
+    getFullOrMiniDrugsName(item) {
+      if (this.isMedicineFull)
+        return `${item.genericName} ${item.medicineName}`;
+      else return `${item.medicineName}`;
+    },
     async submitSideData() {
       let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {
         data: this.sideDataSubmitModel
@@ -941,6 +1074,16 @@ export default {
       }
       this.sideDataSubmitModel = "";
     },
+    async submitAddDrugsHintData() {
+      let r = await this.ABS.addData(this.addDrugsHintDataSubmitCurrentTableName, {
+        data: this.addDrugsHintDataSubmitModel
+      });
+      if (r) {
+        this.getAddDrugHintData(this.addDrugsHintDataSubmitCurrentTableName);
+        this.dialogAddDrugsHintData = false;
+      }
+      this.addDrugsHintDataSubmitModel = "";
+    },
     async getAppointmentData() {
       let id = localStorage.getItem("selectedAppointment");
       this.selectedAppointment = id;
@@ -949,7 +1092,7 @@ export default {
       if (id != null) {
         let data = await this.ABS.getDataById("Appointment", id);
         this.appointment = data[0];
-        console.log(this.appointment.data.prescription)
+        console.log(this.appointment.data.prescription);
         if (this.appointment.data.prescription == undefined) {
           this.appointment.data.prescription = {
             advice: [],
@@ -1017,6 +1160,19 @@ export default {
         output.push(item.data);
       });
       this.sideData[tableName] = output;
+    },
+    async getAddDrugHintData(tableName) {
+      let output = [],
+        response = await this.ABS.getData(tableName);
+
+      response.forEach(function(item) {
+        delete item.id;
+        output.push(item.data);
+      });
+      for(let i = 0;i < this.addDrugHintData[tableName].length;i++){
+        output.push(this.addDrugHintData[tableName][i]);
+      }
+      this.addDrugHintData[tableName] = output;
     },
     async getDrugs() {
       let output = [];
@@ -1144,6 +1300,9 @@ export default {
     this.getSideData("onExamination");
     this.getSideData("diagnosis");
     this.getSideData("investigationAdvice");
+    this.getAddDrugHintData("instruction");
+    this.getAddDrugHintData("duration");
+    this.getAddDrugHintData("note");
     this.getDrugs();
     this.getAppointmentData();
   }

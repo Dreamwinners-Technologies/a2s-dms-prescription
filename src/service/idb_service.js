@@ -40,6 +40,45 @@ const getDatabase = () => {
             },
         }
     };
+    const tblInstruction = {
+        name: 'instruction',
+        columns: {
+            id: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.String
+            },
+        }
+    };
+    const tblDuration = {
+        name: 'duration',
+        columns: {
+            id: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.String
+            },
+        }
+    };
+    const tblNotes = {
+        name: 'note',
+        columns: {
+            id: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.String
+            },
+        }
+    };
     const tblOnExamination = {
         name: 'onExamination',
         columns: {
@@ -161,8 +200,8 @@ const getDatabase = () => {
     };
     const dataBase = {
         name: "a2sdms",
-        version: 13,
-        tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile]
+        version: 15,
+        tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes]
     };
     return dataBase;
 };

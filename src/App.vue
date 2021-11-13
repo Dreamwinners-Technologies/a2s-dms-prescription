@@ -297,6 +297,9 @@ export default {
 .preview p {
   margin-bottom: 0px !important;
 }
+.tick .v-input--selection-controls{
+  margin-top: 0px;
+}
 body {
   font-family: "Open Sans", sans-serif;
 }
