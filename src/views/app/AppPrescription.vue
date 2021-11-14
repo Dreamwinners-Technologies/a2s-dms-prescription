@@ -139,13 +139,13 @@
                   <span
                       class="preview"
                       style="text-align: center !important;"
-                      v-html="middleHeader"
+                      v-html="appointment.data.prescriptionHeaderModel.middleHeader"
                     ></span>
                   </v-col>
                   <v-spacer> </v-spacer>
                   <v-col cols="3" style="text-align:right !important">
                     Prescriped BY <br>
-                    <b>{{appointment.data.updatedBy}}</b>
+                    <b>{{appointment.data.prescriptionHeaderModel.updatedBy}}</b>
                   </v-col>
               </v-row>
         </div>

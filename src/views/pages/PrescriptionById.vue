@@ -166,7 +166,7 @@
                   <v-spacer> </v-spacer>
                   <v-col cols="3" style="text-align:right !important">
                     Prescriped BY <br>
-                    <b>{{appointment.data.prescriptionHeaderModel.updatedBy}}</b>
+                    <b>{{appointment.data.updatedBy}}</b>
                   </v-col>
               </v-row>
           </div>
