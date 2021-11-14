@@ -118,6 +118,19 @@ const getDatabase = () => {
             },
         }
     };
+    const tblAdvice = {
+        name: 'advice',
+        columns: {
+            Id: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            data: {
+                notNull: false,
+                dataType: DATA_TYPE.String
+            },
+        }
+    };
     const tblLocalPrescription = {
         name: 'LocalPresciption',
         columns: {
@@ -201,7 +214,7 @@ const getDatabase = () => {
     const dataBase = {
         name: "a2sdms",
         version: 15,
-        tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes]
+        tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes]
     };
     return dataBase;
 };
