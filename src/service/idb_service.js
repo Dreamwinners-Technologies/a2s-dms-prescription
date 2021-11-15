@@ -10,7 +10,7 @@ const getDatabase = () => {
                 autoIncrement: false
             },
             data: {
-                dataType: DATA_TYPE.String
+                dataType: DATA_TYPE.Object
             },
         }
     };
@@ -200,7 +200,7 @@ const getDatabase = () => {
     };
     const dataBase = {
         name: "a2sdms",
-        version: 15,
+        version: 16,
         tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes]
     };
     return dataBase;

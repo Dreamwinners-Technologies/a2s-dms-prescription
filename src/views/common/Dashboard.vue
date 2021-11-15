@@ -66,46 +66,51 @@
               >
                 <v-row>
                   <v-col cols="3">
-                    <v-img
+                     <v-avatar size="160" color="indigo">
+      <v-icon size="120" dark>
+        mdi-account-circle
+      </v-icon>
+    </v-avatar>
+                    <!-- <v-img
                       sizes="10"
                       class="ma-5 mx-15"
                       style="width:160px;height:160px;border:1px solid gray;border-radius:100px!important"
                       src="https://www.cdc.gov/drugoverdose/training/modules/module1/images/welcomeimage.png"
-                    ></v-img>
+                    ></v-img> -->
                   </v-col>
                   <v-col cols="4">
                     <h2 class="ma-4">
                       <b
-                        >Dr. {{ userInfo.firstName }} {{ userInfo.lastname }}</b
+                        >Dr. {{ userInfo.name }}</b
                       >
                     </h2>
                     <v-chip small outlined class="ml-4"
-                      >{{ userInfo.degree }} , {{ userInfo.institute }}</v-chip
+                      >{{ userInfo.designation || "not provided" }} , {{ userInfo.organization || "not provided" }}</v-chip
                     >
                   </v-col>
                   <v-col>
                     <v-row>
                       <v-col>
                         <v-card-subtitle>
-                          <b>Email:</b> <br />{{ userInfo.email }}
+                          <b>Email:</b> <br />{{ userInfo.email || "not provided" }}
                         </v-card-subtitle>
                       </v-col>
                       <v-col align-self="center">
                         <v-chip color="teal" class="white--text" small link
-                          ><b>{{ userInfo.role }}</b></v-chip
+                          ><b>Doctor</b></v-chip
                         >
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col>
                         <v-card-subtitle>
-                          <b>Phone Number:</b> <br />{{ userInfo.phone }}
+                          <b>Phone Number:</b> <br />{{ userInfo.phoneNo }}
                         </v-card-subtitle>
                       </v-col>
                       <v-col>
                         <v-card-subtitle>
                           <b>Address:</b> <br />
-                          {{ userInfo.address }}
+                          {{ userInfo.thana }} , {{ userInfo.district}}
                         </v-card-subtitle>
                       </v-col>
                     </v-row>
@@ -223,12 +228,14 @@
 import axios from "axios";
 import { mapGetters } from "vuex";
 import moderatorController from "@/views/admin/ModeratorController";
+import { ABService } from "@/service/Generic_Service.js";
 export default {
   components: {
 moderatorController
   },
   data() {
     return {
+      GS: null,
       idx: 0,
       input: "",
       adddialog: false,
@@ -238,14 +245,6 @@ moderatorController
       usedData :{},
       auth: "Bearer " + localStorage.getItem("token"),
       userInfo: {
-        firstName: "Tasnim",
-        lastname: "Jara",
-        institute: "Dhaka Medical College",
-        degree: "MBBS",
-        phone: "01734543027",
-        email: "sandra.dr@gmail.com",
-        role: "Doctor",
-        address: "Dhaka, Bangladesh",
         dashboard: []
       },
       appointmentList: [
@@ -288,28 +287,6 @@ moderatorController
     };
   },
   methods: {
-    getProfileInfo() {
-      console.log(this.auth);
-      axios({
-        method: "get",
-        url: this.GET_LOGGED_IN_PROFILE_API,
-        headers: {
-          Authorization: this.auth,
-          "Content-Type": "application/json"
-        }
-      })
-        .then(r => {
-          console.log(r.data);
-          this.userInfo = r.data;
-          localStorage.setItem("userInfo", JSON.stringify(r.data));
-          this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-          console.log(this.userInfo.firstName);
-          // location.reload();
-        })
-        .catch(r => {
-          console.log(r);
-        });
-    },
     getRandomColor() {
       return (
         "rgb(" +
@@ -323,6 +300,14 @@ moderatorController
     },
     show() {
       return 0;
+    },
+  async getProfileData() {
+      let 
+       response = await this.GS.getData("ProfData");
+
+      this.userInfo = Object.assign({}, this.userInfo, response[0].data);
+      this.userInfo
+      console.log(this.userInfo)
     },
     setSideDataBasedOnUser() {
       console.log(this.dashboard);
@@ -383,11 +368,13 @@ moderatorController
     ...mapGetters(["currentLoggedUserType"])
   },
   mounted() {
+    this.GS = new ABService();
     // this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-     //this.getProfileInfo();
+     this.getProfileData();
     let user = JSON.parse(localStorage.getItem("uData"));
     this.userData = user;
     this.setSideDataBasedOnUser();
+    
   }
 };
 </script>

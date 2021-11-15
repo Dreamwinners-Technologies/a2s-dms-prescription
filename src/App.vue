@@ -120,7 +120,7 @@ export default {
           let as = new ABService();
           let res = as.addData("ProfData", {
             Id: 1,
-            data: JSON.stringify(r.data)
+            data: r.data
           });
         })
         .catch(r => {
