@@ -30,7 +30,7 @@
               <v-col> Date: {{ new Date().toLocaleDateString() }} </v-col>
             </v-row>
             <hr />
-            <v-row class="ma-0" style="height:640px">
+            <v-row class="ma-0" style="height:670px">
               <v-col
                 cols="4"
                 style="border-right: 1px solid #f0f0f0 !important;"
@@ -126,41 +126,49 @@
                 <br />
                 <v-footer>
                   <v-row>
-                    <v-col class="mx-2 mt-4">
+                    <v-col class="mx-2 mt-2">
                       <b>Given Advice: </b>
-                      <p
-                        style="margin:0px;display:block"
+                      <ul class="px-5" style="list-style-type:disc">
+                      <li
                         v-for="item in appointment.data.prescription.advice"
                         :key="item"
                       >
                         {{ item }}
-                      </p>
+                      </li>
+                    </ul>
                     </v-col>
                   </v-row>
                 </v-footer>
               </v-col>
             </v-row>
-            <v-row class="mt-0" v-if="middleHeader!=null">
-              <v-col style="border-top: 1px solid #f0f0f0 !important;">
-                <span class="preview" style="text-align: center !important;" v-html="middleHeader"></span>
-              </v-col>
-            </v-row>
-            <br>
-            <v-footer absolute>
-              <v-row
-                class="pt-2"
+            <v-row
+                class="pt-2 mt-0"
                 style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;"
               >
-                <v-col>
-                  Made By <br />
-                  A2S DMS Prescription
-                </v-col>
-                <v-spacer> </v-spacer>
-                <v-col style="text-align:right !important">
-                  https://prescription.a2sdms.com
-                </v-col>
+                 <v-col cols="3">
+                    Made By <br />
+                    <v-img
+                    max-width="200px"
+                    alt="A2S Need Bangladesh"
+                    title="A2S Need Bangladesh"
+                    src="../../assets/hero-logo.png">
+
+                    </v-img>
+                  </v-col>
+                   <v-spacer> </v-spacer>
+                  <v-col cols="5" style="border-top: 1px solid #f0f0f0 !important;">
+                  <span
+                      class="preview"
+                      style="text-align: center !important;"
+                      v-html="middleHeader"
+                    ></span>
+                  </v-col>
+                  <v-spacer> </v-spacer>
+                  <v-col cols="3" style="text-align:right !important">
+                    Prescriped BY <br>
+                    <b>{{appointment.data.updatedBy}}</b>
+                  </v-col>
               </v-row>
-            </v-footer>
           </div>
           <br />
           <br />

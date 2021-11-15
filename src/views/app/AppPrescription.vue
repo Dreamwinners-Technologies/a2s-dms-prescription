@@ -3,16 +3,17 @@
     <v-main>
     <div class="body">
         <v-container>
-        <div class="print-container" >
+            <h1 class="mx-auto" style="text-align:center" v-if="appointment.data.prescription == null">Prescription for this Appointment is not created Yet.</h1>
+        <div v-if="appointment.data.prescription != null" class="print-container" >
         <v-row class="my-0">
-            <v-col>
+            <v-col v-if="appointment.data.prescriptionHeaderModel.leftHeader">
                 <span
                   class="preview"
                   style="text-align: left !important;"
                   v-html="appointment.data.prescriptionHeaderModel.leftHeader"
                 ></span>
               </v-col>
-              <v-col style="text-align:right !important">
+              <v-col v-if="appointment.data.prescriptionHeaderModel.leftHeader" style="text-align:right !important">
                 <span
                   class="preview"
                   style="text-align: right !important;"
@@ -36,9 +37,9 @@
             </v-col>
         </v-row>
         <hr>
-        <v-row class="ma-0" style="height:630px">
+        <v-row class="ma-0" style="height:670px">
             <v-col cols="4" style="border-right: 1px solid #f0f0f0 !important;">
-                <v-row>
+                <v-row v-if="appointment.data.prescription.chiefComplaints!=null">
                     <v-col>
                     <b>Cheif Complaints :</b><br><br>
                     <ul class="px-4" style="list-style-type:none">
@@ -103,36 +104,50 @@
                     <br>
                     <div>
                         <v-row>
-                            <v-col class="mx-2 mt-4">
-                                <b>Given Advice: </b><p style="margin:0px;display:block" v-for="item in appointment.data.prescription.advice" :key="item"> {{item}} </p>
+                             <v-col class="mx-2 mt-2">
+                            <b>Given Advice: </b>
+                            <ul class="px-5" style="list-style-type:disc">
+                            <li
+                                v-for="item in appointment.data.prescription.advice"
+                                :key="item"
+                            >
+                                {{ item }}
+                            </li>
+                            </ul>
                             </v-col>
                         </v-row>
                     </div>
             </v-col>
         </v-row>
-       <v-row class="mt-0" v-if="appointment.data.prescriptionHeaderModel.middleHeader!=null">
-              <v-col style="border-top: 1px solid #f0f0f0 !important;">
-                <span class="preview" style="text-align: center !important;" v-html="appointment.data.prescriptionHeaderModel.middleHeader"></span>
-              </v-col>
-            </v-row>
-            <br>
-            <br>
-            <br>
-            <v-footer absolute>
-              <v-row
-                class="pt-2"
+<!-- footer  -->
+            <v-row
+                class="pt-2 mt-0"
                 style="border-top: 1px solid #F0F0F0 !important;background-color:#F7F7F7 !important;"
               >
-                <v-col>
-                  Made By <br />
-                  A2S DMS Prescription
-                </v-col>
-                <v-spacer> </v-spacer>
-                <v-col style="text-align:right !important">
-                  https://prescription.a2sdms.com
-                </v-col>
+                 <v-col cols="3">
+                    Made By <br />
+                    <v-img
+                    max-width="200px"
+                    alt="A2S Need Bangladesh"
+                    title="A2S Need Bangladesh"
+                    src="https://prescription.a2sdms.com/img/hero-logo.6e992074.png">
+
+                    </v-img>
+                  </v-col>
+                   <v-spacer> </v-spacer>
+                  <v-col v-if="appointment.data.prescriptionHeaderModel.middleHeader" cols="5" style="border-top: 1px solid #f0f0f0 !important;">
+                  <span
+                      class="preview"
+                      style="text-align: center !important;"
+                      v-html="appointment.data.prescriptionHeaderModel.middleHeader"
+                    ></span>
+                  </v-col>
+                  <v-spacer> </v-spacer>
+                  <v-col cols="3" style="text-align:right !important">
+                    Prescriped BY <br>
+                    <b>{{appointment.data.prescriptionHeaderModel.updatedBy}}</b>
+                  </v-col>
               </v-row>
-            </v-footer>
         </div>
         <!-- <br>
         <br>

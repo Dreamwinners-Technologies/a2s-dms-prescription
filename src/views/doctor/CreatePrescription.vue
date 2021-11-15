@@ -456,6 +456,64 @@
             </v-col>
           </v-row>
 
+          <!-- advice area  -->
+
+           <v-row>
+            <v-col>
+            <v-card
+                class="pa-4 mt-2"
+                elevation="0"
+                style="border: 1px solid #e7e7e7"
+                width="100%"
+              >
+              <h4>Advice To Patient: </h4>
+              <v-autocomplete
+                v-model="sideModels.advice"
+                :items="sideData.advice"
+                chips
+                label="Advice"
+                full-width
+                hide-details
+                hide-no-data
+                hide-selected
+                multiple
+                single-line
+                class="mt-2 pa-0 mb-6"
+                outlined
+                color="#666666"
+                dense
+                @change="setSideDataTextFieldTextByTableName('advice')"
+              >
+                <template slot="append">
+                  <v-btn
+                  :disabled="selectedAppointment == 'null'"
+                    @click.stop="
+                      (dialogSideData = true),
+                        (sideDataSubmitCurrentTableName = 'advice')
+                    "
+                    depressed
+                    class="mt-0"
+                    small
+                    style="vertical-align:center;margin-top:-2px !important; margin-right:-4px !important"
+                  >
+                    <v-icon>mdi-plus</v-icon>
+                  </v-btn>
+                </template>
+              </v-autocomplete>
+              <v-textarea
+                style="margin-top:0px margin-bottom:0px !important"
+                name="input-7-1"
+                outlined
+                v-model="sideDataTextFieldModel.advice"
+                background-color="white"
+                color="#666666"
+                auto-grow
+                placeholder="type here..."
+              ></v-textarea>
+            </v-card>
+            </v-col>
+          </v-row>
+
           <!-- print save button  -->
 
           <v-row style="text-align:center !important;">
@@ -697,31 +755,21 @@
                 <br />
                 <v-footer>
                   <v-row>
-                    <v-col class="mx-2 mt-4">
+                    <v-col class="mx-2 mt-2">
                       <b>Given Advice: </b>
-                      <p
-                        style="margin:0px;display:block"
+                      <ul class="px-5" style="list-style-type:disc">
+                      <li
                         v-for="item in appointment.data.prescription.advice"
                         :key="item"
                       >
                         {{ item }}
-                      </p>
+                      </li>
+                    </ul>
                     </v-col>
                   </v-row>
                 </v-footer>
               </v-col>
             </v-row>
-            <v-row class="mt-0" v-if="middleHeader != null">
-              <v-col style="border-top: 1px solid #f0f0f0 !important;">
-                <span
-                  class="preview"
-                  style="text-align: center !important;"
-                  v-html="middleHeader"
-                ></span>
-              </v-col>
-            </v-row>
-            <!-- <br> 
-        <br> -->
             <br />
             <br />
             <v-footer absolute>
@@ -732,11 +780,24 @@
                 >
                   <v-col>
                     Made By <br />
-                    A2S Need Bangladesh | Prescription
+                    <v-img
+                    width="200px"
+                    src="../../assets/hero-logo.png">
+
+                    </v-img>
+                  </v-col>
+                   <v-spacer> </v-spacer>
+                  <v-col cols="4" style="border-top: 1px solid #f0f0f0 !important;">
+                  <span
+                      class="preview"
+                      style="text-align: center !important;"
+                      v-html="middleHeader"
+                    ></span>
                   </v-col>
                   <v-spacer> </v-spacer>
                   <v-col style="text-align:right !important">
-                    https://prescription.a2sdms.com
+                    Prescriped BY <br>
+                    <b>{{appointment.data.updatedBy}}</b>
                   </v-col>
                 </v-row>
               </v-container>
@@ -935,13 +996,15 @@ export default {
         chiefComplaints: "",
         onExamination: "",
         diagnosis: "",
-        investigationAdvice: ""
+        investigationAdvice: "",
+        advice: ""
       },
       sideData: {
         chiefComplaints: [],
         onExamination: [],
         diagnosis: [],
-        investigationAdvice: []
+        investigationAdvice: [],
+        advice:[]
       },
       // drugsHintData: {
       //    instruction: [],
@@ -1006,7 +1069,8 @@ export default {
         chiefComplaints: "",
         diagnosis: "",
         investigationAdvice: "",
-        onExamination: ""
+        onExamination: "",
+        advice:""
       },
       searchModel: {
         instruction: "",
@@ -1061,7 +1125,7 @@ export default {
     },
     getFullOrMiniDrugsName(item) {
       if (this.isMedicineFull)
-        return `${item.genericName} ${item.medicineName}`;
+        return `${item.genericName} | ${item.medicineName}`;
       else return `${item.medicineName}`;
     },
     async submitSideData() {
@@ -1129,6 +1193,9 @@ export default {
       );
       this.sideDataTextFieldModel.investigationAdvice = this.arrayToString(
         this.appointment.data.prescription.investigationAdvice
+      );
+      this.sideDataTextFieldModel.advice = this.arrayToString(
+        this.appointment.data.prescription.advice
       );
     },
     crearSelectedAppointment() {
@@ -1227,6 +1294,9 @@ export default {
       this.appointment.data.prescription.investigationAdvice = this.stringToArray(
         this.sideDataTextFieldModel.investigationAdvice
       );
+      this.appointment.data.prescription.advice = this.stringToArray(
+        this.sideDataTextFieldModel.advice
+      );
     },
     setLocalPrescriptionData() {
       // this.localprescription.id = this.appointment.data.id;
@@ -1298,6 +1368,7 @@ export default {
     this.DS = new DrugService();
     this.getSideData("chiefComplaints");
     this.getSideData("onExamination");
+    this.getSideData("advice");
     this.getSideData("diagnosis");
     this.getSideData("investigationAdvice");
     this.getAddDrugHintData("instruction");
