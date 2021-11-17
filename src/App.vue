@@ -31,7 +31,7 @@
   </v-app>
 </template>
 <script>
-const API_URL = "https://need-doctors-backend.herokuapp.com/";
+const API_URL = "https://api.a2sdms.com/";
 const PROFILE_URL = API_URL + "auth/profile";
 const PRESCRIPTION_URL = API_URL + "prescriptions/medicines?pageNo=";
 const PRESCRIPTION_HEADER_API = API_URL + "prescriptions/headers";

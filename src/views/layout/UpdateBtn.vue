@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-const API_URL = "https://need-doctors-backend.herokuapp.com/";
+const API_URL = "https://api.a2sdms.com/";
 const BULK_APPOINTMENTS_API = API_URL + "appointments/bulk";
 const BULK_PRESCRIPTION_API = API_URL + "appointments/prescriptions/bulk";
 const GET_APPOINtMENTS_API = API_URL + "appointments/";

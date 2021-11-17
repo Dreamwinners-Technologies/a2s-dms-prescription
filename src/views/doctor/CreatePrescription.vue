@@ -1054,7 +1054,7 @@ export default {
           appointmentId: "",
           prescriptionRequest: {
             advice: [],
-            bloodPressure: 0,
+            bloodPressure: "0",
             chiefComplaints: [],
             diagnosis: [],
             investigationAdvice: [],
@@ -1096,7 +1096,7 @@ export default {
           paymentMethod: "Cash",
           prescription: {
             advice: [],
-            bloodPressure: 0,
+            bloodPressure: "",
             chiefComplaints: [],
             diagnosis: [],
             id: "",
@@ -1160,7 +1160,7 @@ export default {
         if (this.appointment.data.prescription == undefined) {
           this.appointment.data.prescription = {
             advice: [],
-            bloodPressure: 0,
+            bloodPressure: "",
             chiefComplaints: [],
             diagnosis: [],
             id: "",

@@ -202,7 +202,7 @@ export default {
         addMedicineDialog: false,
         medicineInfo:{},
         auth: "Bearer " + localStorage.getItem("token"),
-        MEDICINE_API: 'https://need-doctors-backend.herokuapp.com/medicines',
+        MEDICINE_API: 'https://api.a2sdms.com/medicines',
         medicineList: [],
         response:{},
         medicine: {

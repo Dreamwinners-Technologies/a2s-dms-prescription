@@ -22,6 +22,7 @@
       <v-spacer></v-spacer>
 
       <v-btn
+     v-if="currentLoggedUserType.includes('DOCTOR')"
         color="primary"
         to="rx-prescription"
         text

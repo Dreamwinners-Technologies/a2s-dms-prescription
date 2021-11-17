@@ -167,7 +167,7 @@
 </template>
 
 <script>
-const API_URL = "https://need-doctors-backend.herokuapp.com/";
+const API_URL = "https://api.a2sdms.com/";
 const GET_APPOINtMENTS_API = API_URL + "appointments/";
 import { initJsStore } from "@/service/idb_service.js";
 import { ABService } from "@/service/Generic_Service.js";

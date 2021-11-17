@@ -13,8 +13,8 @@ function getPrescriptionAccessDetails() {
 
 function hasAdminRole() {
     try {
-        let roles = (JSON.parse(localStorage.getItem("uData")).roles),
-            hasAdminRole = roles.includes("ADMIN");
+        let user = JSON.parse(localStorage.getItem("uData")),
+            hasAdminRole = user.roles.includes("SUPER_ADMIN") || user.roles.includes("ADMIN") || user.roles.includes("MODERATOR");
         return hasAdminRole;
     } catch (e) {
         return undefined;

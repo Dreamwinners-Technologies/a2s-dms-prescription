@@ -240,7 +240,7 @@ moderatorController
       input: "",
       adddialog: false,
       GET_LOGGED_IN_PROFILE_API:
-        "https://buggie-backend.herokuapp.com/auth/user-info",
+        "https://api.a2sdms.com/auth/user-info",
       user: {},
       usedData :{},
       auth: "Bearer " + localStorage.getItem("token"),

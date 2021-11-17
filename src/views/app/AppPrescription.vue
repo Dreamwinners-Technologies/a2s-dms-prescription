@@ -174,7 +174,7 @@ export default {
         return {
             ABS: null,
             selectedAppointment:"",
-            GET_APPONTMENT_API: "https://need-doctors-backend.herokuapp.com/appointments/prescriptions",
+            GET_APPONTMENT_API: "https://api.a2sdms.com/appointments/prescriptions",
             windowSize: {
                 x: 500,
                 y: 200,

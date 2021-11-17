@@ -93,7 +93,7 @@
 </template>
 <script>
 import axios from "axios";
-const API_URL = "https://need-doctors-backend.herokuapp.com/";
+const API_URL = "https://api.a2sdms.com/";
 const MODERATOR_API = API_URL + "admin/moderators";
 export default {
   data() {

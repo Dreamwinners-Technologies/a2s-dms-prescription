@@ -103,7 +103,7 @@ export default {
         cardInfo:{},
         supportInfo: {},
         auth: "Bearer " + localStorage.getItem("token"),
-        SUPPORT_API: 'https://need-doctors-backend.herokuapp.com/support-tickets',
+        SUPPORT_API: 'https://api.a2sdms.com/support-tickets',
         cardList: [],
         supportList: [],
         items: [

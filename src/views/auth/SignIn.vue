@@ -127,7 +127,7 @@
 import axios from "axios";
 
 const API_URL =
-  "https://need-doctors-backend.herokuapp.com/";
+  "https://api.a2sdms.com/";
 const OTP_VERIFY_API = API_URL + "auth/verify/otp?";
 const LOGIN_URL = API_URL + "auth/login";
 import { mapGetters } from "vuex";
@@ -226,7 +226,7 @@ export default {
           console.log(response);
           // localStorage.setItem('token', response.data.accessToken)
           let res = response.data;
-          if (res.roles.includes("USER") && (!res.roles.includes("ADMIN") &&  !res.roles.includes("SUPER_ADMIN"))) {
+          if (res.roles.includes("USER") && (!res.roles.includes("ADMIN") &&  !res.roles.includes("SUPER_ADMIN") && !res.roles.includes("MODERATOR"))) {
             this.dialog = false;
             this.snackbar = true;
             this.snackbarColor = "error";

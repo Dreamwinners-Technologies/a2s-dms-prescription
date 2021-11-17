@@ -112,7 +112,7 @@ export default {
         cardInfoDialog: false,
         cardInfo:{},
         auth: "Bearer " + localStorage.getItem("token"),
-        CARD_REQ_API: 'https://need-doctors-backend.herokuapp.com/cards/public',
+        CARD_REQ_API: 'https://api.a2sdms.com/cards/public',
         cardList: [],
         items: [
             {

@@ -361,8 +361,8 @@ export default {
     search: null,
     tab: null,
     auth: "Bearer " + localStorage.getItem("token"),
-    GET_GENERIC_API: 'https://need-doctors-backend.herokuapp.com/drugs/generics',
-    GENERIC_API:'https://need-doctors-backend.herokuapp.com/medicines/generics',
+    GET_GENERIC_API: 'https://api.a2sdms.com/drugs/generics',
+    GENERIC_API:'https://api.a2sdms.com/medicines/generics',
     genericList: [],
     genericInfo: {
       administration: '',
