@@ -185,7 +185,7 @@
 <script>
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
-const API_URL = "https://need-doctors-backend.herokuapp.com/";
+const API_URL = "https://api.a2sdms.com/";
 const DELETE_PRESCRIPTION_PERMISSION_API = API_URL + "admin/prescription/doctors/";
 export default {
   data() {
@@ -258,7 +258,7 @@ export default {
     getPrescriptionDoctorList() {
       axios
         .get(
-          "https://need-doctors-backend.herokuapp.com/admin/prescription/doctors?pageNo=0&pageSize=30"
+          "https://api.a2sdms.com/admin/prescription/doctors?pageNo=0&pageSize=30"
         )
         .then(response => {
           console.log(response);
@@ -272,7 +272,7 @@ export default {
       console.log(JSON.parse(localStorage.getItem("uData")).token);
       axios({
         method: "post",
-        url: `https://need-doctors-backend.herokuapp.com/admin/prescription/doctors/${this.doctorPrescriptionRequestNumber}`,
+        url: `https://api.a2sdms.com/admin/prescription/doctors/${this.doctorPrescriptionRequestNumber}`,
         data: this.doctorPrescriptionRequestModel,
         headers: {
           Authorization: this.auth,
@@ -284,6 +284,7 @@ export default {
           this.snackbar = true;
           this.snackbarColor = "success";
           this.snackbarText = "The doctor has been given permisson!";
+          this.getPrescriptionDoctorList()
           this.doctorPrescriptionRequestModel = {
             appointmentPerDay: 0,
             doctorChamberAddress: "",
