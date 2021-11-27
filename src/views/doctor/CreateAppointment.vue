@@ -32,11 +32,14 @@
                                    <v-col>
                                        <b>Payment</b>
                                    </v-col>
+                                     <v-col>
+                                       <b>Status</b>
+                                   </v-col>
                                    <v-col cols="2">
                                        <b>Action</b>
                                    </v-col>
                                </v-row>
-                               <v-row v-for="appointment in appointmentList" :key="appointment.lId" style="text-align:center;border-bottom: 1px solid #e7e7e7">
+                               <v-row v-for="appointment in appointmentList" :key="appointment.lId" :class="{ incomplete: (appointment.data.prescription == null || appointment.data.prescription.id == '')}" style="text-align:center;border-bottom: 1px solid #e7e7e7">
                                     <v-col class="ml-2" style="text-align:left" cols="3">
 
                                         <v-row>
@@ -68,7 +71,10 @@
                                         </v-card-subtitle>
                                     </v-col>
                                     <v-col>
-                                        <v-chip class="mt-3" small outlined color="green">{{appointment.data.paymentMethod}}</v-chip>
+                                        <v-chip class="mt-3 white--text" small color="blue">{{appointment.data.paymentMethod}}</v-chip>
+                                    </v-col>
+                                                                        <v-col>
+                                        <v-chip class="mt-3" small :color="getAppointmentStatusColor(appointment) ">{{getAppointmentStatus(appointment)}}</v-chip>
                                     </v-col>
                                     <v-col cols="2">
                                         <v-card-subtitle>
@@ -228,7 +234,7 @@ export default {
         menu: false,
         createAppDialog: false,
         genders: ["Male","Female"],
-        paymentMethods: ["Cash","Online"],
+        paymentMethods: ["Cash","Online_Pay"],
         localAppointment: {
                 appointmentDate: "",
                 createdOn: 0,
@@ -296,6 +302,16 @@ export default {
       show () {
         return 0
     },
+    getAppointmentStatus(appointment){
+      if(appointment.data.prescription == null || appointment.data.prescription.id == '')
+      return "Incomplete";
+      else  return "Complete";
+    },
+    getAppointmentStatusColor(appointment){
+      if(appointment.data.prescription == null || appointment.data.prescription.id == '')
+      return "error";
+      else return "success";
+    },
     getRandomColor() {
         return 'rgb(' + 
             (Math.floor(Math.random()*56)+200) + ', ' +
@@ -356,3 +372,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.incomplete{
+    background-color: #ffe7e7;
+}
+</style>

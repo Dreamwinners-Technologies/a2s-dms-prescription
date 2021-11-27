@@ -16,7 +16,7 @@
         <v-card color="#009688" class="text-center" style="color: #fff;">
           <div class=""></div>
           Please wait, Syncing ... <br />
-          <h2 class="">{{ currentProgress * 10 }} %</h2>
+          <h2 class="">{{ currentProgress.toFixed(2) }} %</h2>
           synced.
           <br>
           Don't reload or stop internet.
@@ -215,10 +215,10 @@ export default {
           }
         });
     },
-    parseDrugs(ds, cntr) {
+        parseDrugs(ds, cntr) {
       //  to sync all the drugs change cntr > 10 to cntr > 107
       //
-      if (cntr > 10) {
+      if (cntr > 106) {
         this.dialog = false;
         localStorage.setItem("IL", false);
         return;
@@ -232,9 +232,50 @@ export default {
           for (let i = 0; i < currentDrugList.length; i++) {
             ds.addDrugs({ data: currentDrugList[i] });
           }
-          this.currentProgress = cntr;
-
+          // this.currentProgress = cntr;
+          console.log(response)
+          this.currentProgress = (response.data.pageNo * response.data.pageSize/response.data.totalItems) * 10;
           this.parseDrugs(ds, cntr + 1);
+        })
+        .catch(err => {
+          if (err.response) {
+            // client received an error response (5xx, 4xx)
+            this.dialog = false;
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.syncError = true;
+            this.snackbarText = err.response.data.message;
+            return;
+          } else if (err.request) {
+            // client never received a response, or request never left
+            this.dialog = false;
+            this.snackbar = true;
+            this.syncError = true;
+            this.snackbarColor = "error";
+            this.snackbarText = "Internet Disconnected! Couldn't Sync.";
+            return;
+          } else {
+            // anything else
+          }
+        });
+    },
+    parseDrugsO(ds) {
+
+      let isLastPage = false,
+      cntr = 0;
+      while(!isLastPage){
+        
+        axios
+        .get(`${PRESCRIPTION_URL}${cntr}&pageSize=200`)
+        .then(r => {
+          let response = r.data,
+            currentDrugList = r.data.data.data;
+            isLastPage = r.data.data.lastPage;
+          for (let i = 0; i < currentDrugList.length; i++) {
+            ds.addDrugs({ data: currentDrugList[i] });
+          }
+          cntr++;
+          this.currentProgress = response.data.itemCount/response.data.totalItems;
         })
         .catch(err => {
           if (err.response) {
@@ -256,9 +297,16 @@ export default {
             this.snackbarText = "Internet Disconnected! Couldn't Sync.";
             return;
           } else {
-            // anything else
+ 
           }
         });
+      }
+      if (cntr > 10) {
+        this.dialog = false;
+        localStorage.setItem("IL", false);
+        return;
+      }
+     
     },
     formatDate(date) {
       var d = new Date(date),

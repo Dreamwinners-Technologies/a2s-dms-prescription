@@ -81,6 +81,9 @@
               <v-col>
                 <b>Payment</b>
               </v-col>
+                <v-col>
+                   <b>Status</b>
+                 </v-col>
               <v-col cols="2">
                 <b>Action</b>
               </v-col>
@@ -98,6 +101,7 @@
               v-for="(appointment, i) in appointmentList"
               :key="i"
               style="text-align:center;border-bottom: 1px solid #e7e7e7"
+              :class="{ incomplete: (appointment.prescription == null || appointment.prescription.id == '')}"
             >
               <v-col class="ml-2" style="text-align:left" cols="3">
                 <v-row>
@@ -134,10 +138,13 @@
                 </v-card-subtitle>
               </v-col>
               <v-col>
-                <v-chip class="mt-3" small outlined color="green">{{
+                <v-chip class="mt-3 white--text" small color="blue">{{
                   appointment.paymentMethod
-                }}</v-chip>
+                }}</v-chip>                                                                                      
               </v-col>
+               <v-col>
+                                        <v-chip class="mt-3" small :color="getAppointmentStatusColor(appointment) ">{{getAppointmentStatus(appointment)}}</v-chip>
+                                    </v-col>
               <v-col cols="2">
                 <v-card-subtitle>
                   <v-btn-toggle>
@@ -269,6 +276,16 @@ export default {
     show() {
       return 0;
     },
+    getAppointmentStatus(appointment){
+      if(appointment.prescription == null || appointment.prescription.id == '')
+      return "Incomplete";
+      else  return "Complete";
+    },
+    getAppointmentStatusColor(appointment){
+      if(appointment.prescription == null || appointment.prescription.id == '')
+      return "error";
+      else return "success";
+    },
     getRandomColor() {
       return (
         "rgb(" +
@@ -317,3 +334,9 @@ export default {
   }
 };
 </script>
+</script>
+<style scoped>
+.incomplete{
+    background-color: #ffe7e7;
+}
+</style>
