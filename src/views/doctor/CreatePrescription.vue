@@ -819,7 +819,7 @@
         <h3>Add New Drug</h3>
         <v-row class="rowise pt-5">
           <v-col>
-            <v-autocomplete
+            <v-combobox
               v-model="addDrugModel.brand"
               :items="drugs"
               :item-value="getFullOrMiniDrugsName"
@@ -830,10 +830,10 @@
               color="teal"
               dense
             >
-            </v-autocomplete>
+            </v-combobox>
           </v-col>
           <v-col>
-            <v-autocomplete
+            <v-combobox
               v-model="addDrugModel.dose"
               :items="addDrugItems.dose"
               placeholder="Search Drug Name"
@@ -843,9 +843,9 @@
               dense
               label="Dose"
             >
-              <!-- <template slot="append">
+               <!-- <template slot="append">
                 <v-btn
-                  depressed
+                   depressed
                   class="mt-0"
                   small
                   style="vertical-align:center;margin-top:-2px !important; margin-right:-4px !important"
@@ -854,7 +854,7 @@
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </template> -->
-            </v-autocomplete>
+            </v-combobox>
           </v-col>
           <v-col>
             <v-combobox
@@ -885,6 +885,21 @@
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </template>
+
+               <template v-slot:item="{ index, item }">
+                  {{ item }}
+                <v-spacer></v-spacer>
+                <v-list-item-action @click.stop>
+                  <v-btn
+                    icon
+                    x-small
+                    @click.stop.prevent="deleteHintData(tableName,index, item)"
+                  >
+                    <v-icon>mdi-delete-outline</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </template>
+
             </v-combobox>
           </v-col>
           <v-col>
