@@ -819,7 +819,7 @@
         <h3>Add New Drug</h3>
         <v-row class="rowise pt-5">
           <v-col>
-            <v-combobox
+            <v-autocomplete
               v-model="addDrugModel.brand"
               :items="drugs"
               :item-value="getFullOrMiniDrugsName"
@@ -830,7 +830,7 @@
               color="teal"
               dense
             >
-            </v-combobox>
+            </v-autocomplete>
           </v-col>
           <v-col>
             <v-combobox
@@ -893,7 +893,7 @@
                   <v-btn
                     icon
                     x-small
-                    @click.stop.prevent="deleteHintData(tableName,index, item)"
+                    @click.stop.prevent="deleteHintData('instruction',item)"
                   >
                     <v-icon>mdi-delete-outline</v-icon>
                   </v-btn>
@@ -1242,6 +1242,28 @@ export default {
         output.push(item.data);
       });
       this.sideData[tableName] = output;
+    },
+    async deleteHintData(tableName,deleteitem) {
+      let ok = this.ABS;
+      let output = [],
+        response = Promise.resolve(
+          this.ABS.getData(tableName)
+        );
+        response.then(v=>{
+          v.forEach(function(item) {
+              console.log(item.data)
+              console.log(deleteitem)
+              if(deleteitem.localeCompare(item.data)==0){
+                console.log(deleteitem.localeCompare(item.data))
+                console.log("id found --------------------")
+                ok.removeData(tableName,item.id);
+              }
+          });
+          this.getAddDrugHintData(tableName)
+        });
+    },
+    async removeData(tableName,id){
+      let response = await this.ABS.removeData(tableName,id);
     },
     async getAddDrugHintData(tableName) {
       let output = [],
