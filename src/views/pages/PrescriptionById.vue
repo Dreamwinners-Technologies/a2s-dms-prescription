@@ -116,8 +116,8 @@
                   :key="item"
                 >
                   <v-col class="mx-4">
-                    <b style="font-size: 15px !important;">{{ item.brand }}</b
-                    ><br />
+                    <b style="font-size: 15px !important;">{{ getMedicineNameParsed(item.brand,"general") }}</b
+                    >  {{  getMedicineNameParsed(item.brand,"generic") }}<br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
                     Note: {{ item.note }}
@@ -179,7 +179,7 @@
                   depressed
                   color="error"
                   class="mr-2"
-                  @click="window.close()"
+                  @click="closeWindow"
                   ><v-icon class="mr-2">mdi-close</v-icon>Close</v-btn
                 >
                 <v-btn depressed color="info" @click="print()"
@@ -250,6 +250,16 @@ export default {
   methods: {
     print() {
       window.print();
+    },
+    getMedicineNameParsed(medicineName,type){
+        let parsedMedicineName = medicineName.split("|");
+        if(parsedMedicineName.length == 2)
+        return  ( type == "general" ? parsedMedicineName[0] : parsedMedicineName[1]);
+        else
+        return  ( type == "general" ? parsedMedicineName[0] : "");
+    },
+    closeWindow(){
+window.close();
     },
     async getAppointmentData() {
       let id = this.selectedAppointment;

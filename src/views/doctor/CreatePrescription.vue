@@ -556,6 +556,19 @@
                       <v-icon>mdi-plus</v-icon>
                     </v-btn>
                   </template>
+                  <template v-slot:item="{ index, item }">
+                  {{ item }}
+                  <v-spacer></v-spacer>
+                  <v-list-item-action @click.stop>
+                    <v-btn
+                      icon
+                      x-small
+                      @click.stop.prevent="deleteSideData('advice', item)"
+                    >
+                      <v-icon>mdi-delete-outline</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                </template>
                 </v-autocomplete>
                 <v-textarea
                   style="margin-top:0px margin-bottom:0px !important"
@@ -1210,7 +1223,7 @@ export default {
     },
     getFullOrMiniDrugsName(item) {
       if (this.isMedicineFull)
-        return `${item.genericName} | ${item.medicineName}`;
+        return `${item.medicineName} | ${item.genericName}`;
       else return `${item.medicineName}`;
     },
     async submitSideData() {

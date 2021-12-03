@@ -121,7 +121,7 @@ const getDatabase = () => {
     const tblAdvice = {
         name: 'advice',
         columns: {
-            Id: {
+            id: {
                 primaryKey: true,
                 autoIncrement: true
             },
@@ -213,7 +213,7 @@ const getDatabase = () => {
     };
     const dataBase = {
         name: "a2sdms",
-        version: 18,
+        version: 19,
         tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes]
     };
     return dataBase;
@@ -226,7 +226,6 @@ export const initJsStore = async() => {
 };
 export const dropDatabase = async() => {
     connection.dropDb().then(function() {
-        console.log('Db deleted successfully');
         location.reload(); // this reload is to fix not saving sync data to idb after login out and then login 
     }).catch(function(error) {
         console.log(error);

@@ -31,9 +31,9 @@
                 elevation="0"
                 class="my-2"
                 :color="getRandomColor()"
-                link
-                :to="'project/' + item.id"
               >
+              <!--                 link
+                :to="'project/' + item.id" -->
                 <v-row>
                   <v-col cols="3">
                     <v-icon class="mx-5 my-7" x-large>{{ item.icon }}</v-icon>
