@@ -50,6 +50,22 @@
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </template>
+
+                <template v-slot:item="{ index, item }">
+                  {{ item }}
+                  <v-spacer></v-spacer>
+                  <v-list-item-action @click.stop>
+                    <v-btn
+                      icon
+                      x-small
+                      @click.stop.prevent="
+                        deleteSideData('chiefComplaints', item)
+                      "
+                    >
+                      <v-icon>mdi-delete-outline</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                </template>
               </v-autocomplete>
               <v-textarea
                 :disabled="selectedAppointment == 'null'"
@@ -88,7 +104,7 @@
               >
                 <template slot="append">
                   <v-btn
-                  :disabled="selectedAppointment == 'null'"
+                    :disabled="selectedAppointment == 'null'"
                     @click.stop="
                       (dialogSideData = true),
                         (sideDataSubmitCurrentTableName = 'onExamination')
@@ -100,6 +116,21 @@
                   >
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
+                </template>
+                <template v-slot:item="{ index, item }">
+                  {{ item }}
+                  <v-spacer></v-spacer>
+                  <v-list-item-action @click.stop>
+                    <v-btn
+                      icon
+                      x-small
+                      @click.stop.prevent="
+                        deleteSideData('onExamination', item)
+                      "
+                    >
+                      <v-icon>mdi-delete-outline</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
                 </template>
               </v-autocomplete>
               <v-textarea
@@ -138,7 +169,7 @@
               >
                 <template slot="append">
                   <v-btn
-                  :disabled="selectedAppointment == 'null'"
+                    :disabled="selectedAppointment == 'null'"
                     @click.stop="
                       (dialogSideData = true),
                         (sideDataSubmitCurrentTableName = 'diagnosis')
@@ -150,6 +181,19 @@
                   >
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
+                </template>
+                <template v-slot:item="{ index, item }">
+                  {{ item }}
+                  <v-spacer></v-spacer>
+                  <v-list-item-action @click.stop>
+                    <v-btn
+                      icon
+                      x-small
+                      @click.stop.prevent="deleteSideData('diagnosis', item)"
+                    >
+                      <v-icon>mdi-delete-outline</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
                 </template>
               </v-autocomplete>
               <v-textarea
@@ -190,7 +234,7 @@
               >
                 <template slot="append">
                   <v-btn
-                  :disabled="selectedAppointment == 'null'"
+                    :disabled="selectedAppointment == 'null'"
                     @click.stop="
                       (dialogSideData = true),
                         (sideDataSubmitCurrentTableName = 'investigationAdvice')
@@ -202,6 +246,19 @@
                   >
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
+                </template>
+                <template v-slot:item="{ index, item }">
+                  {{ item }}
+                  <v-spacer></v-spacer>
+                  <v-list-item-action @click.stop>
+                    <v-btn
+                      icon
+                      x-small
+                      @click.stop.prevent="deleteSideData('investigationAdvice', item)"
+                    >
+                      <v-icon>mdi-delete-outline</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
                 </template>
               </v-autocomplete>
               <v-textarea
@@ -458,59 +515,59 @@
 
           <!-- advice area  -->
 
-           <v-row>
+          <v-row>
             <v-col>
-            <v-card
+              <v-card
                 class="pa-4 mt-2"
                 elevation="0"
                 style="border: 1px solid #e7e7e7"
                 width="100%"
               >
-              <h4>Advice To Patient: </h4>
-              <v-autocomplete
-                v-model="sideModels.advice"
-                :items="sideData.advice"
-                chips
-                label="Advice"
-                full-width
-                hide-details
-                hide-no-data
-                hide-selected
-                multiple
-                single-line
-                class="mt-2 pa-0 mb-6"
-                outlined
-                color="#666666"
-                dense
-                @change="setSideDataTextFieldTextByTableName('advice')"
-              >
-                <template slot="append">
-                  <v-btn
-                  :disabled="selectedAppointment == 'null'"
-                    @click.stop="
-                      (dialogSideData = true),
-                        (sideDataSubmitCurrentTableName = 'advice')
-                    "
-                    depressed
-                    class="mt-0"
-                    small
-                    style="vertical-align:center;margin-top:-2px !important; margin-right:-4px !important"
-                  >
-                    <v-icon>mdi-plus</v-icon>
-                  </v-btn>
-                </template>
-              </v-autocomplete>
-              <v-textarea
-                style="margin-top:0px margin-bottom:0px !important"
-                name="input-7-1"
-                outlined
-                v-model="sideDataTextFieldModel.advice"
-                background-color="white"
-                color="#666666"
-                auto-grow
-                placeholder="type here..."
-              ></v-textarea>
-            </v-card>
+                <h4>Advice To Patient:</h4>
+                <v-autocomplete
+                  v-model="sideModels.advice"
+                  :items="sideData.advice"
+                  chips
+                  label="Advice"
+                  full-width
+                  hide-details
+                  hide-no-data
+                  hide-selected
+                  multiple
+                  single-line
+                  class="mt-2 pa-0 mb-6"
+                  outlined
+                  color="#666666"
+                  dense
+                  @change="setSideDataTextFieldTextByTableName('advice')"
+                >
+                  <template slot="append">
+                    <v-btn
+                      :disabled="selectedAppointment == 'null'"
+                      @click.stop="
+                        (dialogSideData = true),
+                          (sideDataSubmitCurrentTableName = 'advice')
+                      "
+                      depressed
+                      class="mt-0"
+                      small
+                      style="vertical-align:center;margin-top:-2px !important; margin-right:-4px !important"
+                    >
+                      <v-icon>mdi-plus</v-icon>
+                    </v-btn>
+                  </template>
+                </v-autocomplete>
+                <v-textarea
+                  style="margin-top:0px margin-bottom:0px !important"
+                  name="input-7-1"
+                  outlined
+                  v-model="sideDataTextFieldModel.advice"
+                  background-color="white"
+                  color="#666666"
+                  auto-grow
+                  placeholder="type here..."
+                ></v-textarea>
+              </v-card>
             </v-col>
           </v-row>
 
@@ -758,13 +815,13 @@
                     <v-col class="mx-2 mt-2">
                       <b>Given Advice: </b>
                       <ul class="px-5" style="list-style-type:disc">
-                      <li
-                        v-for="item in appointment.data.prescription.advice"
-                        :key="item"
-                      >
-                        {{ item }}
-                      </li>
-                    </ul>
+                        <li
+                          v-for="item in appointment.data.prescription.advice"
+                          :key="item"
+                        >
+                          {{ item }}
+                        </li>
+                      </ul>
                     </v-col>
                   </v-row>
                 </v-footer>
@@ -780,15 +837,15 @@
                 >
                   <v-col>
                     Made By <br />
-                    <v-img
-                    width="200px"
-                    src="../../assets/hero-logo.png">
-
+                    <v-img width="200px" src="../../assets/hero-logo.png">
                     </v-img>
                   </v-col>
-                   <v-spacer> </v-spacer>
-                  <v-col cols="4" style="border-top: 1px solid #f0f0f0 !important;">
-                  <span
+                  <v-spacer> </v-spacer>
+                  <v-col
+                    cols="4"
+                    style="border-top: 1px solid #f0f0f0 !important;"
+                  >
+                    <span
                       class="preview"
                       style="text-align: center !important;"
                       v-html="middleHeader"
@@ -796,8 +853,8 @@
                   </v-col>
                   <v-spacer> </v-spacer>
                   <v-col style="text-align:right !important">
-                    Prescriped BY <br>
-                    <b>{{appointment.data.updatedBy}}</b>
+                    Prescriped BY <br />
+                    <b>{{ appointment.data.updatedBy }}</b>
                   </v-col>
                 </v-row>
               </v-container>
@@ -843,7 +900,7 @@
               dense
               label="Dose"
             >
-               <!-- <template slot="append">
+              <!-- <template slot="append">
                 <v-btn
                    depressed
                   class="mt-0"
@@ -877,29 +934,28 @@
                   class="mt-0"
                   small
                   style="vertical-align:center;margin-top:-2px !important; margin-right:-4px !important"
-                 @click.stop="
-                      (dialogAddDrugsHintData = true),
-                        (addDrugsHintDataSubmitCurrentTableName = 'instruction')
-                    "
+                  @click.stop="
+                    (dialogAddDrugsHintData = true),
+                      (addDrugsHintDataSubmitCurrentTableName = 'instruction')
+                  "
                 >
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </template>
 
-               <template v-slot:item="{ index, item }">
-                  {{ item }}
+              <template v-slot:item="{ index, item }">
+                {{ item }}
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
                   <v-btn
                     icon
                     x-small
-                    @click.stop.prevent="deleteHintData('instruction',item)"
+                    @click.stop.prevent="deleteHintData('instruction', item)"
                   >
                     <v-icon>mdi-delete-outline</v-icon>
                   </v-btn>
                 </v-list-item-action>
               </template>
-
             </v-combobox>
           </v-col>
           <v-col>
@@ -933,12 +989,26 @@
                   class="mt-0"
                   small
                   style="vertical-align:center;margin-top:-2px !important; margin-right:-4px !important"
-                                   @click.stop="
-                      (dialogAddDrugsHintData = true),
-                        (addDrugsHintDataSubmitCurrentTableName = 'duration')"
+                  @click.stop="
+                    (dialogAddDrugsHintData = true),
+                      (addDrugsHintDataSubmitCurrentTableName = 'duration')
+                  "
                 >
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
+              </template>
+              <template v-slot:item="{ index, item }">
+                {{ item }}
+                <v-spacer></v-spacer>
+                <v-list-item-action @click.stop>
+                  <v-btn
+                    icon
+                    x-small
+                    @click.stop.prevent="deleteHintData('duration', item)"
+                  >
+                    <v-icon>mdi-delete-outline</v-icon>
+                  </v-btn>
+                </v-list-item-action>
               </template>
             </v-combobox>
           </v-col>
@@ -1019,14 +1089,14 @@ export default {
         onExamination: [],
         diagnosis: [],
         investigationAdvice: [],
-        advice:[]
+        advice: []
       },
       // drugsHintData: {
       //    instruction: [],
       //    duration: []
       // },
       addDrugHintData: {
-        instruction: ["Take medicine now", "Only before sleep"],
+        instruction: [],
         duration: [
           "1 day",
           "2 days",
@@ -1085,7 +1155,7 @@ export default {
         diagnosis: "",
         investigationAdvice: "",
         onExamination: "",
-        advice:""
+        advice: ""
       },
       searchModel: {
         instruction: "",
@@ -1154,9 +1224,12 @@ export default {
       this.sideDataSubmitModel = "";
     },
     async submitAddDrugsHintData() {
-      let r = await this.ABS.addData(this.addDrugsHintDataSubmitCurrentTableName, {
-        data: this.addDrugsHintDataSubmitModel
-      });
+      let r = await this.ABS.addData(
+        this.addDrugsHintDataSubmitCurrentTableName,
+        {
+          data: this.addDrugsHintDataSubmitModel
+        }
+      );
       if (r) {
         this.getAddDrugHintData(this.addDrugsHintDataSubmitCurrentTableName);
         this.dialogAddDrugsHintData = false;
@@ -1243,29 +1316,41 @@ export default {
       });
       this.sideData[tableName] = output;
     },
-    async deleteHintData(tableName,deleteitem) {
+    deleteSideData(tableName, deleteitem) {
       let ok = this.ABS;
       let output = [],
-        response = Promise.resolve(
-          this.ABS.getData(tableName)
-        );
-        response.then(v=>{
-          v.forEach(function(item) {
-              console.log(item.data)
-              console.log(deleteitem)
-              if(deleteitem.localeCompare(item.data)==0){
-                console.log(deleteitem.localeCompare(item.data))
-                console.log("id found --------------------")
-                ok.removeData(tableName,item.id);
-              }
-          });
-          this.getAddDrugHintData(tableName)
+        response = Promise.resolve(this.ABS.getData(tableName));
+      response.then(v => {
+        v.forEach(function(item) {
+          if (deleteitem.localeCompare(item.data) == 0) {
+            ok.removeData(tableName, item.id);
+          }
         });
+        this.getSideData(tableName);
+      });
     },
-    async removeData(tableName,id){
-      let response = await this.ABS.removeData(tableName,id);
+    async deleteHintData(tableName, deleteitem) {
+      let ok = this.ABS;
+      let output = [],
+        response = Promise.resolve(this.ABS.getData(tableName));
+      response.then(v => {
+        v.forEach(function(item) {
+          console.log(item.data);
+          console.log(deleteitem);
+          if (deleteitem.localeCompare(item.data) == 0) {
+            console.log(deleteitem.localeCompare(item.data));
+            console.log("id found --------------------");
+            ok.removeData(tableName, item.id);
+          }
+        });
+        this.getAddDrugHintData(tableName);
+      });
+    },
+    async removeData(tableName, id) {
+      let response = await this.ABS.removeData(tableName, id);
     },
     async getAddDrugHintData(tableName) {
+      this.addDrugHintData[tableName] = [];
       let output = [],
         response = await this.ABS.getData(tableName);
 
@@ -1273,7 +1358,7 @@ export default {
         delete item.id;
         output.push(item.data);
       });
-      for(let i = 0;i < this.addDrugHintData[tableName].length;i++){
+      for (let i = 0; i < this.addDrugHintData[tableName].length; i++) {
         output.push(this.addDrugHintData[tableName][i]);
       }
       this.addDrugHintData[tableName] = output;

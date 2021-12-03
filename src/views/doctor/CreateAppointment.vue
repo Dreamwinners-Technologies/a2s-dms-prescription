@@ -39,26 +39,26 @@
                                        <b>Action</b>
                                    </v-col>
                                </v-row>
-                               <v-row v-for="appointment in appointmentList" :key="appointment.lId" :class="{ incomplete: (appointment.data.prescription == null || appointment.data.prescription.id == '')}" style="text-align:center;border-bottom: 1px solid #e7e7e7">
+                               <v-row align="center" v-for="appointment in appointmentList" :key="appointment.lId" :class="{ incomplete: (appointment.data.prescription == null || appointment.data.prescription.id == '')}" style="text-align:center;border-bottom: 1px solid #e7e7e7">
                                     <v-col class="ml-2" style="text-align:left" cols="3">
 
-                                        <v-row>
-                                            <v-col cols="3">
+                                        <v-row justify="center" align="center">
+                                            <v-col cols="4">
                                                <v-avatar
-                                               class="my-3 white--text"
+                                               class="white--text"
                                                 :color="getRandomColor()"
                                                 size="40"
                                                 ><h3>{{appointment.data.patientName.charAt(0)}}</h3></v-avatar>
                                             </v-col>
-                                            <v-col>
-                                                 <h4 class="mt-5">
+                                            <v-col cols="8">
+                                                 <h4 class="">
                                                     {{appointment.data.patientName}}
                                                 </h4>   
                                             </v-col>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="1">
-                                        <v-chip class="mt-3" small outlined color="teal">{{appointment.data.patientAge}}</v-chip>
+                                        <v-chip small outlined color="teal">{{appointment.data.patientAge}}</v-chip>
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
@@ -71,10 +71,10 @@
                                         </v-card-subtitle>
                                     </v-col>
                                     <v-col>
-                                        <v-chip class="mt-3 white--text" small color="blue">{{appointment.data.paymentMethod}}</v-chip>
+                                        <v-chip class="white--text" small color="blue">{{appointment.data.paymentMethod}}</v-chip>
                                     </v-col>
-                                                                        <v-col>
-                                        <v-chip class="mt-3" small :color="getAppointmentStatusColor(appointment) ">{{getAppointmentStatus(appointment)}}</v-chip>
+                                    <v-col>
+                                        <v-chip class="" small :color="getAppointmentStatusColor(appointment) ">{{getAppointmentStatus(appointment)}}</v-chip>
                                     </v-col>
                                     <v-col cols="2">
                                         <v-card-subtitle>
@@ -313,11 +313,12 @@ export default {
       else return "success";
     },
     getRandomColor() {
-        return 'rgb(' + 
-            (Math.floor(Math.random()*56)+200) + ', ' +
-            (Math.floor(Math.random()*56)+200) + ', ' +
-            (Math.floor(Math.random()*56)+200) +
-            ')';
+        // return 'rgb(' + 
+        //     (Math.floor(Math.random()*56)+200) + ', ' +
+        //     (Math.floor(Math.random()*56)+200) + ', ' +
+        //     (Math.floor(Math.random()*56)+200) +
+        //     ')';
+        return "#"+Math.floor(Math.random()*16777215).toString(16);
      },
     async createAppointment(){
         console.log(this.localAppointment)

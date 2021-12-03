@@ -234,7 +234,7 @@ export default {
           }
           // this.currentProgress = cntr;
           console.log(response)
-          this.currentProgress = (response.data.pageNo * response.data.pageSize/response.data.totalItems) * 10;
+          this.currentProgress = (response.data.pageNo * response.data.pageSize/response.data.totalItems) * 100;
           this.parseDrugs(ds, cntr + 1);
         })
         .catch(err => {

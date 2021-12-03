@@ -95,7 +95,7 @@ const getDatabase = () => {
     const tblDiagnosis = {
         name: 'diagnosis',
         columns: {
-            Id: {
+            id: {
                 primaryKey: true,
                 autoIncrement: true
             },
@@ -108,7 +108,7 @@ const getDatabase = () => {
     const tblInvestigationAdvice = {
         name: 'investigationAdvice',
         columns: {
-            Id: {
+            id: {
                 primaryKey: true,
                 autoIncrement: true
             },
@@ -213,7 +213,7 @@ const getDatabase = () => {
     };
     const dataBase = {
         name: "a2sdms",
-        version: 17,
+        version: 18,
         tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes]
     };
     return dataBase;

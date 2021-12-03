@@ -66,11 +66,11 @@
               >
                 <v-row>
                   <v-col cols="3">
-                     <v-avatar size="160" color="indigo">
-      <v-icon size="120" dark>
-        mdi-account-circle
-      </v-icon>
-    </v-avatar>
+                    <v-avatar size="160" color="indigo">
+                      <v-icon size="120" dark>
+                        mdi-account-circle
+                      </v-icon>
+                    </v-avatar>
                     <!-- <v-img
                       sizes="10"
                       class="ma-5 mx-15"
@@ -80,19 +80,20 @@
                   </v-col>
                   <v-col cols="4">
                     <h2 class="ma-4">
-                      <b
-                        >Dr. {{ userInfo.name }}</b
-                      >
+                      <b>Dr. {{ userInfo.name }}</b>
                     </h2>
                     <v-chip small outlined class="ml-4"
-                      >{{ userInfo.designation || "not provided" }} , {{ userInfo.organization || "not provided" }}</v-chip
+                      >{{ userInfo.designation || "not provided" }} ,
+                      {{ userInfo.organization || "not provided" }}</v-chip
                     >
                   </v-col>
                   <v-col>
                     <v-row>
                       <v-col>
                         <v-card-subtitle>
-                          <b>Email:</b> <br />{{ userInfo.email || "not provided" }}
+                          <b>Email:</b> <br />{{
+                            userInfo.email || "not provided"
+                          }}
                         </v-card-subtitle>
                       </v-col>
                       <v-col align-self="center">
@@ -110,7 +111,7 @@
                       <v-col>
                         <v-card-subtitle>
                           <b>Address:</b> <br />
-                          {{ userInfo.thana }} , {{ userInfo.district}}
+                          {{ userInfo.thana }} , {{ userInfo.district }}
                         </v-card-subtitle>
                       </v-col>
                     </v-row>
@@ -133,14 +134,11 @@
                 <v-row class="pa-5">
                   <v-icon large>mdi-clipboard-text</v-icon>
                   <h3
-                   v-if="currentLoggedUserType.includes('DOCTOR')"
+                    v-if="currentLoggedUserType.includes('DOCTOR')"
                     class="mt-1 ml-2"
                   >
                     Recent Appointment
                   </h3>
-                  <!-- <h3 v-if="currentLoggedUserType == 'ADMIN'" class="mt-1 ml-2">
-                    Approve Doctor
-                  </h3> -->
                 </v-row>
                 <template v-if="currentLoggedUserType.includes('DOCTOR')">
                   <v-row
@@ -211,14 +209,16 @@
                     </v-col>
                   </v-row>
                 </template>
-                
               </v-card>
             </v-col>
           </v-row>
-          <moderator-controller v-if="currentLoggedUserType.includes('ADMIN') || currentLoggedUserType.includes('SUPER_ADMIN')">
-
+          <moderator-controller
+            v-if="
+              currentLoggedUserType.includes('ADMIN') ||
+                currentLoggedUserType.includes('SUPER_ADMIN')
+            "
+          >
           </moderator-controller>
-          
         </v-card>
       </v-col>
     </v-row>
@@ -231,7 +231,7 @@ import moderatorController from "@/views/admin/ModeratorController";
 import { ABService } from "@/service/Generic_Service.js";
 export default {
   components: {
-moderatorController
+    moderatorController
   },
   data() {
     return {
@@ -239,10 +239,9 @@ moderatorController
       idx: 0,
       input: "",
       adddialog: false,
-      GET_LOGGED_IN_PROFILE_API:
-        "https://api.a2sdms.com/auth/user-info",
+      GET_LOGGED_IN_PROFILE_API: "https://api.a2sdms.com/auth/user-info",
       user: {},
-      usedData :{},
+      usedData: {},
       auth: "Bearer " + localStorage.getItem("token"),
       userInfo: {
         dashboard: []
@@ -283,7 +282,7 @@ moderatorController
         doctorChamberAddress: "",
         fee: 0
       },
-      doctorPrescriptionRequestNumber: "",
+      doctorPrescriptionRequestNumber: ""
     };
   },
   methods: {
@@ -301,18 +300,20 @@ moderatorController
     show() {
       return 0;
     },
-  async getProfileData() {
-      let 
-       response = await this.GS.getData("ProfData");
+    async getProfileData() {
+      let response = await this.GS.getData("ProfData");
 
       this.userInfo = Object.assign({}, this.userInfo, response[0].data);
-      this.userInfo
-      console.log(this.userInfo)
+      this.userInfo;
+      console.log(this.userInfo);
     },
     setSideDataBasedOnUser() {
       console.log(this.dashboard);
       if (this.userInfo.dashboard.length != 0) return;
-      if (this.currentLoggedUserType.includes('ADMIN') || this.currentLoggedUserType.includes('SUPER_ADMIN')) {
+      if (
+        this.currentLoggedUserType.includes("ADMIN") ||
+        this.currentLoggedUserType.includes("SUPER_ADMIN")
+      ) {
         let o = [
           {
             text: "Total Doctors",
@@ -331,8 +332,8 @@ moderatorController
           }
         ];
         this.userInfo.dashboard.push(...o);
-      } 
-      if(this.currentLoggedUserType.includes('DOCTOR')) {
+      }
+      if (this.currentLoggedUserType.includes("DOCTOR")) {
         let o = [
           {
             text: "Todays Appointment",
@@ -370,11 +371,10 @@ moderatorController
   mounted() {
     this.GS = new ABService();
     // this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-     this.getProfileData();
+    this.getProfileData();
     let user = JSON.parse(localStorage.getItem("uData"));
     this.userData = user;
     this.setSideDataBasedOnUser();
-    
   }
 };
 </script>
