@@ -891,7 +891,7 @@
           <v-col>
             <v-autocomplete
               v-model="addDrugModel.brand"
-              :items="drugs"
+              :items="isFavOnly? favDrugs : drugs"
               :item-value="getFullOrMiniDrugsName"
               :item-text="getFullOrMiniDrugsName"
               placeholder="Search Drug Name"
@@ -1027,6 +1027,14 @@
           </v-col>
         </v-row>
         <v-row class="mt-0" dense>
+          <v-col cols="4" class="tick">
+            <v-checkbox
+              v-model="isFavOnly"
+              @change="setDrugsDataStyle"
+              label="Favourite only"
+            >
+            </v-checkbox>
+          </v-col>
           <v-col class="tick">
             <v-checkbox
               v-model="isMedicineFull"
@@ -1068,6 +1076,7 @@ export default {
   data() {
     return {
       isMedicineFull: false,
+      isFavOnly: false,
       leftHeader: "",
       rightHeader: "",
       middleHeader: "",
@@ -1135,6 +1144,7 @@ export default {
         dose: ["০+০+১", "০+১+১", "০+১+০", "১+১+০", "১+০+০", "১+১+১"]
       },
       drugs: [],
+      favDrugs: [],
       items: [
         {
           text: "a2sDMS",
@@ -1385,6 +1395,11 @@ export default {
       });
       this.drugs = output;
     },
+    async getfavMedicineList(){
+        let data = JSON.parse(localStorage.getItem("favMedicineList"));
+        console.log(data)
+        this.favDrugs = data;
+    },
     saveAndPrint() {
       console.log("clicked");
       this.prescriptionPriview = true;
@@ -1510,6 +1525,7 @@ export default {
     this.getAddDrugHintData("duration");
     this.getAddDrugHintData("note");
     this.getDrugs();
+    this.getfavMedicineList();
     this.getAppointmentData();
   }
 };
