@@ -211,10 +211,23 @@ const getDatabase = () => {
             },
         }
     };
+    const tblFavDrugs = {
+        name: 'FavDrugs',
+        columns: {
+            drugId: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            data: {
+                notNull: true,
+                dataType: DATA_TYPE.Object
+            }
+        }
+    };
     const dataBase = {
         name: "a2sdms",
         version: 19,
-        tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes]
+        tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes, tblFavDrugs]
     };
     return dataBase;
 };

@@ -103,7 +103,7 @@
                             hide-details
                             hide-selected
                             item-text="data.medicineName"
-                            item-value="drugId"
+                            item-value="data"
                             label="Search Company Name"
                             >
                             </v-autocomplete>
@@ -164,7 +164,9 @@ export default {
     async getfavMedicineList(){
         let data = JSON.parse(localStorage.getItem("favMedicineList"));
         console.log(data)
-        this.favMedicine = data;
+        if(data != null){
+            this.favMedicine = data;
+        }
     },
     async getDrugs() {
       let output = [];
@@ -176,17 +178,15 @@ export default {
       console.log(this.drugs)
     },
     async addToFav() {
-      let drug = await this.DS.getDrugsById(this.item);
-      this.addFavourite(drug)
+    //   let drug = await this.DS.getDrugsById(this.item);
+      this.addFavourite(this.item)
     },
     addFavourite(item){
-        console.log(item[0].data)
-        this.favListArray = this.favMedicine;
-        this.favListArray.push(item[0].data);
+        console.log(item)
+        this.favMedicine.push(item);
         console.log("Fav Medicine")
-        console.log(this.favListArray)
-        this.favMedicine = this.favListArray;
-        localStorage.setItem("favMedicineList",JSON.stringify(this.favListArray));
+        console.log(this.favMedicine)
+        localStorage.setItem("favMedicineList",JSON.stringify(this.favMedicine));
         this.addFavDialog = false;
     },
     deletefromfav(id){

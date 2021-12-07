@@ -51,7 +51,7 @@
                   </v-btn>
                 </template>
 
-                <template v-slot:item="{ index, item }">
+                <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -117,7 +117,7 @@
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </template>
-                <template v-slot:item="{ index, item }">
+                <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -182,7 +182,7 @@
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </template>
-                <template v-slot:item="{ index, item }">
+                <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -247,7 +247,7 @@
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </template>
-                <template v-slot:item="{ index, item }">
+                <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -556,7 +556,7 @@
                       <v-icon>mdi-plus</v-icon>
                     </v-btn>
                   </template>
-                  <template v-slot:item="{ index, item }">
+                  <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -956,7 +956,7 @@
                 </v-btn>
               </template>
 
-              <template v-slot:item="{ index, item }">
+              <template v-slot:item="{item }">
                 {{ item }}
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
@@ -1010,7 +1010,7 @@
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </template>
-              <template v-slot:item="{ index, item }">
+              <template v-slot:item="{item }">
                 {{ item }}
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
