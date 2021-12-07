@@ -133,6 +133,7 @@ export default {
         addFavDialog: false,
         item:{},
         favMedicine: [],
+        favListArray: [],
         drugs: [],
         items: [
             {
@@ -179,10 +180,13 @@ export default {
       this.addFavourite(drug)
     },
     addFavourite(item){
-        console.log(item)
-        this.favMedicine.push(item[0].data);
-        console.log(this.favMedicine)
-        localStorage.setItem("favMedicineList",JSON.stringify(this.favMedicine));
+        console.log(item[0].data)
+        this.favListArray = this.favMedicine;
+        this.favListArray.push(item[0].data);
+        console.log("Fav Medicine")
+        console.log(this.favListArray)
+        this.favMedicine = this.favListArray;
+        localStorage.setItem("favMedicineList",JSON.stringify(this.favListArray));
         this.addFavDialog = false;
     },
     deletefromfav(id){
