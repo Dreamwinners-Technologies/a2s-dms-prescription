@@ -52,15 +52,15 @@
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
-                                           {{ambulance.address}} {{ambulance.thana}}, {{ambulance.district}}
+                                           {{ambulance.address}} {{ambulance.upazila}}, {{ambulance.district}}
                                         </v-card-subtitle>
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
                                              <v-btn-toggle>
-                                                     <v-btn color="info" depressed small @click="seeCardInfo(card)"><v-icon style="color:white!important" small>mdi-eye</v-icon></v-btn>
-                                                     <v-btn color="success" depressed small @click="approveCard(card.id)"><v-icon style="color:white!important" small>mdi-check</v-icon></v-btn>
-                                                     <v-btn color="error" depressed small @click="deleteCard(card.id)"><v-icon style="color:white!important" small>mdi-delete</v-icon></v-btn>
+                                                     <v-btn color="info" depressed small @click="seeCardInfo(ambulance)"><v-icon style="color:white!important" small>mdi-eye</v-icon></v-btn>
+                                                     <v-btn color="success" depressed small @click="approveCard(ambulance.uuid)"><v-icon style="color:white!important" small>mdi-check</v-icon></v-btn>
+                                                     <v-btn color="error" depressed small @click="deleteCard(ambulance.id)"><v-icon style="color:white!important" small>mdi-delete</v-icon></v-btn>
                                                 </v-btn-toggle>
                                         </v-card-subtitle>
                                     </v-col>
@@ -69,20 +69,20 @@
                        </v-col>
                    </v-row>           
     </v-container>
-    <v-dialog max-width="800px" v-model="cardInfoDialog">
+    <v-dialog max-width="800px" v-model="ambulanceInfoDialog">
         <v-card class="pa-5">
            
             <v-row>
                 <v-col cols="6">
-                   <v-icon>mdi-ambulance</v-icon>
+                  <v-img src="https://images.unsplash.com/photo-1587745416684-47953f16f02f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFtYnVsYW5jZXxlbnwwfHwwfHw%3D&w=1000&q=80"></v-img>
                 </v-col>
                 <v-col>
-                     <h3>{{cardInfo.name}}</h3>
-                    <v-chip small>{{ cardInfo.specialization}}</v-chip> <br> 
+                     <h3>{{ambulanceInfo.title}}</h3>
+                    <v-chip small>Driver Name: {{ ambulanceInfo.driverName}}</v-chip> <br> 
                     <v-card-subtitle>
-                    <b>Thana:</b> {{cardInfo.thana}} <br> <br>
-                    <b> District:</b> {{cardInfo.district}} <br> <br>
-                    <b> Number:</b> {{cardInfo.appointmentNo}}
+                    <b>Thana:</b> {{ambulanceInfo.upazila}} <br> <br>
+                    <b> District:</b> {{ambulanceInfo.district}} <br> <br>
+                    <b> Phone Number:</b> {{ambulanceInfo.phoneNo}}
                     </v-card-subtitle>
                 </v-col>
             </v-row>
@@ -90,7 +90,7 @@
                 <v-col>
                     <v-card elevation="0" style="border-radius:12px;background-color:#f0f0f0">
                         <v-card-subtitle>
-                            {{cardInfo.cardOcrData}}
+                            {{ambulanceInfo.cardOcrData}}
                         </v-card-subtitle>
 
                     </v-card>
@@ -107,8 +107,8 @@ export default {
   data () {
     return {
         idx:0,
-        cardInfoDialog: false,
-        cardInfo:{},
+        ambulanceInfoDialog: false,
+        ambulanceInfo:{},
         auth: "Bearer " + localStorage.getItem("token"),
         AMBULANCE_API: 'https://need-doctors-backend.herokuapp.com/api/ambulance/',
         ambulanceList: [],
@@ -154,14 +154,14 @@ export default {
     approveCard(id){
         axios({
             method: "put",
-            url: this.CARD_REQ_API+"/approve/"+id,
+            url: this.AMBULANCE_API+id+"/approve/",
             headers: {
             Authorization: this.auth,
             "Content-Type": "application/json"
             }
         })
         .then(r=>{
-            if(r.data.statusCode==201){
+            if(r.data.statusCode==200){
                 console.log(r)
                 this.getCardReq()
             }
@@ -183,8 +183,8 @@ export default {
         })
     },
     seeCardInfo(item){
-        this.cardInfo = item
-        this.cardInfoDialog = true;
+        this.ambulanceInfo = item
+        this.ambulanceInfoDialog = true;
     }
     },
     mounted(){
