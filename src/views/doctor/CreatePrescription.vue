@@ -811,11 +811,11 @@
                 <v-row
                   class="my-0"
                   style="margin-bottom: 10px !important"
-                  v-for="item in appointment.data.prescription.medicines"
+                  v-for="(item,idDrugs) in appointment.data.prescription.medicines"
                   :key="item"
                 >
                   <v-col class="mx-4">
-                    <b style="font-size: 15px !important;">{{ item.brand }}</b
+                    <b style="font-size: 15px !important;">{{idDrugs+1}}. {{ item.brand }}</b
                     ><br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
@@ -1095,6 +1095,7 @@ export default {
       idx: 0,
       idy: 0,
       idz: 0,
+      idDrugs: 1,
       drugUpdateIdx: -1,
       adddialog: false,
       prescriptionPriview: false,
@@ -1233,8 +1234,8 @@ export default {
     },
     getFullOrMiniDrugsName(item) {
       if (this.isMedicineFull)
-        return `${item.medicineName} | ${item.genericName}`;
-      else return `${item.medicineName}`;
+        return `${item.medicineName} | ${item.genericName} (${item.type})`;
+      else return `${item.medicineName} (${item.type})`;
     },
     async submitSideData() {
       let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {
