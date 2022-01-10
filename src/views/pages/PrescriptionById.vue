@@ -112,15 +112,18 @@
                 </v-row>
                 <v-row
                   class="my-0"
-                  v-for="item in appointment.data.prescription.medicines"
-                  :key="item"
                 >
                   <v-col class="mx-4">
-                    <b style="font-size: 15px !important;">{{ getMedicineNameParsed(item.brand,"general") }}</b
+                    <ol>
+                      <li class="mb-3" v-for="(item) in appointment.data.prescription.medicines"
+                  :key="item">
+                        <b style="font-size: 15px !important;"> {{ getMedicineNameParsed(item.brand,"general") }}</b
                     >  {{  getMedicineNameParsed(item.brand,"generic") }}<br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
                     Note: {{ item.note }}
+                      </li>
+                    </ol>
                   </v-col>
                 </v-row>
                 <br />
@@ -210,6 +213,7 @@ export default {
         x: 500,
         y: 200
       },
+      idDrugs: 0,
       appointment: {
         data: {
           appointmentDate: "",
