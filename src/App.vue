@@ -31,11 +31,8 @@
   </v-app>
 </template>
 <script>
-const API_URL = "https://api.a2sdms.com/";
-const PROFILE_URL = API_URL + "auth/profile";
-const PRESCRIPTION_URL = API_URL + "prescriptions/medicines?pageNo=";
-const PRESCRIPTION_HEADER_API = API_URL + "prescriptions/headers";
-const GET_APPOINtMENTS_API = API_URL + "appointments/";
+
+import {PROFILE_API, PRESCRIPTION_API, PRESCRIPTION_HEADER_API, APPOINTMENTS_API } from "@/shared/apis.js"
 import { mapGetters } from "vuex";
 
 import updte from "@/mixins/update.js";
@@ -105,11 +102,11 @@ export default {
     getLoggedProfileInfo() {
       if(this.syncError) return;
       this.auth = "Bearer " + JSON.parse(localStorage.getItem("uData")).token;
-      console.log(PROFILE_URL);
+      console.log(PROFILE_API);
       console.log(this.auth);
       axios({
         method: "get",
-        url: PROFILE_URL,
+        url: PROFILE_API,
         headers: {
           Authorization: this.auth,
           "Content-Type": "application/json"
@@ -173,7 +170,7 @@ export default {
     syncAppointment() {
       axios({
         method: "get",
-        url: `${GET_APPOINtMENTS_API}?date=${this.formatDate(
+        url: `${APPOINTMENTS_API}?date=${this.formatDate(
           new Date()
         ).toString()}&pageNo=0&pageSize=100`,
         headers: {
@@ -224,7 +221,7 @@ export default {
         return;
       }
       axios
-        .get(`${PRESCRIPTION_URL}${cntr}&pageSize=200`)
+        .get(`${PRESCRIPTION_API}${cntr}&pageSize=200`)
         .then(r => {
           let response = r.data,
             currentDrugList = r.data.data.data;
@@ -266,7 +263,7 @@ export default {
       while(!isLastPage){
         
         axios
-        .get(`${PRESCRIPTION_URL}${cntr}&pageSize=200`)
+        .get(`${PRESCRIPTION_API}${cntr}&pageSize=200`)
         .then(r => {
           let response = r.data,
             currentDrugList = r.data.data.data;

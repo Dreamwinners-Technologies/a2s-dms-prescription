@@ -103,6 +103,7 @@
 
 <script>
 import axios from 'axios';
+import {AMBULANCE_API} from "@/shared/apis.js"
 export default {
   data () {
     return {
@@ -110,7 +111,6 @@ export default {
         ambulanceInfoDialog: false,
         ambulanceInfo:{},
         auth: "Bearer " + localStorage.getItem("token"),
-        AMBULANCE_API: 'https://need-doctors-backend.herokuapp.com/api/ambulance/',
         ambulanceList: [],
         items: [
             {
@@ -140,7 +140,7 @@ export default {
     getCardReq(){
         axios({
             method:"get",
-            url: this.AMBULANCE_API+`?isApproved=false&pageNo=0&pageSize=20`,
+            url: AMBULANCE_API+`?isApproved=false&pageNo=0&pageSize=20`,
             headers: {
             Authorization: this.auth            }
         })
@@ -154,7 +154,7 @@ export default {
     approveCard(id){
         axios({
             method: "put",
-            url: this.AMBULANCE_API+id+"/approve/",
+            url: AMBULANCE_API+id+"/approve/",
             headers: {
             Authorization: this.auth,
             "Content-Type": "application/json"

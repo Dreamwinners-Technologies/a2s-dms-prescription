@@ -237,6 +237,23 @@ export const initJsStore = async() => {
     connection.logStatus = false;
     return await connection.initDb(dataBase);
 };
+const encryptMiddleware = function(request) {
+
+    const query = request.query
+
+    if (request.name == 'insert' && query.encrypt) {
+
+        encryptData(query)
+
+    } else if (request.name == 'select' && query.decrypt) {
+        // result will be encrypted, so let's wait for result and then decrypt data
+
+        request.onResult((result) => {
+            decryptData(result);
+        })
+
+    }
+};
 export const dropDatabase = async() => {
     connection.dropDb().then(function() {
         location.reload(); // this reload is to fix not saving sync data to idb after login out and then login 
