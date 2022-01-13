@@ -51,7 +51,7 @@
                   </v-btn>
                 </template>
 
-                <template v-slot:item="{ index, item }">
+                <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -117,7 +117,7 @@
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </template>
-                <template v-slot:item="{ index, item }">
+                <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -182,7 +182,7 @@
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </template>
-                <template v-slot:item="{ index, item }">
+                <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -247,7 +247,7 @@
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </template>
-                <template v-slot:item="{ index, item }">
+                <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -556,7 +556,7 @@
                       <v-icon>mdi-plus</v-icon>
                     </v-btn>
                   </template>
-                  <template v-slot:item="{ index, item }">
+                  <template v-slot:item="{item }">
                   {{ item }}
                   <v-spacer></v-spacer>
                   <v-list-item-action @click.stop>
@@ -810,16 +810,18 @@
                 </v-row>
                 <v-row
                   class="my-0"
-                  style="margin-bottom: 10px !important"
-                  v-for="item in appointment.data.prescription.medicines"
-                  :key="item"
                 >
                   <v-col class="mx-4">
-                    <b style="font-size: 15px !important;">{{ item.brand }}</b
-                    ><br />
+                    <ol>
+                      <li class="mb-3" v-for="(item) in appointment.data.prescription.medicines"
+                  :key="item">
+                        <b style="font-size: 15px !important;"> {{ getMedicineNameParsed(item.brand,"general") }}</b
+                    >  {{  getMedicineNameParsed(item.brand,"generic") }}<br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
                     Note: {{ item.note }}
+                      </li>
+                    </ol>
                   </v-col>
                 </v-row>
                 <br />
@@ -891,7 +893,7 @@
           <v-col>
             <v-autocomplete
               v-model="addDrugModel.brand"
-              :items="drugs"
+              :items="isFavOnly? favDrugs : drugs"
               :item-value="getFullOrMiniDrugsName"
               :item-text="getFullOrMiniDrugsName"
               placeholder="Search Drug Name"
@@ -899,6 +901,10 @@
               outlined
               color="teal"
               dense
+              persistent-hint
+              hide-selected
+              small-chips
+              label="Select Medicine"
             >
             </v-autocomplete>
           </v-col>
@@ -911,6 +917,9 @@
               outlined
               color="teal"
               dense
+              persistent-hint
+              hide-selected
+              small-chips
               label="Dose"
             >
               <!-- <template slot="append">
@@ -926,6 +935,29 @@
               </template> -->
             </v-combobox>
           </v-col>
+        </v-row>
+
+      <!-- filtering drugs buttons  -->
+        <v-row class="my-0" dense>
+          <v-col cols="4" class="tick">
+            <v-checkbox
+              v-model="isFavOnly"
+              @change="setDrugsDataStyle"
+              label="Favourite only"
+            >
+            </v-checkbox>
+          </v-col>
+          <v-col class="tick">
+            <v-checkbox
+              v-model="isMedicineFull"
+              @change="setDrugsDataStyle"
+              label="Drugs with Generic Name"
+            >
+            </v-checkbox>
+          </v-col>
+        </v-row>
+
+        <v-row class="my-0" dense>
           <v-col>
             <v-combobox
               v-model="addDrugModel.instruction"
@@ -956,7 +988,7 @@
                 </v-btn>
               </template>
 
-              <template v-slot:item="{ index, item }">
+              <template v-slot:item="{item }">
                 {{ item }}
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
@@ -1010,7 +1042,7 @@
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </template>
-              <template v-slot:item="{ index, item }">
+              <template v-slot:item="{item }">
                 {{ item }}
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
@@ -1024,16 +1056,6 @@
                 </v-list-item-action>
               </template>
             </v-combobox>
-          </v-col>
-        </v-row>
-        <v-row class="mt-0" dense>
-          <v-col class="tick">
-            <v-checkbox
-              v-model="isMedicineFull"
-              @change="setDrugsDataStyle"
-              label="Drugs Full Info"
-            >
-            </v-checkbox>
           </v-col>
         </v-row>
         <v-textarea
@@ -1068,6 +1090,7 @@ export default {
   data() {
     return {
       isMedicineFull: false,
+      isFavOnly: false,
       leftHeader: "",
       rightHeader: "",
       middleHeader: "",
@@ -1086,6 +1109,7 @@ export default {
       idx: 0,
       idy: 0,
       idz: 0,
+      idDrugs: 1,
       drugUpdateIdx: -1,
       adddialog: false,
       prescriptionPriview: false,
@@ -1132,9 +1156,10 @@ export default {
         note: ""
       },
       addDrugItems: {
-        dose: ["০+০+১", "০+১+১", "০+১+০", "১+১+০", "১+০+০", "১+১+১"]
+        dose: [ "১+০+০", "০+১+০", "০+০+১","১+১+০", "০+১+১","১+০+১", "১+১+১"]
       },
       drugs: [],
+      favDrugs: [],
       items: [
         {
           text: "a2sDMS",
@@ -1223,8 +1248,8 @@ export default {
     },
     getFullOrMiniDrugsName(item) {
       if (this.isMedicineFull)
-        return `${item.medicineName} | ${item.genericName}`;
-      else return `${item.medicineName}`;
+        return `${item.medicineName} | ${item.genericName} (${item.type})`;
+      else return `${item.medicineName} (${item.type})`;
     },
     async submitSideData() {
       let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {
@@ -1385,6 +1410,18 @@ export default {
       });
       this.drugs = output;
     },
+    async getfavMedicineList(){
+        let data = JSON.parse(localStorage.getItem("favMedicineList"));
+        console.log(data)
+        this.favDrugs = data;
+    },
+    getMedicineNameParsed(medicineName,type){
+        let parsedMedicineName = medicineName.split("|");
+        if(parsedMedicineName.length == 2)
+        return  ( type == "general" ? parsedMedicineName[0] : parsedMedicineName[1]);
+        else
+        return  ( type == "general" ? parsedMedicineName[0] : "");
+    },
     saveAndPrint() {
       console.log("clicked");
       this.prescriptionPriview = true;
@@ -1510,6 +1547,7 @@ export default {
     this.getAddDrugHintData("duration");
     this.getAddDrugHintData("note");
     this.getDrugs();
+    this.getfavMedicineList();
     this.getAppointmentData();
   }
 };

@@ -93,9 +93,9 @@
                             <br>
                         </v-col>
                     </v-row>
-                    <v-row class="my-0" v-for="item in appointment.data.prescription.medicines" :key="item">
+                    <v-row class="my-0" v-for="(item,idDrugs) in appointment.data.prescription.medicines" :key="item">
                         <v-col class="mx-4">
-                            <b style="font-size: 15px !important;">{{item.brand}}</b><br>
+                            <b style="font-size: 15px !important;">{{idDrugs+1}}. {{item.brand}}</b><br>
                             {{item.dose}} --- {{item.instruction}} --- {{item.duration}} <br>
                             Note: {{item.note}}
                         </v-col>
@@ -154,6 +154,7 @@ export default {
     data(){
         return {
             ABS: null,
+            idDrugs: 0,
             selectedAppointment:"",
             GET_APPONTMENT_API: "https://api.a2sdms.com/appointments/prescriptions",
             windowSize: {

@@ -115,7 +115,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-footer fixed>
+    <v-footer app bottom fixed padless>
       <p style="text-align:center;margin:auto; !important">
          Copyright  {{ year }} © a2sdms Prescription
       </p>

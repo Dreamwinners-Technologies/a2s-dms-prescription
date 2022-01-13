@@ -59,6 +59,12 @@ const routes = [{
                     import ( /* webpackChunkName: "about" */ '../views/admin/MedicineController.vue')
             },
             {
+                path: 'ambulance-controller',
+                name: 'Ambulance Controller',
+                component: () =>
+                    import ( /* webpackChunkName: "about" */ '../views/admin/AmbulanceController.vue')
+            },
+            {
                 path: 'create-appointment',
                 name: 'Create Appointment',
                 component: () =>

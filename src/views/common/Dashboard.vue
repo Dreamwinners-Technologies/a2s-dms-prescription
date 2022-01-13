@@ -80,7 +80,7 @@
                   </v-col>
                   <v-col cols="4">
                     <h2 class="ma-4">
-                      <b>Dr. {{ userInfo.name }}</b>
+                        <b>{{ userInfo.name }}</b>
                     </h2>
                     <v-chip small outlined class="ml-4"
                       >{{ userInfo.designation || "not provided" }} ,

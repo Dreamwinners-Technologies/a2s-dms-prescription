@@ -232,6 +232,7 @@ export default {
     return {
         ABS: null,
         menu: false,
+        uData: {},
         createAppDialog: false,
         genders: ["Male","Female"],
         paymentMethods: ["Cash","Online_Pay"],
@@ -341,9 +342,9 @@ export default {
         data.id = this.localAppointment.id
         data.appointmentDate = this.localAppointment.appointmentDate
         data.createdAt = this.localAppointment.createdOn
-        data.createdBy = "ihsonnet"
+        data.createdBy = "u"+this.uData.phoneNo
         data.updatedAt = this.localAppointment.createdOn
-        data.updatedBy = "ihsonnet"
+        data.updatedBy = "u"+this.uData.phoneNo
         data.doctorsFee = 400
         data.gender = this.localAppointment.gender
         data.otherFees = 0
@@ -373,6 +374,7 @@ export default {
   mounted(){
        this.ABS = new ABService();
        this.getAppointmentList();
+       this.uData = JSON.parse(localStorage.getItem("uData"));
   }
 }
 </script>
