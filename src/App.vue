@@ -283,13 +283,11 @@ export default {
             this.dialog = false;
             this.snackbar = true;
             this.snackbarColor = "error";
-            console.log("Here 1")
             this.syncError = true;
             this.snackbarText = err.response.data.message;
             return;
           } else if (err.request) {
             // client never received a response, or request never left
-            console.log("Here 2")
             this.dialog = false;
             this.snackbar = true;
             this.syncError = true;

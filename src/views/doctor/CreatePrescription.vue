@@ -1523,3 +1523,4 @@ export default {
   border-left: 1px solid gray;
 }
 </style>
+
