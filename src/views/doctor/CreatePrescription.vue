@@ -816,7 +816,7 @@
                       <li class="mb-3" v-for="(item) in appointment.data.prescription.medicines"
                   :key="item">
                         <b style="font-size: 15px !important;"> {{ getMedicineNameParsed(item.brand,"general") }}</b
-                    >  {{  getMedicineNameParsed(item.brand,"generic") }}<br />
+                    > <b v-if="getMedicineNameParsed(item.brand,'generic')"> | </b> <small>{{  getMedicineNameParsed(item.brand,"generic") }}</small><br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
                     Note: {{ item.note }}
@@ -876,11 +876,6 @@
             </v-footer>
           </v-container>
         </div>
-        <v-btn depressed color="info"
-          ><v-icon class="mr-2" @click="prescriptionPriview = false"
-            >mdi-content-save</v-icon
-          >Print Prescription</v-btn
-        >
       </v-card>
     </v-dialog>
 
@@ -1248,8 +1243,8 @@ export default {
     },
     getFullOrMiniDrugsName(item) {
       if (this.isMedicineFull)
-        return `${item.medicineName} | ${item.genericName} (${item.type})`;
-      else return `${item.medicineName} (${item.type})`;
+        return `(${item.type}) ${item.medicineName} | ${item.genericName}`;
+      else return ` (${item.type}) ${item.medicineName}`;
     },
     async submitSideData() {
       let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {

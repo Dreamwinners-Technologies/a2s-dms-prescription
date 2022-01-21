@@ -117,8 +117,8 @@
                     <ol>
                       <li class="mb-3" v-for="(item) in appointment.data.prescription.medicines"
                   :key="item">
-                        <b style="font-size: 15px !important;"> {{ getMedicineNameParsed(item.brand,"general") }}</b
-                    >  {{  getMedicineNameParsed(item.brand,"generic") }}<br />
+                       <b style="font-size: 15px !important;"> {{ getMedicineNameParsed(item.brand,"general") }}</b
+                    > <b v-if="getMedicineNameParsed(item.brand,'generic')"> | </b> <small>{{  getMedicineNameParsed(item.brand,"generic") }}</small><br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
                     Note: {{ item.note }}
