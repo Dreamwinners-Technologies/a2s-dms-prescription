@@ -110,7 +110,7 @@ export default {
         ambulanceInfoDialog: false,
         ambulanceInfo:{},
         auth: "Bearer " + localStorage.getItem("token"),
-        AMBULANCE_API: 'https://need-doctors-backend.herokuapp.com/api/ambulance/',
+        AMBULANCE_API: 'https://api.a2sdms.com/api/ambulance/',
         ambulanceList: [],
         items: [
             {
