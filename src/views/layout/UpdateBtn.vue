@@ -207,7 +207,6 @@ export default {
           })
           .catch(r => {
             console.log(r);
-            alert(r);
             this.dialog = false;
           });
       });
