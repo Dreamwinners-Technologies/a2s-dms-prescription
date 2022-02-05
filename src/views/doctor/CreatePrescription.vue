@@ -1243,8 +1243,8 @@ export default {
     },
     getFullOrMiniDrugsName(item) {
       if (this.isMedicineFull)
-        return `(${item.type}) ${item.medicineName} | ${item.genericName}`;
-      else return ` (${item.type}) ${item.medicineName}`;
+        return `${item.type.substring(0,3).toUpperCase()}. ~ ${item.medicineName} (${item.strength}) | ${item.genericName}`;
+      else return `${item.type.substring(0,3).toUpperCase()}. ~ ${item.medicineName} (${item.strength})`;
     },
     async submitSideData() {
       let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {
