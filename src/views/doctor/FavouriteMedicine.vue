@@ -88,7 +88,7 @@
 
     <!-- dialog here -->
 
-    <v-dialog title="Add New Drug" v-model="addFavDialog" max-width="800px">
+    <v-dialog top title="Add New Drug" v-model="addFavDialog" max-width="800px">
         <v-card class="pa-6">
             <h3>Add To Favourite</h3> <br>
 

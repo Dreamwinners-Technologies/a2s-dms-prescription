@@ -264,8 +264,14 @@ export default {
           //   this.dialog = false;
           // }
           // }
-          this.sendPrescriptions();
-          this.dialog = false;
+          // this.sendPrescriptions();
+          // this.dialog = false;
+
+          if (isLocalPrescription == true) {
+            this.sendPrescriptions();
+          } else {
+            this.dialog = false;
+          }
         });
     },
     sendPrescriptions() {
