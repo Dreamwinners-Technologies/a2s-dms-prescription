@@ -121,7 +121,7 @@
                     > <b v-if="getMedicineNameParsed(item.brand,'generic')"> | </b> <small>{{  getMedicineNameParsed(item.brand,"generic") }}</small><br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
-                    Note: {{ item.note }}
+                    <div v-if="item.note">Note: {{ item.note }}</div>
                       </li>
                     </ol>
                   </v-col>
