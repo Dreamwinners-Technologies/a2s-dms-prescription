@@ -102,10 +102,26 @@
                             clearable
                             hide-details
                             hide-selected
-                            item-text="data.medicineName"
+                            persistent-hint
+                            small-chips
                             item-value="data"
-                            label="Search Company Name"
+                            item-text="data.medicineName"
+                            label="Search Medicine Name"
                             >
+                            <template v-slot:item="{ item }">
+                                <v-list-item-avatar
+                                    class="my-3 white--text"
+                                    :color="getRandomColor()"
+                                    size="40"
+                                    ><v-icon>mdi-pill</v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                <v-list-item-title v-text="item.data.medicineName +' ('+ item.data.strength+')'"></v-list-item-title>
+                                </v-list-item-content>
+                                <v-list-item-action>
+                                <v-chip small v-text="item.data.type"></v-chip>
+                                </v-list-item-action>
+                            </template>
                             </v-autocomplete>
 
                             <!-- {{item}} -->
@@ -159,6 +175,10 @@ export default {
             (Math.floor(Math.random()*56)+200) + ', ' +
             (Math.floor(Math.random()*56)+200) +
             ')';
+     },
+
+     getMedInfo(item){
+         return `${item.data.type.substring(0,3).toUpperCase()}. ${item.data.medicineName.toUpperCase()} (${item.data.strength.toUpperCase()})`;
      },
     
     async getfavMedicineList(){
