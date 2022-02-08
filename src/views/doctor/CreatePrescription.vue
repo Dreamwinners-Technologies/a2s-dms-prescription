@@ -819,7 +819,8 @@
                     > <b v-if="getMedicineNameParsed(item.brand,'generic')"> | </b> <small>{{  getMedicineNameParsed(item.brand,"generic") }}</small><br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
-                    Note: {{ item.note }}
+                    <div v-if="item.note">Note: {{ item.note }}</div>
+                    
                       </li>
                     </ol>
                   </v-col>
@@ -884,7 +885,29 @@
     <v-dialog title="Add New Drug" v-model="adddialog" max-width="800px">
       <v-card class="pa-5">
         <h3>Add New Drug</h3>
-        <v-row class="rowise pt-5">
+
+ <!-- filtering drugs buttons  -->
+        <v-row class="my-0 pt-5" dense>
+          <v-col cols="4" class="tick">
+            <v-checkbox
+              v-model="isFavOnly"
+              @change="setDrugsDataStyle"
+              label="Favourite Drugs only"
+            >
+            </v-checkbox>
+          </v-col>
+          <v-col class="tick">
+            <v-checkbox
+              v-model="isMedicineFull"
+              @change="setDrugsDataStyle"
+              label="Drugs with Generic Name"
+            >
+            </v-checkbox>
+          </v-col>
+        </v-row>
+
+ <!-- row 2 -->
+        <v-row class="rowise">
           <v-col>
             <v-autocomplete
               v-model="addDrugModel.brand"
@@ -892,7 +915,7 @@
               :item-value="getFullOrMiniDrugsName"
               :item-text="getFullOrMiniDrugsName"
               placeholder="Search Drug Name"
-              class="mt-2 pa-0"
+              class="pa-0"
               outlined
               color="teal"
               dense
@@ -908,7 +931,7 @@
               v-model="addDrugModel.dose"
               :items="addDrugItems.dose"
               placeholder="Search Drug Name"
-              class="mt-2 pa-0"
+              class="pa-0"
               outlined
               color="teal"
               dense
@@ -932,26 +955,7 @@
           </v-col>
         </v-row>
 
-      <!-- filtering drugs buttons  -->
-        <v-row class="my-0" dense>
-          <v-col cols="4" class="tick">
-            <v-checkbox
-              v-model="isFavOnly"
-              @change="setDrugsDataStyle"
-              label="Favourite only"
-            >
-            </v-checkbox>
-          </v-col>
-          <v-col class="tick">
-            <v-checkbox
-              v-model="isMedicineFull"
-              @change="setDrugsDataStyle"
-              label="Drugs with Generic Name"
-            >
-            </v-checkbox>
-          </v-col>
-        </v-row>
-
+ <!-- row 3 -->
         <v-row class="my-0" dense>
           <v-col>
             <v-combobox
@@ -1243,8 +1247,8 @@ export default {
     },
     getFullOrMiniDrugsName(item) {
       if (this.isMedicineFull)
-        return `${item.type.substring(0,3).toUpperCase()}. ~ ${item.medicineName} (${item.strength}) | ${item.genericName}`;
-      else return `${item.type.substring(0,3).toUpperCase()}. ~ ${item.medicineName} (${item.strength})`;
+        return `${item.type.substring(0,3).toUpperCase()}. ${item.medicineName.toUpperCase()} (${item.strength.toUpperCase()}) | ${item.genericName}`;
+      else return `${item.type.substring(0,3).toUpperCase()}. ${item.medicineName.toUpperCase()} (${item.strength.toUpperCase()})`;
     },
     async submitSideData() {
       let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {
