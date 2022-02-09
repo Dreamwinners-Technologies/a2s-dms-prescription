@@ -126,9 +126,16 @@
 
                             <!-- {{item}} -->
                         </v-col>
+                    </v-row>
+                    <v-row>
                         <v-col class="ma-0" style="text-align:right !important;">
                             <v-btn depressed @click="addToFav(item)" color="info"><v-icon class="mr-2">mdi-content-save</v-icon>Add Favourite</v-btn>
                         </v-col>
+                    </v-row>
+                    <v-row>
+                        <div style="text-align:center !important;color:red;margin-top:200px">
+                            *Select Medicine your want to add to favourite.
+                        </div>
                     </v-row>
               </v-card>
     </v-dialog>
