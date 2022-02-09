@@ -122,7 +122,7 @@
           </v-row>
 
           <!-- appointment list  -->
-          <v-row>
+          <!-- <v-row>
             <v-col>
               <v-card
                 class="pa-4 mt-2"
@@ -211,7 +211,7 @@
                 </template>
               </v-card>
             </v-col>
-          </v-row>
+          </v-row> -->
           <moderator-controller
             v-if="
               currentLoggedUserType.includes('ADMIN') ||
