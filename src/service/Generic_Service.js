@@ -18,6 +18,15 @@ export class ABService {
         })
     }
 
+    addEncryptedData(tableName, data) {
+        return connection.insert({
+            into: tableName,
+            values: [data],
+            return: true,
+            encrypt: true
+        })
+    }
+
     getDataById(tableName, id) {
         return connection.select({
             from: tableName,

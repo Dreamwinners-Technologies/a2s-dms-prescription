@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 function getPrescriptionAccessDetails() {
     try {
@@ -13,9 +13,9 @@ function getPrescriptionAccessDetails() {
 
 function hasAdminRole() {
     try {
-        let user = JSON.parse(localStorage.getItem("uData")),
-            hasAdminRole = user.roles.includes("SUPER_ADMIN") || user.roles.includes("ADMIN") || user.roles.includes("MODERATOR");
-        return hasAdminRole;
+        let user = JSON.parse(localStorage.getItem("uData"));
+            return user.roles.includes("SUPER_ADMIN") || user.roles.includes("ADMIN") || user.roles.includes("MODERATOR");
+
     } catch (e) {
         return undefined;
     }

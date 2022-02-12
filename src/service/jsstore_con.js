@@ -1,3 +1,5 @@
+
+
 import { Connection } from "jsstore";
 
 const getWorkerPath = () => {
@@ -11,5 +13,3 @@ const getWorkerPath = () => {
 
 const workerPath = getWorkerPath().default;
 export const connection = new Connection(new Worker(workerPath));
-
-connection.logStatus = true;

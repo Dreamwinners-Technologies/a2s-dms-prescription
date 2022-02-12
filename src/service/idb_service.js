@@ -1,5 +1,11 @@
 import { connection } from "./jsstore_con";
 import { DATA_TYPE } from "jsstore";
+import { encryptData, decryptData } from "../shared/enc.js";
+
+
+
+connection.logStatus = true;
+
 
 const getDatabase = () => {
     const tblProfile = {
@@ -27,6 +33,19 @@ const getDatabase = () => {
             }
         }
     };
+    const tblUser = {
+        name: 'User',
+        columns: {
+            id: {
+                primaryKey: true,
+                autoIncrement: true
+            },
+            uData: {
+                dataType: DATA_TYPE.String,
+            }
+        }
+    };
+
     const tblComlaints = {
         name: 'chiefComplaints',
         columns: {
@@ -224,12 +243,12 @@ const getDatabase = () => {
             }
         }
     };
-    const dataBase = {
+    return {
         name: "a2sdms",
-        version: 19,
-        tables: [tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes, tblFavDrugs]
+        version: 20,
+        tables: [tblUser, tblLatestAppointment, tblDrugs, tblComlaints, tblOnExamination, tblDiagnosis, tblInvestigationAdvice, tblAdvice, tblPrescription, tblLocalPrescription, tblAppointment, tblLocalAppointment, tblProfile, tblInstruction, tblDuration, tblNotes, tblFavDrugs]
     };
-    return dataBase;
+
 };
 
 export const initJsStore = async() => {
@@ -239,25 +258,48 @@ export const initJsStore = async() => {
 };
 const encryptMiddleware = function(request) {
 
-    const query = request.query
+    const query = request.query;
 
-    if (request.name == 'insert' && query.encrypt) {
+    if (request.name === 'insert' && query.encrypt) {
 
-        encryptData(query)
+        JSE.encrypt(query)
 
-    } else if (request.name == 'select' && query.decrypt) {
+    } else if (request.name === 'select' && query.decrypt) {
         // result will be encrypted, so let's wait for result and then decrypt data
 
         request.onResult((result) => {
-            decryptData(result);
+            JSE.decrypt(result);
         })
 
     }
 };
+// connection.addMiddleware(encryptMiddleware, false);
+
+export const setSpecialData = async(tableName, data) => {
+    // let encData = encryptData(data);
+    connection.set(tableName, data).then(function() {
+        console.log('value setted');
+    }).catch(function(error) {
+        console.log(error);
+    });
+};
+
+export const getSpecialData = async(tableName, data) => {
+    connection.get(tableName).then(function(userInfo) {
+        // console.log(decryptData(userInfo));
+        return userInfo;
+    }).catch(function(error) {
+        console.log(error);
+    });
+};
+
+
+
+
 export const dropDatabase = async() => {
     connection.dropDb().then(function() {
         location.reload(); // this reload is to fix not saving sync data to idb after login out and then login 
     }).catch(function(error) {
         console.log(error);
-    });;
+    });
 };

@@ -2,13 +2,18 @@
   <v-app>
     <router-view />
     <div class="text-center">
-      <v-snackbar bottom right :value="updateExists" :timeout="-1" color="primary">
-  An update is available
-  <v-btn color="white" class="black--text" text @click="refreshApp">
-    
-    Update
-  </v-btn>
-</v-snackbar>
+      <v-snackbar
+        bottom
+        right
+        :value="updateExists"
+        :timeout="-1"
+        color="primary"
+      >
+        An update is available
+        <v-btn color="white" class="black--text" text @click="refreshApp">
+          Update
+        </v-btn>
+      </v-snackbar>
       <v-snackbar top :color="snackbarColor" v-model="snackbar" timeout="1500">
         {{ snackbarText }}
       </v-snackbar>
@@ -18,7 +23,7 @@
           Please wait, Syncing ... <br />
           <h2 class="">{{ currentProgress.toFixed(2) }} %</h2>
           synced.
-          <br>
+          <br />
           Don't reload or stop internet.
           <v-progress-linear
             indeterminate
@@ -31,8 +36,13 @@
   </v-app>
 </template>
 <script>
-
-import {PROFILE_API, PRESCRIPTION_API, PRESCRIPTION_HEADER_API, APPOINTMENTS_API } from "@/shared/apis.js"
+import {
+  PROFILE_API,
+  PRESCRIPTION_API,
+  PRESCRIPTION_HEADER_API,
+  APPOINTMENTS_API,
+        auth
+} from "@/shared/apis.js";
 import { mapGetters } from "vuex";
 
 import updte from "@/mixins/update.js";
@@ -52,7 +62,7 @@ export default {
     //   "setHasPrescriptionAccess",
     //   JSON.parse(localStorage.getItem("uData")).hasPrescriptionAccess
     // );
-    console.log(this.$store.state.hasPrescriptionAccess)
+    console.log(this.$store.state.hasPrescriptionAccess);
     try {
       const isDbCreated = await initJsStore();
       if (isDbCreated) {
@@ -79,7 +89,7 @@ export default {
       snackbar: false,
       snackbarColor: "",
       snackbarText: "",
-      syncError: false,
+      syncError: false
     };
   },
   methods: {
@@ -87,7 +97,7 @@ export default {
       console.log("initial login");
       if (localStorage.getItem("uData") === null) return;
       let cu = JSON.parse(localStorage.getItem("uData")).roles;
-      if (cu.includes("DOCTOR") && localStorage.getItem("IL") == "true") {
+      if (cu.includes("DOCTOR") && localStorage.getItem("IL") === "true") {
         this.getPrescriptionHeader();
         this.syncDB();
       }
@@ -100,7 +110,7 @@ export default {
       this.parseDrugs(ds, 0);
     },
     getLoggedProfileInfo() {
-      if(this.syncError) return;
+      if (this.syncError) return;
       this.auth = "Bearer " + JSON.parse(localStorage.getItem("uData")).token;
       console.log(PROFILE_API);
       console.log(this.auth);
@@ -212,7 +222,7 @@ export default {
           }
         });
     },
-        parseDrugs(ds, cntr) {
+    parseDrugs(ds, cntr) {
       //  to sync all the drugs change cntr > 10 to cntr > 107
       //
       if (cntr > 106) {
@@ -230,8 +240,11 @@ export default {
             ds.addDrugs({ data: currentDrugList[i] });
           }
           // this.currentProgress = cntr;
-          console.log(response)
-          this.currentProgress = (response.data.pageNo * response.data.pageSize/response.data.totalItems) * 100;
+          console.log(response);
+          this.currentProgress =
+            ((response.data.pageNo * response.data.pageSize) /
+              response.data.totalItems) *
+            100;
           this.parseDrugs(ds, cntr + 1);
         })
         .catch(err => {
@@ -257,54 +270,51 @@ export default {
         });
     },
     parseDrugsO(ds) {
-
       let isLastPage = false,
-      cntr = 0;
-      while(!isLastPage){
-        
+        cntr = 0;
+      while (!isLastPage) {
         axios
-        .get(`${PRESCRIPTION_API}${cntr}&pageSize=200`)
-        .then(r => {
-          let response = r.data,
-            currentDrugList = r.data.data.data;
+          .get(`${PRESCRIPTION_API}${cntr}&pageSize=200`)
+          .then(r => {
+            let response = r.data,
+              currentDrugList = r.data.data.data;
             isLastPage = r.data.data.lastPage;
-          for (let i = 0; i < currentDrugList.length; i++) {
-            ds.addDrugs({ data: currentDrugList[i] });
-          }
-          cntr++;
-          this.currentProgress = response.data.itemCount/response.data.totalItems;
-        })
-        .catch(err => {
-          if (err.response) {
-            // client received an error response (5xx, 4xx)
-            this.dialog = false;
-            this.snackbar = true;
-            this.snackbarColor = "error";
-            this.syncError = true;
-            this.snackbarText = err.response.data.message;
-            return;
-          } else if (err.request) {
-            // client never received a response, or request never left
-            this.dialog = false;
-            this.snackbar = true;
-            this.syncError = true;
-            this.snackbarColor = "error";
-            this.snackbarText = "Internet Disconnected! Couldn't Sync.";
-            return;
-          } else {
- 
-          }
-        });
+            for (let i = 0; i < currentDrugList.length; i++) {
+              ds.addDrugs({ data: currentDrugList[i] });
+            }
+            cntr++;
+            this.currentProgress =
+              response.data.itemCount / response.data.totalItems;
+          })
+          .catch(err => {
+            if (err.response) {
+              // client received an error response (5xx, 4xx)
+              this.dialog = false;
+              this.snackbar = true;
+              this.snackbarColor = "error";
+              this.syncError = true;
+              this.snackbarText = err.response.data.message;
+              return;
+            } else if (err.request) {
+              // client never received a response, or request never left
+              this.dialog = false;
+              this.snackbar = true;
+              this.syncError = true;
+              this.snackbarColor = "error";
+              this.snackbarText = "Internet Disconnected! Couldn't Sync.";
+              return;
+            } else {
+            }
+          });
       }
       if (cntr > 10) {
         this.dialog = false;
         localStorage.setItem("IL", false);
         return;
       }
-     
     },
     formatDate(date) {
-      var d = new Date(date),
+      let d = new Date(date),
         month = "" + (d.getMonth() + 1),
         day = "" + d.getDate(),
         year = d.getFullYear();
@@ -321,12 +331,13 @@ export default {
   watch: {
     $route(to, from) {
       // react to route changes...
-      if (from.fullPath == "/auth/signin") {
+      if (from.fullPath === "/auth/signin") {
         this.checkIfInitialLogInAndSync();
       }
     }
   },
   mounted() {
+    console.log(auth);
     this.GS = new ABService();
     localStorage.setItem("selectedAppointment", null);
     this.checkIfInitialLogInAndSync();
@@ -338,10 +349,10 @@ export default {
 </script>
 <style lang="scss">
 .preview p {
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
 }
-.tick .v-input--selection-controls{
-  margin-top: 0px;
+.tick .v-input--selection-controls {
+  margin-top: 0;
 }
 body {
   font-family: "Open Sans", sans-serif;

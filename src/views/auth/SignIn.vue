@@ -65,7 +65,11 @@
             <br />
             <v-row class="mt-0">
               <v-col style="text-align:center" class="pb-0 pt-0">
-                <v-btn color="#3f8485" :disabled="dialog" class="white--text" @click="submit"
+                <v-btn
+                  color="#3f8485"
+                  :disabled="dialog"
+                  class="white--text"
+                  @click="submit"
                   >Sign In</v-btn
                 >
               </v-col>
@@ -86,13 +90,13 @@
               :rules="[rules.required]"
               required
               outlined
-               prepend-inner-icon="mdi-account-check"
+              prepend-inner-icon="mdi-account-check"
             ></v-text-field>
             <v-row justify="center" class="mb-2" align="center">
               <v-col class="">
                 Didn't get OTP?
               </v-col>
-              <v-col >
+              <v-col>
                 <v-btn
                   rounded=""
                   :disabled="countDown != 0"
@@ -101,7 +105,9 @@
                 >
                   Resend
                 </v-btn>
-                <span class="pt-1 d-inline-block" v-if="countDown != 0"> in {{ countDown }}s</span>
+                <span class="pt-1 d-inline-block" v-if="countDown != 0">
+                  in {{ countDown }}s</span
+                >
               </v-col>
             </v-row>
             <v-row class="mt-0">
@@ -117,7 +123,7 @@
     </v-row>
     <v-footer app bottom fixed padless>
       <p style="text-align:center;margin:auto; !important">
-         Copyright  {{ year }} © a2sdms Prescription
+        Copyright {{ year }} © a2sdms Prescription
       </p>
     </v-footer>
   </v-container>
@@ -126,14 +132,16 @@
 <script>
 import axios from "axios";
 
-const API_URL =
-  "https://api.a2sdms.com/";
+import { setSpecialData } from "@/service/idb_service.js";
+import { ABService } from "@/service/Generic_Service.js";
+const API_URL = "https://api.a2sdms.com/";
 const OTP_VERIFY_API = API_URL + "auth/verify/otp?";
 const LOGIN_URL = API_URL + "auth/login";
 import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      GS: null,
       phone: "",
       otp: "",
       isOTPMode: false,
@@ -169,7 +177,7 @@ export default {
   methods: {
     submit() {
       let r = this.$refs.form.validate();
-      if (r == true) {
+      if (r === true) {
         let i = this;
         this.dialog = true;
         let signInData = {
@@ -180,7 +188,7 @@ export default {
     },
     submitOtp() {
       let r = this.$refs.formOTP.validate();
-      if (r == true) {
+      if (r === true) {
         let i = this;
         this.dialog = true;
         this.OTPSend();
@@ -192,8 +200,9 @@ export default {
           `${OTP_VERIFY_API}otp=${this.otp}&phoneNo=${this.userLoginResponse.phoneNo}`
         )
         .then(response => {
-          console.log(response);
-          if (response.status == 200) {
+          if (response.status === 200) {
+            const setData = setSpecialData("indexDbId", JSON.stringify(response.data));
+            // this.saveUserInfo(response.data);
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("IL", true);
             localStorage.setItem("uData", JSON.stringify(response.data));
@@ -202,7 +211,7 @@ export default {
           }
         })
         .catch(err => {
-            if (err.response) {
+          if (err.response) {
             // client received an error response (5xx, 4xx)
             this.dialog = false;
             this.snackbar = true;
@@ -226,7 +235,12 @@ export default {
           console.log(response);
           // localStorage.setItem('token', response.data.accessToken)
           let res = response.data;
-          if (res.roles.includes("USER") && (!res.roles.includes("ADMIN") &&  !res.roles.includes("SUPER_ADMIN") && !res.roles.includes("MODERATOR"))) {
+          if (
+            res.roles.includes("USER") &&
+            !res.roles.includes("ADMIN") &&
+              !res.roles.includes("SUPER_ADMIN") &&
+              !res.roles.includes("MODERATOR")
+          ) {
             this.dialog = false;
             this.snackbar = true;
             this.snackbarColor = "error";
@@ -268,6 +282,13 @@ export default {
     redirect() {
       this.$router.push("/cpanel/dashboard");
     },
+    async saveUserInfo(data) {
+      let as = new ABService();
+      let r = await as.addEncryptedData("User", {
+        id: 1,
+        uData: JSON.stringify(data)
+      });
+    },
     countDownTimer() {
       if (this.countDown > 0) {
         setTimeout(() => {
@@ -278,22 +299,10 @@ export default {
     }
   },
   mounted() {
-    if (localStorage.token != undefined) {
+    if (localStorage.token !== undefined) {
       this.$router.push("/");
     }
   }
-  //   watch: {
-  //     response (val) {
-  //       console.log("logging" + val);
-  //         let i = this;
-  //        if(val!=false){
-  //     this.dialog = false;
-  //   setTimeout(() => {
-  //           window.location.href = "http://localhost:8080/#/";
-  //       }, 4000)
-  //  }
-  //     },
-  //   }
 };
 </script>
 

@@ -69,6 +69,13 @@
             <v-list-item-title>Doctor Controller</v-list-item-title>
           </v-list-item>
 
+           <v-list-item v-if="isAdmin" link to="ambulance-controller">
+            <v-list-item-icon>
+              <v-icon>mdi-ambulance</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Ambulance Controller</v-list-item-title>
+          </v-list-item>
+
           <v-list-item v-if="isAdmin" link to="card-controller">
             <v-list-item-icon>
               <v-icon>mdi-card-bulleted</v-icon>
