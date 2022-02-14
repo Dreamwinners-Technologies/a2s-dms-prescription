@@ -127,14 +127,23 @@ export default {
     },
     // local
     async getLocalDataParsed(tableName) {
-      let data = await this.GS.getData(tableName),
+      console.log("getting local -------------------------");
+      let data = this.GS.getData(tableName),
         output = [];
+        console.log(data);
       if (data) {
+        console.log(data);
         for (let i = 0; i < data.length; i++) {
           output.push(data[i].data);
         }
         return output;
+      }else{
+        return [];
       }
+    },
+      async getDataCount(tableName) {
+      let data = await this.GS.getLength(tableName);
+        return data;
     },
     syncPrescriptionHeader() {
       this.message = "Saving prescription Template...";
@@ -160,8 +169,8 @@ export default {
     },
     syncFavMedicine() {
       this.message = "Updateing Fav Medicine!";
-      console.log("fav medicine")
-      console.log(this.favMedicineList)
+      console.log("fav medicine");
+      console.log(this.favMedicineList);
       axios({
         method: "put",
         url: FAV_MEDICINE_API,
@@ -183,13 +192,15 @@ export default {
       this.syncPrescriptionHeader();
       this.syncFavMedicine();
       this.message = "Sending Appointments to Server ...";
-      let localPrescriptions = Promise.resolve(
-        this.getLocalDataParsed("LocalAppointment")
+      // let v = this.getLocalDataParsed("LocalAppointment");
+      // console.log(this.getDataCount("LocalAppointment"));
+       let localPrescriptions = Promise.resolve(
+         this.getLocalDataParsed("LocalAppointment")
       );
       let instance = this;
-
+      //  sending all local appointments as bulk to server
       localPrescriptions.then(v => {
-        console.log(v);
+        console.log("local parsed prescriptions ====>", v);
         //  return;
         axios({
           method: "post",
@@ -207,13 +218,21 @@ export default {
           })
           .catch(r => {
             console.log(r);
+            if(r.response){
+              // if(r.response.data.message.contains("JSON parse error")){
+              console.log(r.response.data.message);
+              // }
+            }
+            this.dialog = false;
           });
       });
     },
     syncAppointment(isLocalPrescription) {
+      
       if (isLocalPrescription)
-        this.message = "Syncing appointments with server ..";
+        this.message = "Getting latest appointments from server ..";
       else this.message = "Finalizing Syncing..";
+
       axios({
         method: "get",
         url: `${GET_APPOINtMENTS_API}?date=${this.formatDate(
@@ -263,8 +282,14 @@ export default {
           //   this.dialog = false;
           // }
           // }
-          this.sendPrescriptions();
-          this.dialog = false;
+          // this.sendPrescriptions();
+          // this.dialog = false;
+
+          if (isLocalPrescription == true) {
+            this.sendPrescriptions();
+          } else {
+            this.dialog = false;
+          }
         });
     },
     sendPrescriptions() {
@@ -314,7 +339,9 @@ export default {
     this.GS = new ABService();
     // this.sendBulkAppointmentsToServer();
     // console.log(this.formatDate(new Date()).toString())
-    this.favMedicineList.favouriteDrugs = JSON.parse(localStorage.getItem("favMedicineList"));
+    this.favMedicineList.favouriteDrugs = JSON.parse(
+      localStorage.getItem("favMedicineList")
+    );
   }
 };
 </script>

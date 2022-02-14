@@ -88,7 +88,7 @@
 
     <!-- dialog here -->
 
-    <v-dialog title="Add New Drug" v-model="addFavDialog" max-width="800px">
+    <v-dialog top title="Add New Drug" v-model="addFavDialog" max-width="800px">
         <v-card class="pa-6">
             <h3>Add To Favourite</h3> <br>
 
@@ -102,17 +102,40 @@
                             clearable
                             hide-details
                             hide-selected
-                            item-text="data.medicineName"
+                            persistent-hint
+                            small-chips
                             item-value="data"
-                            label="Search Company Name"
+                            item-text="data.medicineName"
+                            label="Search Medicine Name"
                             >
+                            <template v-slot:item="{ item }">
+                                <v-list-item-avatar
+                                    class="my-3 white--text"
+                                    :color="getRandomColor()"
+                                    size="40"
+                                    ><v-icon>mdi-pill</v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                <v-list-item-title v-text="item.data.medicineName +' ('+ item.data.strength+')'"></v-list-item-title>
+                                </v-list-item-content>
+                                <v-list-item-action>
+                                <v-chip small v-text="item.data.type"></v-chip>
+                                </v-list-item-action>
+                            </template>
                             </v-autocomplete>
 
                             <!-- {{item}} -->
                         </v-col>
+                    </v-row>
+                    <v-row>
                         <v-col class="ma-0" style="text-align:right !important;">
                             <v-btn depressed @click="addToFav(item)" color="info"><v-icon class="mr-2">mdi-content-save</v-icon>Add Favourite</v-btn>
                         </v-col>
+                    </v-row>
+                    <v-row>
+                        <div style="text-align:center !important;color:red;margin-top:200px">
+                            *Select Medicine your want to add to favourite.
+                        </div>
                     </v-row>
               </v-card>
     </v-dialog>
@@ -159,6 +182,10 @@ export default {
             (Math.floor(Math.random()*56)+200) + ', ' +
             (Math.floor(Math.random()*56)+200) +
             ')';
+     },
+
+     getMedInfo(item){
+         return `${item.data.type.substring(0,3).toUpperCase()}. ${item.data.medicineName.toUpperCase()} (${item.data.strength.toUpperCase()})`;
      },
     
     async getfavMedicineList(){

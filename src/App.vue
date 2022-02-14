@@ -41,7 +41,6 @@ import {
   PRESCRIPTION_API,
   PRESCRIPTION_HEADER_API,
   APPOINTMENTS_API,
-        auth
 } from "@/shared/apis.js";
 import { mapGetters } from "vuex";
 
@@ -105,9 +104,14 @@ export default {
     syncDB() {
       this.dialog = true;
       let ds = new DrugService();
-      this.syncAppointment();
-      this.getLoggedProfileInfo();
-      this.parseDrugs(ds, 0);
+      let  dp = Promise.resolve( this.parseDrugs(ds, 0));
+
+      dp.then(r => {
+  this.syncAppointment();
+      })
+     
+      // this.getLoggedProfileInfo();
+      // 
     },
     getLoggedProfileInfo() {
       if (this.syncError) return;
@@ -200,12 +204,16 @@ export default {
               id: response[a].id
             });
             console.log("updated appointments");
+                  this.getLoggedProfileInfo();
+      // this.parseDrugs(ds, 0);
           }
         })
         .catch(err => {
           if (err.response) {
             // client received an error response (5xx, 4xx)
             console.log(err.response);
+                  this.getLoggedProfileInfo();
+      // this.parseDrugs(ds, 0);
             // this.dialog = false;
             // this.snackbar = true;
             // this.snackbarColor = "error";
@@ -228,7 +236,8 @@ export default {
       if (cntr > 106) {
         this.dialog = false;
         localStorage.setItem("IL", false);
-        return;
+        //  this.syncAppointment();
+        return true;
       }
       axios
         .get(`${PRESCRIPTION_API}${cntr}&pageSize=200`)
@@ -337,7 +346,15 @@ export default {
     }
   },
   mounted() {
-    console.log(auth);
+  const  DEBUG = true;
+if(!DEBUG){
+    if(!window.console) window.console = {};
+    var methods = ["log", "debug", "warn", "info"];
+    for(var i=0;i<methods.length;i++){
+        console[methods[i]] = function(){};
+    }
+}
+    // console.log(auth);
     this.GS = new ABService();
     localStorage.setItem("selectedAppointment", null);
     this.checkIfInitialLogInAndSync();
@@ -363,5 +380,16 @@ body {
     // To pin point specific classes of some components
     font-family: "Open Sans", sans-serif !important;
   }
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>

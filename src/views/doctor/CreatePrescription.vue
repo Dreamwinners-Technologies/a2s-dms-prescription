@@ -402,6 +402,8 @@
                       color="#666666"
                       dense
                       label="Temparature"
+                      type="number"
+                      min="0"
                     >
                       <template slot="append">
                         <v-chip color="orange" small>°F</v-chip>
@@ -738,9 +740,9 @@
                     <b>Cheif Complaints :</b><br /><br />
                     <ul class="px-4" style="list-style-type:none">
                       <li
-                        v-for="item in appointment.data.prescription
+                        v-for="(item,idx) in appointment.data.prescription
                           .chiefComplaints"
-                        :key="item"
+                        :key="idx"
                       >
                         {{ item }}
                       </li>
@@ -763,9 +765,9 @@
                         {{ appointment.data.prescription.temperature }} Degree F
                       </li>
                       <li
-                        v-for="item in appointment.data.prescription
+                        v-for="(item, idx) in appointment.data.prescription
                           .onExamination"
-                        :key="item"
+                        :key="idx"
                       >
                         {{ item }}
                       </li>
@@ -777,8 +779,8 @@
                     <b>Diagnosis :</b><br /><br />
                     <ul class="px-4" style="list-style-type:none">
                       <li
-                        v-for="item in appointment.data.prescription.diagnosis"
-                        :key="item"
+                        v-for="(item, idx) in appointment.data.prescription.diagnosis"
+                        :key="idx"
                       >
                         {{ item }}
                       </li>
@@ -813,13 +815,14 @@
                 >
                   <v-col class="mx-4">
                     <ol>
-                      <li class="mb-3" v-for="(item) in appointment.data.prescription.medicines"
-                  :key="item">
+                      <li class="mb-3" v-for="(item, idx) in appointment.data.prescription.medicines"
+                  :key="idx">
                         <b style="font-size: 15px !important;"> {{ getMedicineNameParsed(item.brand,"general") }}</b
-                    >  {{  getMedicineNameParsed(item.brand,"generic") }}<br />
+                    > <b v-if="getMedicineNameParsed(item.brand,'generic')"> | </b> <small>{{  getMedicineNameParsed(item.brand,"generic") }}</small><br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
-                    Note: {{ item.note }}
+                    <div v-if="item.note">Note: {{ item.note }}</div>
+                    
                       </li>
                     </ol>
                   </v-col>
@@ -831,8 +834,8 @@
                       <b>Given Advice: </b>
                       <ul class="px-5" style="list-style-type:disc">
                         <li
-                          v-for="item in appointment.data.prescription.advice"
-                          :key="item"
+                          v-for="(item, idx) in appointment.data.prescription.advice"
+                          :key="idx"
                         >
                           {{ item }}
                         </li>
@@ -876,11 +879,6 @@
             </v-footer>
           </v-container>
         </div>
-        <v-btn depressed color="info"
-          ><v-icon class="mr-2" @click="prescriptionPriview = false"
-            >mdi-content-save</v-icon
-          >Print Prescription</v-btn
-        >
       </v-card>
     </v-dialog>
 
@@ -889,7 +887,29 @@
     <v-dialog title="Add New Drug" v-model="adddialog" max-width="800px">
       <v-card class="pa-5">
         <h3>Add New Drug</h3>
-        <v-row class="rowise pt-5">
+
+ <!-- filtering drugs buttons  -->
+        <v-row class="my-0 pt-5" dense>
+          <v-col cols="4" class="tick">
+            <v-checkbox
+              v-model="isFavOnly"
+              @change="setDrugsDataStyle"
+              label="Favourite Drugs only"
+            >
+            </v-checkbox>
+          </v-col>
+          <v-col class="tick">
+            <v-checkbox
+              v-model="isMedicineFull"
+              @change="setDrugsDataStyle"
+              label="Drugs with Generic Name"
+            >
+            </v-checkbox>
+          </v-col>
+        </v-row>
+
+ <!-- row 2 -->
+        <v-row class="rowise">
           <v-col>
             <v-autocomplete
               v-model="addDrugModel.brand"
@@ -897,7 +917,7 @@
               :item-value="getFullOrMiniDrugsName"
               :item-text="getFullOrMiniDrugsName"
               placeholder="Search Drug Name"
-              class="mt-2 pa-0"
+              class="pa-0"
               outlined
               color="teal"
               dense
@@ -913,7 +933,7 @@
               v-model="addDrugModel.dose"
               :items="addDrugItems.dose"
               placeholder="Search Drug Name"
-              class="mt-2 pa-0"
+              class="pa-0"
               outlined
               color="teal"
               dense
@@ -937,26 +957,7 @@
           </v-col>
         </v-row>
 
-      <!-- filtering drugs buttons  -->
-        <v-row class="my-0" dense>
-          <v-col cols="4" class="tick">
-            <v-checkbox
-              v-model="isFavOnly"
-              @change="setDrugsDataStyle"
-              label="Favourite only"
-            >
-            </v-checkbox>
-          </v-col>
-          <v-col class="tick">
-            <v-checkbox
-              v-model="isMedicineFull"
-              @change="setDrugsDataStyle"
-              label="Drugs with Generic Name"
-            >
-            </v-checkbox>
-          </v-col>
-        </v-row>
-
+ <!-- row 3 -->
         <v-row class="my-0" dense>
           <v-col>
             <v-combobox
@@ -1226,8 +1227,8 @@ export default {
             investigationAdvice: [],
             medicines: [],
             onExamination: [],
-            pulse: 0,
-            temperature: 0
+            pulse: "",
+            temperature: null | 0
           },
           totalFee: 0,
           updatedAt: 0,
@@ -1248,8 +1249,8 @@ export default {
     },
     getFullOrMiniDrugsName(item) {
       if (this.isMedicineFull)
-        return `${item.medicineName} | ${item.genericName} (${item.type})`;
-      else return `${item.medicineName} (${item.type})`;
+        return `${item.type.substring(0,3).toUpperCase()}. ${item.medicineName.toUpperCase()} (${item.strength.toUpperCase()}) | ${item.genericName}`;
+      else return `${item.type.substring(0,3).toUpperCase()}. ${item.medicineName.toUpperCase()} (${item.strength.toUpperCase()})`;
     },
     async submitSideData() {
       let r = await this.ABS.addData(this.sideDataSubmitCurrentTableName, {
@@ -1282,8 +1283,8 @@ export default {
       if (id != null) {
         let data = await this.ABS.getDataById("Appointment", id);
         this.appointment = data[0];
-        console.log(this.appointment.data.prescription);
-        if (this.appointment.data.prescription == undefined) {
+        // console.log(this.appointment.data.prescription);
+        if (this.appointment?.data.prescription == undefined) {
           this.appointment.data.prescription = {
             advice: [],
             bloodPressure: "",
@@ -1521,7 +1522,7 @@ export default {
       var data = string + "";
       var arr = data.split(",");
       console.log(arr);
-      return arr;
+      return arr.slice(0,arr.length-1);
     },
     arrayToString(arr) {
       console.log(arr);

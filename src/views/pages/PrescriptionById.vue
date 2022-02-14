@@ -40,9 +40,9 @@
                     <b>Cheif Complaints :</b><br /><br />
                     <ul class="px-4" style="list-style-type:none">
                       <li
-                        v-for="item in appointment.data.prescription
+                        v-for="(item, idx) in appointment.data.prescription
                           .chiefComplaints"
-                        :key="item"
+                        :key="idx"
                       >
                         {{ item }}
                       </li>
@@ -65,9 +65,9 @@
                         {{ appointment.data.prescription.temperature }} Degree F
                       </li>
                       <li
-                        v-for="item in appointment.data.prescription
+                        v-for="(item, idx) in appointment.data.prescription
                           .onExamination"
-                        :key="item"
+                        :key="idx"
                       >
                         {{ item }}
                       </li>
@@ -79,8 +79,8 @@
                     <b>Diagnosis :</b><br /><br />
                     <ul class="px-4" style="list-style-type:none">
                       <li
-                        v-for="item in appointment.data.prescription.diagnosis"
-                        :key="item"
+                        v-for="(item, idx) in appointment.data.prescription.diagnosis"
+                        :key="idx"
                       >
                         {{ item }}
                       </li>
@@ -92,9 +92,9 @@
                     <b>Investigation Advice :</b><br /><br />
                     <ul class="px-4" style="list-style-type:none">
                       <li
-                        v-for="item in appointment.data.prescription
+                        v-for="(item, idx) in appointment.data.prescription
                           .investigationAdvice"
-                        :key="item"
+                        :key="idx"
                       >
                         {{ item }}
                       </li>
@@ -115,13 +115,13 @@
                 >
                   <v-col class="mx-4">
                     <ol>
-                      <li class="mb-3" v-for="(item) in appointment.data.prescription.medicines"
-                  :key="item">
-                        <b style="font-size: 15px !important;"> {{ getMedicineNameParsed(item.brand,"general") }}</b
-                    >  {{  getMedicineNameParsed(item.brand,"generic") }}<br />
+                      <li class="mb-3" v-for="(item, idx) in appointment.data.prescription.medicines"
+                  :key="idx">
+                       <b style="font-size: 15px !important;"> {{ getMedicineNameParsed(item.brand,"general") }}</b
+                    > <b v-if="getMedicineNameParsed(item.brand,'generic')"> | </b> <small>{{  getMedicineNameParsed(item.brand,"generic") }}</small><br />
                     {{ item.dose }} --- {{ item.instruction }} ---
                     {{ item.duration }} <br />
-                    Note: {{ item.note }}
+                    <div v-if="item.note">Note: {{ item.note }}</div>
                       </li>
                     </ol>
                   </v-col>
@@ -131,10 +131,10 @@
                   <v-row>
                     <v-col class="mx-2 mt-2">
                       <b>Given Advice: </b>
-                      <ul class="px-5" style="list-style-type:disc">
+                      <ul  v-if="appointment.data.prescription.advice.length != 0" class="px-5" style="list-style-type:disc">
                       <li
-                        v-for="item in appointment.data.prescription.advice"
-                        :key="item"
+                        v-for="(item, idx) in appointment.data.prescription.advice"
+                        :key="idx"
                       >
                         {{ item }}
                       </li>
@@ -150,13 +150,13 @@
               >
                  <v-col cols="3">
                     Made By <br />
-                    <v-img
-                    max-width="200px"
+                    <img 
+                    style="max-width:200px;"
                     alt="A2S Need Bangladesh"
                     title="A2S Need Bangladesh"
                     src="../../assets/hero-logo.png">
 
-                    </v-img>
+                    <!-- </v-img> -->
                   </v-col>
                    <v-spacer> </v-spacer>
                   <v-col cols="5" style="border-top: 1px solid #f0f0f0 !important;">

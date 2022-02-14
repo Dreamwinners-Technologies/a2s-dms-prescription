@@ -9,6 +9,11 @@ export class ABService {
             from: tableName,
         })
     }
+    getLength(tableName){
+        return connection.count({
+            from: tableName
+        });
+    }
 
     addData(tableName, data) {
         return connection.insert({

@@ -102,6 +102,7 @@
                   :disabled="countDown != 0"
                   color="black"
                   class="white--text float-right"
+                  @click="OTPSend"
                 >
                   Resend
                 </v-btn>

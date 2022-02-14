@@ -93,6 +93,11 @@
 
     <v-dialog title="Add New Drug" v-model="createAppDialog" max-width="800px">
         <v-card class="pa-6">
+              <v-form
+    ref="form"
+    v-model="apoointmentFormModel"
+    lazy-validation
+  >
             <h3>Create New Appointment</h3>
                 <v-row class="rowise pt-5">
                     <v-col>
@@ -100,10 +105,14 @@
                         v-model="localAppointment.patientName"
                         placeholder="Name"
                         class="mt-2 pa-0"
+                        :rules="[rules.required]"
                         outlined
                         dense
                         label="Patient Name"
                         >
+                        <!-- <template #label>
+    <span class="red--text"><strong>* </strong></span>Email
+  </template> -->
                         </v-text-field>
                         <v-text-field
                         v-model="localAppointment.patientAge"
@@ -111,6 +120,7 @@
                         class="mt-2 pa-0"
                         outlined
                         dense
+                        :rules="[rules.required, rules.numOnly, rules.min]"
                         label="Patient Age"
                         >
                         </v-text-field>
@@ -119,12 +129,14 @@
                         label="Gender"
                         dense
                         outlined
+                        :rules="[rules.required]"
                         ></v-select>
                          <v-text-field
                         v-model="localAppointment.patientPhoneNo"
                         placeholder="+880"
                         class="mt-2 pa-0"
                         outlined
+                         :rules="[rules.required, rules.numOnly, rules.min]"
                         dense
                         label="Phone Number"
                         >
@@ -134,6 +146,7 @@
                         placeholder="Address"
                         class="mt-2 pa-0"
                         outlined
+                         :rules="[rules.required]"
                         dense
                         label="Patient Address"
                         >
@@ -151,6 +164,7 @@
                         <template v-slot:activator="{ on, attrs }">
                         <v-combobox
                             v-model="localAppointment.appointmentDate"
+                            :rules="[rules.required]"
                             label="Appointment Date"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -202,6 +216,7 @@
                             <v-btn depressed @click="createAppointment" color="info"><v-icon class="mr-2">mdi-content-save</v-icon>Create</v-btn>
                         </v-col>
                     </v-row>
+              </v-form>
               </v-card>
     </v-dialog>
             
@@ -236,7 +251,13 @@ export default {
         createAppDialog: false,
         genders: ["Male","Female"],
         paymentMethods: ["Cash","Online_Pay"],
+        rules: {required: value => !!value || 'Required.',
+        numOnly: value => /^[0-9]+$/.test(value) || 'Only numbers.',
+        min:value => parseInt(value) >= 0 || 'Must be more than 0.',
+        max: value => !!value || 'Must be less than 0.',},
+        apoointmentFormModel: false,
         localAppointment: {
+            // new Date().toJSON().slice(0,10)
                 appointmentDate: "",
                 createdOn: 0,
                 gender: "Male",
@@ -325,7 +346,9 @@ export default {
         return "#"+Math.floor(Math.random()*16777215).toString(16);
      },
     async createAppointment(){
-        console.log(this.localAppointment)
+       if(!this.$refs.form.validate())
+        return;
+
         this.localAppointment.id = uuidv4();
         this.localAppointment.createdOn = Date.now();
         let r = await this.ABS.addData("LocalAppointment", {
