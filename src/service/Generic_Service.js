@@ -9,13 +9,20 @@ export class ABService {
             from: tableName,
         })
     }
-    getLength(tableName){
+    getLength(tableName) {
         return connection.count({
             from: tableName
         });
     }
 
     addData(tableName, data) {
+        return connection.insert({
+            into: tableName,
+            values: [data],
+            return: true
+        })
+    }
+    async addDataAsync(tableName, data) {
         return connection.insert({
             into: tableName,
             values: [data],

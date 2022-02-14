@@ -19,12 +19,18 @@
       </v-snackbar>
       <v-dialog v-model="dialog" persistent width="300" style="height:40px;">
         <v-card color="#009688" class="text-center" style="color: #fff;">
-          <div class=""></div>
+          <!-- <div class=""></div> -->
+          <span v-if="!isSyncFinalMoment">
           Please wait, Syncing ... <br />
           <h2 class="">{{ currentProgress.toFixed(2) }} %</h2>
           synced.
           <br />
           Don't reload or stop internet.
+          </span>
+          <span v-if="isSyncFinalMoment">
+            Finalizing All
+          </span>
+
           <v-progress-linear
             indeterminate
             color="white"
@@ -88,7 +94,8 @@ export default {
       snackbar: false,
       snackbarColor: "",
       snackbarText: "",
-      syncError: false
+      syncError: false,
+      isSyncFinalMoment: false,
     };
   },
   methods: {
@@ -98,17 +105,14 @@ export default {
       let cu = JSON.parse(localStorage.getItem("uData")).roles;
       if (cu.includes("DOCTOR") && localStorage.getItem("IL") === "true") {
         this.getPrescriptionHeader();
-        this.syncDB();
       }
     },
     syncDB() {
       this.dialog = true;
       let ds = new DrugService();
-      let  dp = Promise.resolve( this.parseDrugs(ds, 0));
+      this.parseDrugs(ds, 0);
 
-      dp.then(r => {
-  this.syncAppointment();
-      })
+  
      
       // this.getLoggedProfileInfo();
       // 
@@ -129,15 +133,26 @@ export default {
         .then(r => {
           console.log(r.data);
           let as = new ABService();
-          let res = as.addData("ProfData", {
+          let res = as.addDataAsync("ProfData", {
             Id: 1,
             data: r.data
           });
+
+          res.then( res => {
+          // reload to fix first sync stuck
+            location.reload();
+          });
+
+
+          
         })
         .catch(r => {
           console.log(r);
         });
     },
+    // async setProfData(){
+
+    // },
     getPrescriptionHeader() {
       console.log(this.auth);
       axios({
@@ -154,15 +169,19 @@ export default {
           localStorage.setItem("leftHeader", r.data.data.leftHeader);
           localStorage.setItem("rightHeader", r.data.data.rightHeader);
           localStorage.setItem("middleHeader", r.data.data.middleHeader);
+          // start of syncing of DB
+           this.syncDB();
         })
         .catch(err => {
           if (err.response) {
             // client received an error response (5xx, 4xx)
             console.log(err.response);
-            this.dialog = false;
+          //  this.dialog = false;
             this.snackbar = true;
             this.snackbarColor = "error";
             this.snackbarText = err.response.data.message;
+            // either way try to sync DB 
+             this.syncDB();
           } else if (err.request) {
             // client never received a response, or request never left
             this.dialog = false;
@@ -204,7 +223,7 @@ export default {
               id: response[a].id
             });
             console.log("updated appointments");
-                  this.getLoggedProfileInfo();
+              this.getLoggedProfileInfo();
       // this.parseDrugs(ds, 0);
           }
         })
@@ -234,8 +253,10 @@ export default {
       //  to sync all the drugs change cntr > 10 to cntr > 107
       //
       if (cntr > 106) {
-        this.dialog = false;
+        // this.dialog = false;
         localStorage.setItem("IL", false);
+  this.isSyncFinalMoment = true;
+  this.syncAppointment();
         //  this.syncAppointment();
         return true;
       }
