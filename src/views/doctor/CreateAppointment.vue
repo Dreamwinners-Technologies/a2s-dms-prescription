@@ -290,15 +290,15 @@ export default {
                 paymentMethod: "Cash",
                 prescription: {
                 advice: [],
-                bloodPressure: 0,
+                bloodPressure: null,
                 chiefComplaints: [],
                 diagnosis: [],
                 id: "",
                 investigationAdvice: [],
                 medicines: [],
                 onExamination: [],
-                pulse: 0,
-                temperature: 0
+                pulse: null,
+                temperature: null
                 },
                 totalFee: 0,
                 updatedAt: 0,

@@ -373,6 +373,7 @@
                       color="#666666"
                       dense
                       label="Pulse"
+                      @focus="$event.target.select()"
                     >
                       <template slot="append">
                         <v-chip color="info" small>/min</v-chip>
@@ -388,6 +389,7 @@
                       color="#666666"
                       dense
                       label="BP"
+                      @focus="$event.target.select()"
                     >
                       <template slot="append">
                         <v-chip color="green" small>mmHg</v-chip>
@@ -404,6 +406,7 @@
                       label="Temparature"
                       type="number"
                       min="0"
+                      @focus="$event.target.select()"
                     >
                       <template slot="append">
                         <v-chip color="orange" small>°F</v-chip>
@@ -1228,7 +1231,7 @@ export default {
             medicines: [],
             onExamination: [],
             pulse: "",
-            temperature: null | 0
+            temperature: null
           },
           totalFee: 0,
           updatedAt: 0,
