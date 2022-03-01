@@ -38,6 +38,7 @@
           ></v-progress-linear>
         </v-card>
       </v-dialog>
+
     </div>
     <!--  -->
   </div>
@@ -115,6 +116,18 @@ export default {
           this.currentProgress = cntr;
 
           this.parseDrugs(ds, cntr + 1);
+        }).catch(err => {
+                      if (err.response) {
+              // client received an error response (5xx, 4xx)
+              console.log(err.response);
+         if(err.response.status === 500){
+           this.store.commit("tknExp", true);
+         }
+            } else if (err.request) {
+              // client never received a response, or request never left
+ 
+            } else {
+            }
         });
     },
     async searchDrugs() {

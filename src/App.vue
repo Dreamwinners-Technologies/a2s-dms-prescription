@@ -21,11 +21,11 @@
         <v-card color="#009688" class="text-center" style="color: #fff;">
           <!-- <div class=""></div> -->
           <span v-if="!isSyncFinalMoment">
-          Please wait, Syncing ... <br />
-          <h2 class="">{{ currentProgress.toFixed(2) }} %</h2>
-          synced.
-          <br />
-          Don't reload or stop internet.
+            Please wait, Syncing ... <br />
+            <h2 class="">{{ currentProgress.toFixed(2) }} %</h2>
+            synced.
+            <br />
+            Don't reload or stop internet.
           </span>
           <span v-if="isSyncFinalMoment">
             Finalizing All
@@ -38,6 +38,9 @@
           ></v-progress-linear>
         </v-card>
       </v-dialog>
+            <v-dialog width="max-content" class="expDialog" v-model="dialogExpSignIn" hide-overlay >
+      <token-expire-sign-in></token-expire-sign-in>
+      </v-dialog>
     </div>
   </v-app>
 </template>
@@ -46,7 +49,7 @@ import {
   PROFILE_API,
   PRESCRIPTION_API,
   PRESCRIPTION_HEADER_API,
-  APPOINTMENTS_API,
+  APPOINTMENTS_API
 } from "@/shared/apis.js";
 import { mapGetters } from "vuex";
 
@@ -56,11 +59,16 @@ import { initJsStore } from "@/service/idb_service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { ABService } from "@/service/Generic_Service.js";
 
+import tokenExpireSignIn  from "@/views/auth/TokenExpireSignIn";
+
 // import { dropDatabase } from "@/service/idb_service.js";
 
 import { Global } from "@/global";
 import axios from "axios";
 export default {
+  components: {
+tokenExpireSignIn
+  },
   mixins: [updte],
   async beforeCreate() {
     // this.$store.commit(
@@ -81,21 +89,22 @@ export default {
       Global.isIndexedDbSupported = false;
     }
   },
-  components: {
-    name: "App"
-  },
+  // components: {
+  //   name: "App"
+  // },
 
   data() {
     return {
       GS: null,
       auth: "",
       dialog: false,
+      dialogExpSignIn: false,
       currentProgress: 0,
       snackbar: false,
       snackbarColor: "",
       snackbarText: "",
       syncError: false,
-      isSyncFinalMoment: false,
+      isSyncFinalMoment: false
     };
   },
   methods: {
@@ -110,12 +119,9 @@ export default {
     syncDB() {
       this.dialog = true;
       let ds = new DrugService();
+     // console.log("======>", this.GS.clearTable.constructor.name === "AsyncFunction");
+      this.GS.clearTable("Drugs");
       this.parseDrugs(ds, 0);
-
-  
-     
-      // this.getLoggedProfileInfo();
-      // 
     },
     getLoggedProfileInfo() {
       if (this.syncError) return;
@@ -138,13 +144,10 @@ export default {
             data: r.data
           });
 
-          res.then( res => {
-          // reload to fix first sync stuck
+          res.then(res => {
+            // reload to fix first sync stuck
             location.reload();
           });
-
-
-          
         })
         .catch(r => {
           console.log(r);
@@ -170,18 +173,18 @@ export default {
           localStorage.setItem("rightHeader", r.data.data.rightHeader);
           localStorage.setItem("middleHeader", r.data.data.middleHeader);
           // start of syncing of DB
-           this.syncDB();
+          this.syncDB();
         })
         .catch(err => {
           if (err.response) {
             // client received an error response (5xx, 4xx)
             console.log(err.response);
-          //  this.dialog = false;
+            //  this.dialog = false;
             this.snackbar = true;
             this.snackbarColor = "error";
             this.snackbarText = err.response.data.message;
-            // either way try to sync DB 
-             this.syncDB();
+            // either way try to sync DB
+            this.syncDB();
           } else if (err.request) {
             // client never received a response, or request never left
             this.dialog = false;
@@ -217,26 +220,19 @@ export default {
           console.log(response);
           this.GS.clearTable("Appointment");
           for (let a = 0; a < response.length; a++) {
-            console.log(response[a].id);
             this.GS.addData("Appointment", {
               data: response[a],
               id: response[a].id
             });
             console.log("updated appointments");
-              this.getLoggedProfileInfo();
-      // this.parseDrugs(ds, 0);
+            this.getLoggedProfileInfo();
           }
         })
         .catch(err => {
           if (err.response) {
             // client received an error response (5xx, 4xx)
             console.log(err.response);
-                  this.getLoggedProfileInfo();
-      // this.parseDrugs(ds, 0);
-            // this.dialog = false;
-            // this.snackbar = true;
-            // this.snackbarColor = "error";
-            // this.snackbarText = err.response.data.message;
+            this.getLoggedProfileInfo();
           } else if (err.request) {
             // client never received a response, or request never left
             this.dialog = false;
@@ -255,8 +251,8 @@ export default {
       if (cntr > 106) {
         // this.dialog = false;
         localStorage.setItem("IL", false);
-  this.isSyncFinalMoment = true;
-  this.syncAppointment();
+        this.isSyncFinalMoment = true;
+        this.syncAppointment();
         //  this.syncAppointment();
         return true;
       }
@@ -299,50 +295,6 @@ export default {
           }
         });
     },
-    parseDrugsO(ds) {
-      let isLastPage = false,
-        cntr = 0;
-      while (!isLastPage) {
-        axios
-          .get(`${PRESCRIPTION_API}${cntr}&pageSize=200`)
-          .then(r => {
-            let response = r.data,
-              currentDrugList = r.data.data.data;
-            isLastPage = r.data.data.lastPage;
-            for (let i = 0; i < currentDrugList.length; i++) {
-              ds.addDrugs({ data: currentDrugList[i] });
-            }
-            cntr++;
-            this.currentProgress =
-              response.data.itemCount / response.data.totalItems;
-          })
-          .catch(err => {
-            if (err.response) {
-              // client received an error response (5xx, 4xx)
-              this.dialog = false;
-              this.snackbar = true;
-              this.snackbarColor = "error";
-              this.syncError = true;
-              this.snackbarText = err.response.data.message;
-              return;
-            } else if (err.request) {
-              // client never received a response, or request never left
-              this.dialog = false;
-              this.snackbar = true;
-              this.syncError = true;
-              this.snackbarColor = "error";
-              this.snackbarText = "Internet Disconnected! Couldn't Sync.";
-              return;
-            } else {
-            }
-          });
-      }
-      if (cntr > 10) {
-        this.dialog = false;
-        localStorage.setItem("IL", false);
-        return;
-      }
-    },
     formatDate(date) {
       let d = new Date(date),
         month = "" + (d.getMonth() + 1),
@@ -356,7 +308,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["currentLoggedUserType"])
+    ...mapGetters(["currentLoggedUserType", "tknExp"])
   },
   watch: {
     $route(to, from) {
@@ -364,24 +316,25 @@ export default {
       if (from.fullPath === "/auth/signin") {
         this.checkIfInitialLogInAndSync();
       }
+    },
+    tknExp(val){
+     lthis.dialogExpSignIn = val;
     }
   },
   mounted() {
-  const  DEBUG = true;
-if(!DEBUG){
-    if(!window.console) window.console = {};
-    var methods = ["log", "debug", "warn", "info"];
-    for(var i=0;i<methods.length;i++){
-        console[methods[i]] = function(){};
+    const DEBUG = true;
+    if (!DEBUG) {
+      if (!window.console) window.console = {};
+      var methods = ["log", "debug", "warn", "info"];
+      for (var i = 0; i < methods.length; i++) {
+        console[methods[i]] = function() {};
+      }
     }
-}
-    // console.log(auth);
     this.GS = new ABService();
     localStorage.setItem("selectedAppointment", null);
     this.checkIfInitialLogInAndSync();
   },
   created() {
-    // console.log(JSON.parse(localStorage.getItem("uData")).hasPrescriptionAccess)
   }
 };
 </script>
@@ -410,7 +363,10 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
+.expDialog {
+    overflow: none !important;
+  }
 </style>

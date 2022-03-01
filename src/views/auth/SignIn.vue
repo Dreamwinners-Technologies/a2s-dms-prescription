@@ -61,6 +61,7 @@
               required
               outlined
               prepend-inner-icon="mdi-phone"
+              v-on:keydown.enter.prevent="submit"
             ></v-text-field>
             <br />
             <v-row class="mt-0">
@@ -70,6 +71,7 @@
                   :disabled="dialog"
                   class="white--text"
                   @click="submit"
+                  
                   >Sign In</v-btn
                 >
               </v-col>
@@ -176,7 +178,8 @@ export default {
     ...mapGetters(["userLoginResponse"])
   },
   methods: {
-    submit() {
+    submit(event) {
+       event.preventDefault()
       let r = this.$refs.form.validate();
       if (r === true) {
         let i = this;

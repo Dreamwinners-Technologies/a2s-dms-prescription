@@ -14,7 +14,7 @@ function getPrescriptionAccessDetails() {
 function hasAdminRole() {
     try {
         let user = JSON.parse(localStorage.getItem("uData"));
-            return user.roles.includes("SUPER_ADMIN") || user.roles.includes("ADMIN") || user.roles.includes("MODERATOR");
+        return user.roles.includes("SUPER_ADMIN") || user.roles.includes("ADMIN") || user.roles.includes("MODERATOR");
 
     } catch (e) {
         return undefined;
@@ -27,6 +27,7 @@ export default new Vuex.Store({
         currentLoggedUserType: "",
         hasPrescriptionAccess: getPrescriptionAccessDetails(),
         adminRole: hasAdminRole(),
+        tknExp: false,
     },
     mutations: {
         setUserLoginResponse(state, data) {
@@ -38,6 +39,9 @@ export default new Vuex.Store({
         setHasPrescriptionAccess(state, data) {
             state.hasPrescriptionAccess = data;
         },
+        setTokenExpire(state, data) {
+            state.tknExp = data;
+        },
     },
     actions: {},
     modules: {},
@@ -45,6 +49,7 @@ export default new Vuex.Store({
         userLoginResponse: state => state.userLoginResponse,
         currentLoggedUserType: state => state.currentLoggedUserType,
         hasPrescriptionAccess: state => state.hasPrescriptionAccess,
-        adminRole: state => state.adminRole
+        adminRole: state => state.adminRole,
+        tknExp: state => state.tknExp,
     }
 })
