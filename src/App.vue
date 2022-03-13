@@ -10,7 +10,7 @@
         color="primary"
       >
         An update is available
-        <v-btn color="white" class="black--text" text @click="refreshApp">
+        <v-btn color="white" class="black--text"  text @click="refreshApp">
           Update
         </v-btn>
       </v-snackbar>
