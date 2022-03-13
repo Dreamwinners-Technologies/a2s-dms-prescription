@@ -6461,11 +6461,6 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jsstore-encrypt@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/jsstore-encrypt/-/jsstore-encrypt-1.1.2.tgz#05e1c2127addcfbee8f1727c529f7966a3bbb495"
-  integrity sha512-8qR30bmyxfx8E4BmOMoRQwE46QYEwC8/S7dg6EEcaMIXkbD55wkoqN2lL75ESMguWIO23KjMhyZ58eANl81Fgw==
-
 jsstore@^4.3.7:
   version "4.3.7"
   resolved "https://registry.npmjs.org/jsstore/-/jsstore-4.3.7.tgz"
