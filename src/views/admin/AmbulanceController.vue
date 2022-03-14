@@ -291,6 +291,13 @@
         <br />
         <v-row>
           <v-col cols="6">
+                        <v-text-field
+              outlined
+              label="Title"
+              dense
+              v-model="editAmbulanceModel.title"
+            >
+            </v-text-field>
             <v-text-field
               outlined
               label="Address"
@@ -298,19 +305,11 @@
               v-model="editAmbulanceModel.address"
             >
             </v-text-field>
-            <v-text-field
+                        <v-text-field
               outlined
-              label="District"
+              label="Mobile No"
               dense
-              v-model="editAmbulanceModel.district"
-            >
-            </v-text-field>
-            <br />
-            <v-text-field
-              outlined
-              label="Divison"
-              dense
-              v-model="editAmbulanceModel.division"
+              v-model="editAmbulanceModel.phoneNo"
             >
             </v-text-field>
             <v-text-field
@@ -324,16 +323,16 @@
           <v-col cols="6">
             <v-text-field
               outlined
-              label="Mobile No"
+              label="Divison"
               dense
-              v-model="editAmbulanceModel.phoneNo"
+              v-model="editAmbulanceModel.division"
             >
             </v-text-field>
             <v-text-field
               outlined
-              label="Title"
+              label="District"
               dense
-              v-model="editAmbulanceModel.title"
+              v-model="editAmbulanceModel.district"
             >
             </v-text-field>
             <v-text-field

@@ -141,22 +141,25 @@ export default {
     // local
     async getLocalDataParsed(tableName) {
       console.log("getting local -------------------------");
-      let data = this.GS.getData(tableName),
-        output = [];
-        console.log(data);
-      if (data) {
-        console.log(data);
+      let data = await this.getData(tableName);
+                      const output = [];
+        // data.then(result => {
+
+                  console.log(data);
         for (let i = 0; i < data.length; i++) {
           output.push(data[i].data);
         }
+        // })
         return output;
-      }else{
-        return [];
-      }
     },
       async getDataCount(tableName) {
       let data = await this.GS.getLength(tableName);
         return data;
+    },
+    async getData(tableName){
+  let data = await this.GS.getData(tableName);
+  console.log("test",data)
+  return data;
     },
     syncPrescriptionHeader() {
       this.message = "Saving prescription Template...";
@@ -200,25 +203,24 @@ export default {
           console.log(r);
         });
     },
-    sendBulkAppointmentsToServer() {
+   async sendBulkAppointmentsToServer() {
       this.dialog = true;
       this.syncPrescriptionHeader();
       this.syncFavMedicine();
       this.message = "Sending Appointments to Server ...";
       // let v = this.getLocalDataParsed("LocalAppointment");
       // console.log(this.getDataCount("LocalAppointment"));
-       let localPrescriptions = Promise.resolve(
-         this.getLocalDataParsed("LocalAppointment")
-      );
+       let localPrescriptions =  this.getLocalDataParsed("LocalAppointment")
+  console.log(localPrescriptions);
       let instance = this;
       //  sending all local appointments as bulk to server
-      localPrescriptions.then(v => {
-        console.log("local parsed prescriptions ====>", v);
+      localPrescriptions.then(response => {
+        console.log(response[0]);
         //  return;
         axios({
           method: "post",
           url: BULK_APPOINTMENTS_API,
-          data: v,
+          data: response,
           headers: {
             Authorization: instance.auth,
             "Content-Type": "application/json"
