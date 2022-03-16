@@ -5,7 +5,7 @@ const API_ROOT = "https://api.a2sdms.com/";
 const API_ROOT_ALT = "http://need-doctors-backend.southeastasia.cloudapp.azure.com:8100/";
 const DEV_API_ROOT = "https://need-doctors-backend.herokuapp.com/";
 //getSpecialData("ud")
-let data = Promise.resolve(getSpecialData("ud"));
+// let data = Promise.resolve(getSpecialData("ud"));
 // let decData;
 // data.then(v => {
 //     decData = "Bearer " + decryptData(v);

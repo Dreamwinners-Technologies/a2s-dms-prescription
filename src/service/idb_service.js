@@ -275,8 +275,16 @@ const encryptMiddleware = function(request) {
 };
 // connection.addMiddleware(encryptMiddleware, false);
 
-export const setSpecialData = async(tableName, data) => {
-    // let encData = encryptData(data);
+export const setSpecialDataE = async(tableName, data) => {
+    let encData = encryptData(data);
+    connection.set(tableName, encData).then(function() {
+        console.log('value setted');
+    }).catch(function(error) {
+        console.log(error);
+    });
+};
+
+export const setSmallData = async(tableName, data) => {
     connection.set(tableName, data).then(function() {
         console.log('value setted');
     }).catch(function(error) {
@@ -284,16 +292,29 @@ export const setSpecialData = async(tableName, data) => {
     });
 };
 
+
+
 export const getSpecialData = async(tableName, data) => {
+    let output = await connection.get(tableName);
+    return await decryptData(output);
     connection.get(tableName).then(function(userInfo) {
-        // console.log(decryptData(userInfo));
-        return userInfo;
+        console.log(decryptData(userInfo));
+        output = decryptData(userInfo);
     }).catch(function(error) {
         console.log(error);
     });
+    return output;
 };
 
-
+export const getSmallData = async(tableName, data) => {
+    let output;
+    try {
+        output = await connection.get(tableName);
+        return output;
+    } catch (e) {
+        return undefined;
+    }
+}
 
 
 export const dropDatabase = async() => {

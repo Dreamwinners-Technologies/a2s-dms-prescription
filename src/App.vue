@@ -10,15 +10,15 @@
         color="primary"
       >
         An update is available
-        <v-btn color="white" class="black--text"  text @click="refreshApp">
+        <v-btn color="white" class="black--text" text @click="refreshApp">
           Update
         </v-btn>
       </v-snackbar>
       <v-snackbar top :color="snackbarColor" v-model="snackbar" timeout="1500">
         {{ snackbarText }}
       </v-snackbar>
-      <v-dialog v-model="dialog" persistent width="300" style="height:40px;">
-        <v-card color="#009688" class="text-center" style="color: #fff;">
+      <v-dialog v-model="dialog" persistent width="300" style="height: 40px">
+        <v-card color="#009688" class="text-center" style="color: #fff">
           <!-- <div class=""></div> -->
           <span v-if="!isSyncFinalMoment">
             Please wait, Syncing ... <br />
@@ -27,9 +27,7 @@
             <br />
             Don't reload or stop internet.
           </span>
-          <span v-if="isSyncFinalMoment">
-            Finalizing All
-          </span>
+          <span v-if="isSyncFinalMoment"> Finalizing All </span>
 
           <v-progress-linear
             indeterminate
@@ -38,8 +36,13 @@
           ></v-progress-linear>
         </v-card>
       </v-dialog>
-            <v-dialog width="max-content" class="expDialog" v-model="dialogExpSignIn" hide-overlay >
-      <token-expire-sign-in></token-expire-sign-in>
+      <v-dialog
+        width="max-content"
+        class="expDialog"
+        v-model="dialogExpSignIn"
+        hide-overlay
+      >
+        <token-expire-sign-in></token-expire-sign-in>
       </v-dialog>
     </div>
   </v-app>
@@ -49,17 +52,21 @@ import {
   PROFILE_API,
   PRESCRIPTION_API,
   PRESCRIPTION_HEADER_API,
-  APPOINTMENTS_API
+  APPOINTMENTS_API,
 } from "@/shared/apis.js";
 import { mapGetters } from "vuex";
 
 import updte from "@/mixins/update.js";
 
-import { initJsStore } from "@/service/idb_service.js";
+import {
+  initJsStore,
+  getSpecialData,
+  getSmallData,
+} from "@/service/idb_service.js";
 import { DrugService } from "@/service/drugs_service.js";
 import { ABService } from "@/service/Generic_Service.js";
 
-import tokenExpireSignIn  from "@/views/auth/TokenExpireSignIn";
+import tokenExpireSignIn from "@/views/auth/TokenExpireSignIn";
 
 // import { dropDatabase } from "@/service/idb_service.js";
 
@@ -67,7 +74,7 @@ import { Global } from "@/global";
 import axios from "axios";
 export default {
   components: {
-tokenExpireSignIn
+    tokenExpireSignIn,
   },
   mixins: [updte],
   async beforeCreate() {
@@ -89,10 +96,6 @@ tokenExpireSignIn
       Global.isIndexedDbSupported = false;
     }
   },
-  // components: {
-  //   name: "App"
-  // },
-
   data() {
     return {
       GS: null,
@@ -104,23 +107,27 @@ tokenExpireSignIn
       snackbarColor: "",
       snackbarText: "",
       syncError: false,
-      isSyncFinalMoment: false
+      isSyncFinalMoment: false,
     };
   },
   methods: {
     checkIfInitialLogInAndSync() {
       console.log("initial login");
       if (localStorage.getItem("uData") === null) return;
+      let decr = getSpecialData("indexDbId");
+      decr.then((res) => {
+        console.log("yo", res);
+      });
       let cu = JSON.parse(localStorage.getItem("uData")).roles;
       if (cu.includes("DOCTOR") && localStorage.getItem("IL") === "true") {
         this.getPrescriptionHeader();
       }
     },
-    syncDB() {
+    async syncDB() {
       this.dialog = true;
       let ds = new DrugService();
-     // console.log("======>", this.GS.clearTable.constructor.name === "AsyncFunction");
-      this.GS.clearTable("Drugs");
+      // console.log("======>", this.GS.clearTable.constructor.name === "AsyncFunction");
+      await this.GS.clearTable("Drugs");
       this.parseDrugs(ds, 0);
     },
     getLoggedProfileInfo() {
@@ -133,23 +140,23 @@ tokenExpireSignIn
         url: PROFILE_API,
         headers: {
           Authorization: this.auth,
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       })
-        .then(r => {
+        .then((r) => {
           console.log(r.data);
           let as = new ABService();
           let res = as.addDataAsync("ProfData", {
             Id: 1,
-            data: r.data
+            data: r.data,
           });
 
-          res.then(res => {
+          res.then((res) => {
             // reload to fix first sync stuck
             location.reload();
           });
         })
-        .catch(r => {
+        .catch((r) => {
           console.log(r);
         });
     },
@@ -164,10 +171,10 @@ tokenExpireSignIn
         headers: {
           Authorization:
             "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       })
-        .then(r => {
+        .then((r) => {
           console.log(r.data);
           localStorage.setItem("leftHeader", r.data.data.leftHeader);
           localStorage.setItem("rightHeader", r.data.data.rightHeader);
@@ -175,7 +182,7 @@ tokenExpireSignIn
           // start of syncing of DB
           this.syncDB();
         })
-        .catch(err => {
+        .catch((err) => {
           if (err.response) {
             // client received an error response (5xx, 4xx)
             console.log(err.response);
@@ -200,7 +207,7 @@ tokenExpireSignIn
       let as = new ABService();
       let r = await as.addData("ProfData", {
         Id: 1,
-        data: JSON.stringify(this.getLoggedProfileInfo())
+        data: JSON.stringify(this.getLoggedProfileInfo()),
       });
     },
     syncAppointment() {
@@ -212,23 +219,23 @@ tokenExpireSignIn
         headers: {
           Authorization:
             "Bearer " + JSON.parse(localStorage.getItem("uData")).token,
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       })
-        .then(r => {
+        .then((r) => {
           let response = r.data.data.data;
           console.log(response);
           this.GS.clearTable("Appointment");
           for (let a = 0; a < response.length; a++) {
             this.GS.addData("Appointment", {
               data: response[a],
-              id: response[a].id
+              id: response[a].id,
             });
             console.log("updated appointments");
             this.getLoggedProfileInfo();
           }
         })
-        .catch(err => {
+        .catch((err) => {
           if (err.response) {
             // client received an error response (5xx, 4xx)
             console.log(err.response);
@@ -258,7 +265,7 @@ tokenExpireSignIn
       }
       axios
         .get(`${PRESCRIPTION_API}${cntr}&pageSize=200`)
-        .then(r => {
+        .then((r) => {
           let response = r.data,
             currentDrugList = r.data.data.data;
           console.log(currentDrugList);
@@ -273,7 +280,7 @@ tokenExpireSignIn
             100;
           this.parseDrugs(ds, cntr + 1);
         })
-        .catch(err => {
+        .catch((err) => {
           if (err.response) {
             // client received an error response (5xx, 4xx)
             this.dialog = false;
@@ -305,10 +312,10 @@ tokenExpireSignIn
       if (day.length < 2) day = "0" + day;
 
       return [year, month, day].join("-");
-    }
+    },
   },
   computed: {
-    ...mapGetters(["currentLoggedUserType", "tknExp"])
+    ...mapGetters(["currentLoggedUserType", "tknExp"]),
   },
   watch: {
     $route(to, from) {
@@ -317,9 +324,9 @@ tokenExpireSignIn
         this.checkIfInitialLogInAndSync();
       }
     },
-    tknExp(val){
-     lthis.dialogExpSignIn = val;
-    }
+    tknExp(val) {
+      lthis.dialogExpSignIn = val;
+    },
   },
   mounted() {
     const DEBUG = true;
@@ -327,15 +334,19 @@ tokenExpireSignIn
       if (!window.console) window.console = {};
       var methods = ["log", "debug", "warn", "info"];
       for (var i = 0; i < methods.length; i++) {
-        console[methods[i]] = function() {};
+        console[methods[i]] = function () {};
       }
     }
     this.GS = new ABService();
     localStorage.setItem("selectedAppointment", null);
     this.checkIfInitialLogInAndSync();
+
+    let il = getSmallData("IL");
+    il.then((res) => {
+      console.log(res);
+    });
   },
-  created() {
-  }
+  created() {},
 };
 </script>
 <style lang="scss">
@@ -367,6 +378,6 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 .expDialog {
-    overflow: none !important;
-  }
+  overflow: none !important;
+}
 </style>

@@ -135,7 +135,7 @@
 <script>
 import axios from "axios";
 
-import { setSpecialData } from "@/service/idb_service.js";
+import { setSpecialDataE, setSmallData } from "@/service/idb_service.js";
 import { ABService } from "@/service/Generic_Service.js";
 const API_URL = "https://api.a2sdms.com/";
 const OTP_VERIFY_API = API_URL + "auth/verify/otp?";
@@ -205,8 +205,9 @@ export default {
         )
         .then(response => {
           if (response.status === 200) {
-            const setData = setSpecialData("indexDbId", JSON.stringify(response.data));
+            const setData = setSpecialDataE("indexDbId", JSON.stringify(response.data));
             // this.saveUserInfo(response.data);
+            setSmallData("IL", true);
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("IL", true);
             localStorage.setItem("uData", JSON.stringify(response.data));

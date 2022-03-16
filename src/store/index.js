@@ -28,6 +28,7 @@ export default new Vuex.Store({
         hasPrescriptionAccess: getPrescriptionAccessDetails(),
         adminRole: hasAdminRole(),
         tknExp: false,
+        userData: {},
     },
     mutations: {
         setUserLoginResponse(state, data) {
@@ -42,6 +43,9 @@ export default new Vuex.Store({
         setTokenExpire(state, data) {
             state.tknExp = data;
         },
+        setUserDa(state, data) {
+            state.userData = data;
+        }
     },
     actions: {},
     modules: {},
@@ -51,5 +55,6 @@ export default new Vuex.Store({
         hasPrescriptionAccess: state => state.hasPrescriptionAccess,
         adminRole: state => state.adminRole,
         tknExp: state => state.tknExp,
+        userData: state => state.userData,
     }
 })
