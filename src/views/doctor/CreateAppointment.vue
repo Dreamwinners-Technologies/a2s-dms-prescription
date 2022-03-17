@@ -14,7 +14,7 @@
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
                                <v-row class="pa-5">
-                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Pending Appointment</h3>   <v-spacer></v-spacer> <v-btn depressed @click="createAppDialog = true" color="info">Create Appointment</v-btn>
+                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Todays Appointment</h3>   <v-spacer></v-spacer> <v-btn depressed @click="createAppDialog = true" color="info">Create Appointment</v-btn>
                                </v-row>
                                <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
                                    <v-col cols="3">
@@ -79,7 +79,7 @@
                                     <v-col cols="2">
                                         <v-card-subtitle>
                                                  <v-btn-toggle>
-                                                     <v-btn color="info" depressed small  @click="showPrescription(appointment.data.id)"><v-icon style="color:white!important" small>mdi-eye</v-icon></v-btn>
+                                                     <v-btn color="info" depressed small :disabled="appointment.data.prescription == null || appointment.data.prescription.id == ''" @click="showPrescription(appointment.data.id)"><v-icon style="color:white!important" small>mdi-eye</v-icon></v-btn>
                                                      <v-btn color="info" depressed small @click="createPrescription(appointment.data.id)"><v-icon style="color:white!important" small>mdi-prescription</v-icon></v-btn>
                                                 </v-btn-toggle>
                                         </v-card-subtitle>
