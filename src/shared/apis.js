@@ -15,9 +15,9 @@ const DEV_API_ROOT = "https://need-doctors-backend.herokuapp.com/";
 export const PROFILE_API = API_ROOT + "auth/profile";
 export const PRESCRIPTION_API = API_ROOT + "prescriptions/medicines?pageNo=";
 export const PRESCRIPTION_HEADER_API = API_ROOT + "prescriptions/headers";
-export const APPOINTMENTS_API = API_ROOT_ALT + "appointments/";
+export const APPOINTMENTS_API = API_ROOT + "appointments/";
 export const AMBULANCE_API = API_ROOT + "api/ambulance/";
-export const RESEARCH_API = DEV_API_ROOT + "api/research/";
+export const RESEARCH_API = API_ROOT + "api/research/";
 
-export const PREVIOUS_PRESCRIPTION_API = API_ROOT_ALT + "appointments/doctor/previous/users/";
+export const PREVIOUS_PRESCRIPTION_API = API_ROOT + "appointments/doctor/previous/users/";
 export const APPOINTMENTS_BY_ID_API = APPOINTMENTS_API + "prescriptions/";
