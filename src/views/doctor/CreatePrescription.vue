@@ -3,7 +3,9 @@
     <v-snackbar v-model="snackbar" top color="success" centered timeout="1000">
       Prescitption has been saved
     </v-snackbar>
-
+    <v-snackbar v-model="snackbarPrevPres" top color="warning" centered timeout="3000">
+      The appointment you selected don't have prescription data.
+    </v-snackbar>
     <v-card rounded="0" elevation="0" color="#f2f5f8">
       <v-breadcrumbs :items="items">
         <template v-slot:divider>
@@ -1127,11 +1129,7 @@
         >
       </v-card>
     </v-dialog>
-    <v-dialog
-      scrollable
-      max-width="800px"
-      v-model="dialog"
-    >
+    <v-dialog scrollable max-width="800px" v-model="dialog">
       <v-card>
         <v-card-title>
           <v-row cols="12" class="pa-5" align="center" justify="center">
@@ -1139,7 +1137,6 @@
             <h3 class="mt-1 ml-2">Previous Appoinments of the patient</h3>
             <v-spacer></v-spacer>
           </v-row>
-    
         </v-card-title>
         <v-card-title>
           <v-row
@@ -1166,14 +1163,20 @@
              
             > -->
               <div v-if="previousPrescriptions.length === 0">
-                <h3 class="red--text text-center pa-4">Couldn't find any previous appointments of this patient</h3>
+                <h3 class="red--text text-center pa-4">
+                  Couldn't find any previous appointments of this patient
+                </h3>
               </div>
               <v-row
                 justify="center"
                 align="center"
                 v-for="(prevPres, idx) in previousPrescriptions"
                 :key="idx"
-                style="text-align: center; border-bottom: 1px solid #e7e7e7; color: black;"
+                style="
+                  text-align: center;
+                  border-bottom: 1px solid #e7e7e7;
+                  color: black;
+                "
                 class="clickable-row"
                 @click="setPreviousPrescriptionData(prevPres)"
               >
@@ -1191,9 +1194,8 @@
               <!-- </v-card> -->
             </v-col>
           </v-row>
-
         </v-card-text>
-                   <v-card-actions>
+        <v-card-actions>
           <v-row>
             <v-col style="text-align: center">
               <v-btn
@@ -1215,7 +1217,7 @@
               </v-btn>
             </v-col>
           </v-row>
-           </v-card-actions>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -1227,7 +1229,10 @@ import { DrugService } from "@/service/drugs_service.js";
 import VueSuggest from "vue-simple-suggest";
 import "vue-simple-suggest/dist/styles.css";
 import axios from "axios";
-import { PREVIOUS_PRESCRIPTION_API, APPOINTMENTS_BY_ID_API } from "@/shared/apis.js";
+import {
+  PREVIOUS_PRESCRIPTION_API,
+  APPOINTMENTS_BY_ID_API,
+} from "@/shared/apis.js";
 export default {
   components: {
     VueSuggest,
@@ -1244,6 +1249,7 @@ export default {
       ABS: null,
       DS: null,
       snackbar: false,
+      snackbarPrevPres: false,
       dialogSideData: false,
       dialogAddDrugsHintData: false,
       sideDataSubmitModel: "",
@@ -1392,8 +1398,7 @@ export default {
     show() {
       return 0;
     },
-    setPreviousPrescriptionData({appointmentId}){
-
+    setPreviousPrescriptionData({ appointmentId }) {
       axios({
         method: "get",
         url: `${APPOINTMENTS_BY_ID_API}${appointmentId}`,
@@ -1404,10 +1409,18 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res.data);
-          this.appointment = res.data;
+          let tmp = res.data;
+          if(tmp.data.prescription === null) {
+                 //tmp.data.prescription = {};
+                 this.snackbarPrevPres = true;
+          }else{
+          console.log(tmp);
+          this.appointment = tmp;
+          }
+
         })
-        .catch((err) => {}).finally(() =>{
+        .catch((err) => {})
+        .finally(() => {
           this.dialog = false;
         });
     },
@@ -1763,16 +1776,15 @@ export default {
 }
 .v-dialog.v-dialog--active.v-dialog--scrollable {
   overflow: hidden !important;
-
 }
-.clickable-row{
+.clickable-row {
   cursor: pointer;
 }
 .clickable-row:hover {
-background-color: rgba(242, 245, 248, .5);
+  background-color: rgba(242, 245, 248, 0.5);
 }
 .clickable-row:active {
-background-color: rgba(242, 245, 248, .9);
+  background-color: rgba(242, 245, 248, 0.9);
 }
 </style>
 
